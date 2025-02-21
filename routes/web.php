@@ -28,8 +28,15 @@ use Illuminate\Support\Facades\Route;
     });
 
     Route::get('/berita', function () {
-        return view('layouts.berita');
+        return view('layouts.berita.berita');
     });
+
+
+    Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+    Route::resource('alumni', App\Http\Controllers\AlumniController::class);
+
+    Route::get('/alumni/pdf/{id}', [AlumniController::class, 'create'])->name('alumni.create');
     
 
     Auth::routes();
@@ -41,12 +48,6 @@ use Illuminate\Support\Facades\Route;
         Route::put('/user/update/{id}', [UserController::class, 'update'])->name('user.update');
         Route::delete('/user/{id}', [UserController::class, 'destroy'])->name('user.destroy');
 
-
-    Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-
-    Route::resource('alumni', App\Http\Controllers\AlumniController::class);
-
-    Route::get('/alumni/pdf/{id}', [AlumniController::class, 'create'])->name('alumni.create');
 
 
     //Route::get('/alumni', [AlumniController::class, 'index']);

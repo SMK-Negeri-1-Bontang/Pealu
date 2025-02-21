@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('welcome')
 
 @section('content')
 <!-- Font Awesome 6.5.1 -->
