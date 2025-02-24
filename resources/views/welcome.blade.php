@@ -151,7 +151,7 @@
                             <a href="" class="fs-5">+Berita</a>
                             </li>
                             <li class="nav-item">
-                            <a href="" class="fs-5">User</a>
+                            <a href="{{ route('user.index') }}" class="fs-5">User</a>
                             </li>
                             <li class="nav-item">
                             <a href="{{ url('/home') }}" class="fs-5">Status</a>
@@ -160,7 +160,7 @@
                             <a href="" class="fs-5">Lowongan</a>
                             </li>
                             <li class="nav-item">
-                            <a href="" class="fs-5">Berita</a>
+                            <a href="{{ url('/berita') }}" class="fs-5">Berita</a>
                             </li>
                         </ul>
                     </div>
