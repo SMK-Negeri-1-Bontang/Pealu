@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('welcome')
 
 @section('content')
 <div class="container d-flex justify-content-center align-items-center min-vh-100">
@@ -28,7 +28,7 @@
                     <button type="submit" class="btn btn-success w-100">Masuk</button>
                 </form>
                 <p class="mt-3 text-center">
-                    Belum punya akun? <a class="text-primary" href="{{ route('register') }}" >Daftar</a>
+                    Belum punya akun? <a class="text-primary" href="{{ Route('user.create') }}" >Daftar</a>
                 </p>
             </div>
             
