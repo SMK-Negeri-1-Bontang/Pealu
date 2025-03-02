@@ -40,15 +40,15 @@
                        </tr>
                      </thead>
                      <tbody>
-                       @foreach($user as $users) 
+                       @foreach($users as $user) 
                        <tr>
                          <td>{{$loop->iteration}}</td>
-                         <td>{{$users->name}}</td>
-                         <td>{{$users->nama_lengkap}}</td>
-                         <td>{{$users->email}}</td>
+                         <td>{{$user->name}}</td>
+                         <td>{{$user->nama_lengkap}}</td>
+                         <td>{{$user->email}}</td>
                          <td>
-                             @if ($users->roles->isNotEmpty())
-                                 {{ $users->roles->pluck('roles')->implode(', ') }}
+                             @if ($user->roles->isNotEmpty())
+                                 {{ $user->roles->pluck('roles')->implode(', ') }}
                              @else
                                  -
                              @endif
@@ -56,7 +56,7 @@
                          <td>
                         <div class="input-group mb-3">
                           <div class="input-group-prepend">
-                              <a href="{{ route('user.edit', $users->id) }}" 
+                              <a href="{{ route('user.edit', $user->id) }}" 
                                 class="btn btn-success mx-1 shadow d-flex align-items-center justify-content-center"
                                 style="width: 36px; height: 36px; padding: 0;">
                                   <i class="fa-solid fa-pen"></i> <!-- Versi Font Awesome 6 -->
@@ -65,7 +65,7 @@
                           </div>
   
                           <div class="input-group-prepend">
-                              <a href="#" data-bs-toggle="modal" data-bs-target="#delete{{$users->id}}" 
+                              <a href="#" data-bs-toggle="modal" data-bs-target="#delete{{$user->id}}" 
                                 class="btn btn-danger d-flex align-items-center justify-content-center"
                                 style="width: 36px; height: 36px; padding: 0;">
                                   <i class="fa fa-lg fa-fw fa-trash"></i>
@@ -77,7 +77,7 @@
                        @endforeach
                      </tbody>
                    </table>
-                   {{ $user->links() }}
+                   {{ $users->links() }}
                </div>
            </div>
        </div>
@@ -85,9 +85,9 @@
 </div>
 @endsection
 
-@foreach($user as $users)
+@foreach($users as $user)
 <!-- Modal Delete -->
-<div class="modal fade" id="delete{{ $users->id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="delete{{ $user->id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -95,11 +95,11 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <p>Apakah Anda Yakin Ingin Menghapus Data <b>{{ $users->nama }}</b></p>
+                <p>Apakah Anda Yakin Ingin Menghapus Data <b>{{ $user->nama }}</b></p>
             </div>
             <div class="modal-footer justify-content-between">
                 <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">keluar</button>
-                <form action="{{ route('user.destroy', $users->id) }}" method="POST">
+                <form action="{{ route('user.destroy', $user->id) }}" method="POST">
                     @csrf
                     @method('DELETE')
                     <button type="submit" class="btn btn-danger btn-sm">hapus</button>

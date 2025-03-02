@@ -9,18 +9,20 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-    public function up()
-{
-    Schema::table('roles', function (Blueprint $table) {
-        $table->string('roles')->after('user_id'); // Tambahkan kolom role
-    });
-}
+    public function up(): void
+    {
+        Schema::table('roles', function (Blueprint $table) {
+            $table->enum('role', ['admin', 'petugas', 'user'])->change(); // Pastikan kolom tetap konsisten
+        });
+    }
 
-public function down()
-{
-    Schema::table('roles', function (Blueprint $table) {
-        $table->dropColumn('roles');
-    });
-}
-
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::table('roles', function (Blueprint $table) {
+            $table->enum('role', ['admin', 'petugas', 'user'])->change(); // Kembalikan seperti semula
+        });
+    }
 };
