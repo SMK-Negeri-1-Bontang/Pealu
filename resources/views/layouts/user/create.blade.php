@@ -3,7 +3,7 @@
 @section('content')
 <div class="container d-flex justify-content-center align-items-center min-vh-100">
     <div class="card shadow-lg p-4" style="width: 100%; max-width: 500px;">
-        <h2 class="text-center pb-4">Tambah User</h2>
+        <h2 class="text-center pb-4">Tambah akun</h2>
         <form method="POST" action="{{ route('user.store') }}">
             @csrf
             <div class="mb-3">

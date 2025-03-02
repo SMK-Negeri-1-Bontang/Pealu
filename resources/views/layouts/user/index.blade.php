@@ -21,9 +21,12 @@
                      </div>
                   @endif
 
+                  @if(true)
                    <a href="{{Route('user.create')}}" class="btn btn-success btn-md m-4">
                      <i class="fa fa-plus"></i> Tambah User
                    </a>
+                   @endif
+                   
                    
                    <table class="table table-striped table-bordered">
                      <thead>
