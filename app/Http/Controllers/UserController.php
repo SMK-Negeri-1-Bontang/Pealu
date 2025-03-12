@@ -17,7 +17,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::with('role')->paginate(10); // Pastikan relasi ikut di-load
+        $users = User::with('role')->paginate(10);
         return view('layouts.user.index', compact('users'));
     }
 
