@@ -49,9 +49,10 @@
             <div class="mb-3">
                 <label for="role" class="form-label">Level</label>
                 <select id="role" name="role" class="form-select @error('role') is-invalid @enderror" required>
-                    <option value="admin">Admin</option>
-                    <option value="user">User</option>
+                    <option value="admin" {{ old('role', Auth::user()->role) == 'admin' ? 'selected' : '' }}>Admin</option>
+                    <option value="user" {{ old('role', Auth::user()->role) == 'user' ? 'selected' : '' }}>User</option>
                 </select>
+
                 @error('role')
                     <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
                 @enderror

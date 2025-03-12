@@ -40,13 +40,14 @@
                 @enderror
             </div>
             <div class="mb-3">
-                <label for="password" class="form-label">Password</label>
-                <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" 
-                       name="password" placeholder="Kosongkan jika tidak ingin merubah password">
-                @error('password')
+                <label for="old_password" class="form-label">Password Lama</label>
+                <input id="old_password" type="password" class="form-control @error('old_password') is-invalid @enderror" 
+                    name="old_password" placeholder="********" autocomplete="current-password">
+                @error('old_password')
                     <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
                 @enderror
             </div>
+
             <div class="mb-3">
                 <label for="role" class="form-label">Level</label>
                 <select id="role" name="role" class="form-select @error('role') is-invalid @enderror" required>
