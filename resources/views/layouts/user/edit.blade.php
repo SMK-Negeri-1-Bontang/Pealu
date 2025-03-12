@@ -24,14 +24,6 @@
                 @enderror
             </div>
             <div class="mb-3">
-                <label for="email" class="form-label">Email</label>
-                <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" 
-                       name="email" value="{{ old('email', $user->email) }}" required>
-                @error('email')
-                    <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
-                @enderror
-            </div>
-            <div class="mb-3">
                 <label for="hp" class="form-label">No HP</label>
                 <input id="hp" type="text" class="form-control @error('hp') is-invalid @enderror" 
                        name="hp" value="{{ old('hp', $user->hp) }}" required>
@@ -40,10 +32,17 @@
                 @enderror
             </div>
             <div class="mb-3">
+                <label for="email" class="form-label">Email</label>
+                <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" 
+                       name="email" value="{{ old('email', $user->email) }}" required>
+                @error('email')
+                    <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+                @enderror
+            </div>
+            <div class="mb-3">
                 <label for="password" class="form-label">Password</label>
                 <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" 
-                       name="password">
-                <small class="text-muted">Kosongkan jika tidak ingin mengubah password</small>
+                       name="password" placeholder="Kosongkan jika tidak ingin merubah password">
                 @error('password')
                     <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
                 @enderror

@@ -22,7 +22,7 @@ class AlumniController extends Controller
             $alumni = Alumni::paginate(5);
         }
 
-        return view('alumni', compact('alumni'));
+        return view('layouts.alumni.alumni', compact('alumni'));
     }
 
     /**

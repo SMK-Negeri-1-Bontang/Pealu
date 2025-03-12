@@ -9,7 +9,7 @@
                     <h3>Daftar Berita</h3>
                 </div>
                 <div class="card-body">
-                    <a href="{{ route('berita.create') }}" class="btn btn-primary mb-3">Tambah Berita</a>
+                    <a href="" class="btn btn-primary mb-3">Tambah Berita</a>
 
                     @if(session('status'))
                         <div class="alert alert-success">

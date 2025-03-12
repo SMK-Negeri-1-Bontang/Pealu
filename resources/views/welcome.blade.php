@@ -48,8 +48,6 @@
             footer{
                 background-color: #dffff0;
                 font-family: 'Roboto Mono', sans-serif;
-                overflow-x: hidden;
-                position: fixed;
                 bottom: 0;
                 width: 100%;
                 padding: 10px 0;
@@ -148,7 +146,7 @@
                             <a href="" class="fs-5">+Lowongan</a>
                             </li>
                             <li class="nav-item">
-                            <a href="{{ route('TambahBerita.index') }}" class="fs-5">tambahberita</a>
+                            <a href="{{ route('tmbberita.index') }}" class="fs-5">+Berita</a>
                             </li>
                             <li class="nav-item">
                             <a href="{{ route('user.index') }}" class="fs-5">User</a>

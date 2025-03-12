@@ -40,14 +40,9 @@ Route::get('/alumni/pdf/{id}', [AlumniController::class, 'create'])->name('alumn
 
 Auth::routes();
 
-Route::get('/user', [UserController::class, 'index'])->name('user.index');
-Route::get('/user/create', [UserController::class, 'create'])->name('user.create');
-Route::post('/user/store', [UserController::class, 'store'])->name('user.store');
-Route::get('/user/edit/{id}', [UserController::class, 'edit'])->name('user.edit');
-Route::put('/user/update/{id}', [UserController::class, 'update'])->name('user.update');
-Route::delete('/user/{id}', [UserController::class, 'destroy'])->name('user.destroy');
+Route::resource('user', App\Http\Controllers\UserController::class);
 
 // Route untuk Berita
-Route::resource('berita', TambahBeritaController::class);
-Route::get('/TambahBerita', [TambahBeritaController::class, 'index'])->name('TambahBerita.index');
+Route::resource('tmbberita', App\Http\Controllers\TambahBeritaController::class);
+
 

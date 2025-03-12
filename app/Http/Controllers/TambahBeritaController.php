@@ -6,6 +6,7 @@ use App\Models\TambahBerita;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
+
 class TambahBeritaController extends Controller
 {
     /**
@@ -14,7 +15,7 @@ class TambahBeritaController extends Controller
     public function index()
     {
         $berita = TambahBerita::latest()->paginate(10);
-return view('TambahBerita.index', compact('berita'));
+        return view('layouts.berita.index', compact('berita'));
 
     }
 
@@ -23,7 +24,7 @@ return view('TambahBerita.index', compact('berita'));
      */
     public function create()
     {
-        return view('TambahBerita.create');
+        return view('layouts.berita.index');
     }
 
     /**
@@ -45,7 +46,7 @@ return view('TambahBerita.index', compact('berita'));
             'image' => $imagePath,
         ]);
 
-        return redirect()->route('TambahBerita.index')->with('success', 'TambahBerita berhasil ditambahkan.');
+        return redirect()->route('tmbberita.index')->with('success', 'TambahBerita berhasil ditambahkan.');
     }
 
     /**
@@ -53,7 +54,7 @@ return view('TambahBerita.index', compact('berita'));
      */
     public function show(TambahBerita $TambahBerita)
     {
-        return view('TambahBerita.show', compact('TambahBerita'));
+        return view('layouts.berita.show', compact('berita'));
     }
 
     /**
@@ -61,7 +62,7 @@ return view('TambahBerita.index', compact('berita'));
      */
     public function edit(TambahBerita $TambahBerita)
     {
-        return view('TambahBerita.edit', compact('TambahBerita'));
+        return view('layouts.berita.edit', compact('berita'));
     }
 
     /**
@@ -90,7 +91,7 @@ return view('TambahBerita.index', compact('berita'));
             'content' => $request->content,
         ]);
 
-        return redirect()->route('TambahBerita.index')->with('success', 'TambahBerita berhasil diperbarui.');
+        return redirect()->route('tmbberita.index')->with('success', 'TambahBerita berhasil diperbarui.');
     }
 
     /**
@@ -104,6 +105,6 @@ return view('TambahBerita.index', compact('berita'));
 
         $TambahBerita->delete();
 
-        return redirect()->route('TambahBerita.index')->with('success', 'TambahBerita berhasil dihapus.');
+        return redirect()->route('tmbberita.index')->with('success', 'TambahBerita berhasil dihapus.');
     }
 }
