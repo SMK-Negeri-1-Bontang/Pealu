@@ -4,10 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
-use App\Models\Role;
+use App\Models\role;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Validation\Rules;
+use Illuminate\Validation\Roles;
 use Exception;
 
 class UserController extends Controller
@@ -17,9 +17,10 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::paginate(10); // Pastikan hasil paginate()
+        $users = User::with('role')->paginate(10); // Pastikan relasi ikut di-load
         return view('layouts.user.index', compact('users'));
     }
+
 
     /**
      * Show the form for creating a new resource.
@@ -35,7 +36,7 @@ class UserController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|unique:users|min:5',
+            'name' => 'required|unique:users',
             'nama_lengkap' => 'required',
             'hp' => 'required|min:9|numeric',
             'email' => 'required|email|unique:users',
@@ -56,7 +57,7 @@ class UserController extends Controller
                 Role::create([
                     'user_id' => $user->id,
                     'role' => $request->role
-                ]);
+                ]);                
             }
         } catch (Exception $e) {
             return redirect()->back()->with('error', 'Data Gagal Disimpan');

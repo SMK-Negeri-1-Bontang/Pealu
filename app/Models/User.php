@@ -8,6 +8,11 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\DB;
 
 
 class User extends Authenticatable
@@ -26,7 +31,6 @@ class User extends Authenticatable
         'email',
         'hp',
         'password',
-        'roles',
     ];
 
     /**
@@ -44,22 +48,13 @@ class User extends Authenticatable
      *
      * @return array<string, string>
      */
-    protected function casts(): array
-    {
-        return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
-        ];
-    }
-public function roles()
-{
-    return $this->hasMany(Role::class, 'user_id'); 
-}
-
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+        'password' => 'hashed',
+    ];
     
-
-    public function hasRole(): HasOne
-{
-    return $this->hasOne(Role::class);
-}
+    public function role()
+    {
+        return $this->hasOne(Role::class, 'user_id'); 
+    }
 }

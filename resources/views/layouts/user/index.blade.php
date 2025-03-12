@@ -47,11 +47,12 @@
                          <td>{{$user->nama_lengkap}}</td>
                          <td>{{$user->email}}</td>
                          <td>
-                             @if ($user->roles->isNotEmpty())
-                                 {{ $user->roles->pluck('roles')->implode(', ') }}
-                             @else
-                                 -
-                             @endif
+                            @if ($user->role)
+                                {{ ucfirst($user->role->role) }}
+                            @else
+                                -
+                            @endif
+
                          </td>
                          <td>
                         <div class="input-group mb-3">

@@ -148,7 +148,7 @@
                             <a href="" class="fs-5">+Lowongan</a>
                             </li>
                             <li class="nav-item">
-                            <a href="" class="fs-5">+Berita</a>
+                            <a href="{{ route('TambahBerita.index') }}" class="fs-5">tambahberita</a>
                             </li>
                             <li class="nav-item">
                             <a href="{{ route('user.index') }}" class="fs-5">User</a>

@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('roles', function (Blueprint $table) {
-            $table->enum('role', ['admin', 'petugas', 'user'])->change(); // Pastikan kolom tetap konsisten
+            $table->enum('role', ['admin', 'user'])->change(); // Pastikan kolom tetap konsisten
         });
     }
 
@@ -22,7 +22,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('roles', function (Blueprint $table) {
-            $table->enum('role', ['admin', 'petugas', 'user'])->change(); // Kembalikan seperti semula
+            $table->enum('role', ['admin', 'user'])->change(); // Kembalikan seperti semula
         });
     }
 };
