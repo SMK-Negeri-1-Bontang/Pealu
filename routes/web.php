@@ -47,4 +47,4 @@ Route::middleware(['auth'])->group(function () {
 // Route untuk Berita
 Route::resource('tmbberita', App\Http\Controllers\TambahBeritaController::class);
 
-
+//coba
