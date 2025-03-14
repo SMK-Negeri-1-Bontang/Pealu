@@ -27,9 +27,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        return view('layouts.user.create', [
-            'user' => Auth::user() // Mengirimkan user ke tampilan
-        ]);
+        return view('layouts.user.create');
     }
 
     /**

@@ -142,8 +142,6 @@
                     <div class="container">
                         <hr>
                         <ul class="d-flex justify-content-center list-unstyled gap-5">
-                            @if (Auth::check())
-                                @if (Auth::user()->role->role == 'admin')
                                     <li class="nav-item">
                                     <a href="" class="fs-5">+Lowongan</a>
                                     </li>
@@ -162,21 +160,6 @@
                                     <li class="nav-item">
                                     <a href="{{ url('/berita') }}" class="fs-5">Berita</a>
                                     </li>
-                                @elseif (Auth::user()->role->role == 'user') 
-                                    <li class="nav-item">
-                                    <a href="{{ route('user.index') }}" class="fs-5">User</a>
-                                    </li>
-                                    <li class="nav-item">
-                                    <a href="{{ url('/home') }}" class="fs-5">Status</a>
-                                    </li>
-                                    <li class="nav-item">
-                                    <a href="" class="fs-5">Lowongan</a>
-                                    </li>
-                                    <li class="nav-item">
-                                    <a href="{{ url('/berita') }}" class="fs-5">Berita</a>
-                                    </li>
-                                @endif
-                            @endif
                         </ul>
                     </div>
                 </div>
