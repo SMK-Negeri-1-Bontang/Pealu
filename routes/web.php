@@ -46,3 +46,4 @@ Route::resource('tmbberita', App\Http\Controllers\TambahBeritaController::class)
 
 //tes tes
 //tes zaidan
+//tes ikhsan
