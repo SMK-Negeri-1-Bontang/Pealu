@@ -50,3 +50,4 @@ Route::resource('tmbberita', App\Http\Controllers\TambahBeritaController::class)
 //tes syahid
 //tes syahid 2
 //tes syahid 3
+//tes zdnn 34
