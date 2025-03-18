@@ -4,6 +4,7 @@ use App\Http\Controllers\AlumniController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\TambahBeritaController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\BeritaController;
 
 Route::get('/', function () {
     return view('beranda');
@@ -43,6 +44,9 @@ Auth::routes();
 
 // Route untuk Berita
 Route::resource('tmbberita', App\Http\Controllers\TambahBeritaController::class);
+
+Route::post('/berita/store', [BeritaController::class, 'store'])->name('berita.store');
+
 
 //tes tes
 //tes zaidan
