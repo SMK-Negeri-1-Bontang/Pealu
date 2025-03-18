@@ -12,7 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->enum('status', ['active', 'inactive'])->default('active')->after('email');
+            if (!Schema::hasColumn('users', 'deleted_at')) {
+                $table->softDeletes(); // Tambahkan kolom deleted_at
+            }
         });
     }
 
@@ -22,7 +24,9 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn('status');
+            if (Schema::hasColumn('users', 'deleted_at')) {
+                $table->dropColumn('deleted_at'); // Hapus kolom deleted_at jika rollback
+            }
         });
     }
 };

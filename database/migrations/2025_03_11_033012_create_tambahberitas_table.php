@@ -11,12 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('tambahberita', function (Blueprint $table) {
-            $table->id();
-            $table->string('title');
-            $table->text('content');
-            $table->string('image')->nullable();
-            $table->timestamps();
-        });
+        if (!Schema::hasTable('tambahberita')) {
+            Schema::create('tambahberita', function (Blueprint $table) {
+                $table->id();
+                $table->string('title');
+                $table->text('content');
+                $table->string('image')->nullable();
+                $table->timestamps();
+            });
+        }
     }
+
 };

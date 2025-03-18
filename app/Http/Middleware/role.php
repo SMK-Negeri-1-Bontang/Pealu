@@ -4,38 +4,26 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 
-class role
+class Role
 {
     /**
      * Handle an incoming request.
-     *
-     * @param \Closure(\Illuminate\Http\Request):
-     * (\Symfony\Component\HttpFoundation\Response) $next
      */
-    public function handle(Request $request, Closure $next): Response
+    public function handle(Request $request, Closure $next, ...$allowedRoles): Response
     {
-        $allow = array_slice(func_get_args(), 2); //cek role yg boleh
+        $user = Auth::user()->load('role'); // Eager loading role
 
-        if(\Auth::user()) //jika user login
-        {
-            $ada = \Auth::user()->hasRole()->value('roles');
-            if($ada){
-                $roles= $ada;
-            }else{
-                $roles= 'user';
-            }
-
-            foreach($allow as $allow){ //untuk setiap role yg boleh
-                if( $roles == $allow){
-                    return $next($request);
-                }
-            }
-            return redirect('/dashboard');
-        }else{
-            return redirect('.');
+        if (!$user) {
+            return redirect('/')->with('error', 'Silakan login terlebih dahulu.');
         }
 
+        if (!$user->hasRole($allowedRoles)) {
+            return redirect('/dashboard')->with('error', 'Anda tidak memiliki akses.');
+        }
+
+        return $next($request);
     }
 }

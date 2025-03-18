@@ -10,10 +10,10 @@ return new class extends Migration
     {
         Schema::create('roles', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
-            $table->enum('role', ['admin', 'user']);
+            $table->string('name')->unique(); // 'admin', 'user', dll.
             $table->timestamps();
         });
+        
     }
 
     public function down(): void
