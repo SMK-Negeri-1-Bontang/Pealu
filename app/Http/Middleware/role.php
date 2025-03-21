@@ -4,26 +4,33 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 
 class Role
 {
     /**
      * Handle an incoming request.
+     *
+     * @param \Closure(\Illuminate\Http\Request):
+     * (\Symfony\Component\HttpFoundation\Response) $next
      */
-    public function handle(Request $request, Closure $next, ...$allowedRoles): Response
+    public function handle(Request $request, Closure $next, ...$roles): Response
     {
-        $user = Auth::user()->load('role'); // Eager loading role
+        // Check if the user is authenticated
+        if (\Auth::check()) {
+            // Get the authenticated user's role
+            $userRole = \Auth::user()->hasRole()->value('role') ?? 'user'; // Default to 'user' if no role found
 
-        if (!$user) {
-            return redirect('/')->with('error', 'Silakan login terlebih dahulu.');
+            // Check if the user's role is allowed to access the route
+            if (in_array($userRole, $roles)) {
+                return $next($request); // Allow access if the role matches
+            }
+
+            // Redirect to the dashboard if the role doesn't match
+            return redirect('/dashboard')->with('error', 'You do not have permission to access this page.');
         }
 
-        if (!$user->hasRole($allowedRoles)) {
-            return redirect('/dashboard')->with('error', 'Anda tidak memiliki akses.');
-        }
-
-        return $next($request);
+        // If the user is not authenticated, redirect to the login page
+        return redirect('/')->with('error', 'Please log in to continue.');
     }
 }

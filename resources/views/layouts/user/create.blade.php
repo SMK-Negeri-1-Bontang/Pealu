@@ -1,64 +1,103 @@
 @extends('welcome')
 
 @section('content')
-<div class="container d-flex justify-content-center align-items-center min-vh-100">
-    <div class="card shadow-lg p-4" style="width: 100%; max-width: 500px;">
-        <h2 class="text-center pb-4">Buat akun</h2>
+    <div class="container py-5">
+        <!-- Menampilkan pesan sukses -->
+        @if(session('success'))
+            <div class="alert alert-success">
+                {{ session('success') }}
+            </div>
+        @endif
+
+        <!-- Menampilkan pesan error -->
+        @if(session('error'))
+            <div class="alert alert-danger">
+                {{ session('error') }}
+            </div>
+        @endif
+
+        <!-- Menampilkan semua pesan error validasi -->
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
+        <h2 class="">Create User</h2>
         <form method="POST" action="{{ route('user.store') }}">
             @csrf
+
+            <!-- Name -->
             <div class="mb-3">
-                <label for="name" class="form-label">Nama</label>
-                <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" 
-                       name="name" value="{{ old('name') }}" required autofocus>
+                <label for="name" class="form-label">Name</label>
+                <input type="text" class="form-control @error('name') is-invalid @enderror" id="name" name="name" value="{{ old('name') }}" required autofocus>
                 @error('name')
-                    <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+                    <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
             </div>
+
+            <!-- Nama Lengkap -->
             <div class="mb-3">
                 <label for="nama_lengkap" class="form-label">Nama Lengkap</label>
-                <input id="nama_lengkap" type="text" class="form-control @error('nama_lengkap') is-invalid @enderror" 
-                       name="nama_lengkap" value="{{ old('nama_lengkap') }}" required>
+                <input type="text" class="form-control @error('nama_lengkap') is-invalid @enderror" id="nama_lengkap" name="nama_lengkap" value="{{ old('nama_lengkap') }}" required>
                 @error('nama_lengkap')
-                    <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+                    <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
             </div>
+
+            <!-- HP -->
             <div class="mb-3">
-                <label for="hp" class="form-label">No HP</label>
-                <input id="hp" type="text" class="form-control @error('hp') is-invalid @enderror" 
-                       name="hp" value="{{ old('hp') }}" required>
+                <label for="hp" class="form-label">HP</label>
+                <input type="text" class="form-control @error('hp') is-invalid @enderror" id="hp" name="hp" value="{{ old('hp') }}" required>
                 @error('hp')
-                    <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+                    <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
             </div>
+
+            <!-- Email -->
             <div class="mb-3">
                 <label for="email" class="form-label">Email</label>
-                <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" 
-                       name="email" value="{{ old('email') }}" required>
+                <input type="email" class="form-control @error('email') is-invalid @enderror" id="email" name="email" value="{{ old('email') }}" required>
                 @error('email')
-                    <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+                    <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
             </div>
+
+            <!-- Password -->
             <div class="mb-3">
                 <label for="password" class="form-label">Password</label>
-                <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" 
-                       name="password" required>
+                <input type="password" class="form-control @error('password') is-invalid @enderror" id="password" name="password" required>
                 @error('password')
-                    <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+                    <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
             </div>
+
+            <!-- Role -->
             <div class="mb-3">
                 <label for="role" class="form-label">Level</label>
                 <select id="role" name="role" class="form-select @error('role') is-invalid @enderror" required>
-                    <option value="admin">Admin</option>
+                    <option value="" disabled selected>Pilih Level</option>
+                    @if (Auth::check() && Auth::user()->isAdmin())
+                        <option value="admin">Admin</option>
+                        <option value="petugas">Petugas</option>
+                    @endif
                     <option value="user">User</option>
                 </select>
-
                 @error('role')
-                    <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+                    <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
             </div>
-            <button type="submit" class="btn btn-success w-100">Register</button>
+
+            <div class="d-flex justify-content-between align-items-center mt-4">
+                <a class="text-decoration-none text-muted" href="{{ route('login') }}">
+                    Already registered?
+                </a>
+                <button type="submit" class="btn btn-primary">Create User</button>
+            </div>
         </form>
     </div>
-</div>
 @endsection
