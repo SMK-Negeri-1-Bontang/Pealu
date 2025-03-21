@@ -5,20 +5,18 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
-class User extends Authenticatable
+class User extends Authenticatable // <== Perbaikan di sini
 {
-    use HasFactory, Notifiable, SoftDeletes;
+    use HasFactory, Notifiable;
 
     protected $fillable = [
         'name',
         'nama_lengkap',
-        'email',
         'hp',
+        'email',
         'password',
-        'role_id',
-        'remember_token',
     ];
 
     protected $hidden = [
@@ -26,19 +24,26 @@ class User extends Authenticatable
         'remember_token',
     ];
 
-    protected $casts = [
-        'email_verified_at' => 'datetime',
-        'password' => 'hashed',
-    ];
-
-    public function role()
+    protected function casts(): array
     {
-        return $this->belongsTo(Role::class, 'role_id');
+        return [
+            'email_verified_at' => 'datetime',
+            'password' => 'hashed',
+        ];
     }
 
-    public function hasRole($roles)
+    public function hasRole(): HasOne
     {
-        $userRole = optional($this->role)->role ?? 'user';
-        return in_array($userRole, (array) $roles);
+        return $this->hasOne(Role::class);
+    }
+
+    public function isAdmin()
+    {
+        return $this->hasRole()->where('role', 'admin')->exists();
+    }
+
+    public function isUser()
+    {
+        return $this->hasRole()->where('role', 'user')->exists();
     }
 }

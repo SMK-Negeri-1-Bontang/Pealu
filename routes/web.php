@@ -5,53 +5,38 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\TambahBeritaController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BeritaController;
+use App\Http\Controllers\HomeController;
 
+// Halaman utama
 Route::get('/', function () {
     return view('beranda');
 });
 Route::get('/tentangsmkn1', function () {
     return view('tentangsmkn1');
 });
-
 Route::get('/welcome', function () {
     return view('welcome');
 });
-
 Route::get('/alumni', function () {
     return view('alumni');
 });
+Route::get('/home', [HomeController::class, 'index'])->name('home');
 
-Route::get('/home', function () {
-    return view('home');
-});
-
-Route::get('/app', function () {
-    return view('layouts.app');
-});
-
-Route::get('/berita', function () {
-    return view('layouts.berita.berita');
-});
-
-Route::resource('alumni', App\Http\Controllers\AlumniController::class);
-
-//Route::get('/alumni/pdf/{id}', [AlumniController::class, 'create'])->name('alumni.create');
+// Rute untuk Alumni
+Route::resource('alumni', AlumniController::class);
 Route::get('/alumni/pdf/{id}', [AlumniController::class, 'invoice'])->name('alumni.invoice');
 
-Auth::routes();
-    Route::resource('user', App\Http\Controllers\UserController::class);
-    Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-
-// Route untuk Berita
-Route::resource('tmbberita', App\Http\Controllers\TambahBeritaController::class);
-
+// Rute untuk Berita
+Route::resource('tmbberita', TambahBeritaController::class);
 Route::post('/berita/store', [BeritaController::class, 'store'])->name('berita.store');
 
+// Rute User (Bisa diakses tanpa login)
+Route::resource('user', UserController::class);
 
-//tes tes
-//tes zaidan
-//tes ikhsan
-//tes syahid
-//tes syahid 2
-//tes syahid 3
-//tes zdnn 34
+// Proteksi hanya untuk fitur tertentu
+Route::middleware(['role:admin,petugas'])->group(function () {
+    // Rute untuk User (Hanya admin dan petugas)
+});
+
+// Auth Routes (Tetap ada untuk fitur login/register)
+Auth::routes();
