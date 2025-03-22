@@ -1,27 +1,40 @@
 @extends('welcome')
 
 @section('content')
-<div class="d-flex justify-content-center align-items-center vh-100" style="background-color: rgba(0, 0, 0, 0.5);">
-    <div class="card shadow-lg" style="width: 400px; border-radius: 10px;">
-        <div class="card-body text-center">
-            <a href="{{ url('/') }}"><button class="btn-close position-absolute end-0 m-2"></button></a>
-            <h3 class="fw-bold mb-4">Login</h3>
+<div class="d-flex justify-content-center align-items-center">
+    <div class="card shadow p-4"
+        style="width: 500px; border-radius: 12px; background-color: #f9f9f9; position: relative;">
+        
+        <!-- Tombol Close -->
+        <a href="{{ url('/') }}" class="position-absolute top-0 end-0 m-3 text-dark text-decoration-none">
+            <i class="fas fa-times fs-5"></i>
+        </a>
 
-            <form method="POST" action="{{ route('login') }}">
-                @csrf
-                <div class="mb-3 text-start">
-                    <label for="email" class="form-label">Email:</label>
-                    <input type="email" id="email" name="email" class="form-control border-0 border-bottom border-success" placeholder="Masukan Email" required>
-                </div>
+        <!-- Judul Login -->
+        <h2 class="fw-bold text-center mb-5">Login</h2>
 
-                <div class="mb-3 text-start">
-                    <label for="password" class="form-label">Password:</label>
-                    <input type="password" id="password" name="password" class="form-control border-0 border-bottom border-success" placeholder="Masukan Password" required>
-                </div>
+        <!-- Form Login -->
+        <form method="POST" action="{{ route('login') }}">
+            @csrf
+            <div class="mb-3">
+                <label for="email" class="form-label">Email</label>
+                <input type="email" id="email" name="email" class="form-control" 
+                    style="background-color: #e9ecef; border: none; height: 40px;" required>
+            </div>
 
-                <button type="submit" class="btn btn-primary w-100">Login</button>
-            </form>
-        </div>
+            <div class="mb-5">
+                <label for="password" class="form-label">Password</label>
+                <input type="password" id="password" name="password" class="form-control" 
+                    style="background-color: #e9ecef; border: none; height: 40px;" required>
+            </div>
+
+            <!-- Tombol Register & Login -->
+            <div class="d-grid gap-2">
+                <button type="submit" class="btn" 
+                    style="background-color: #28a745; color: white;">Login</button>
+                <a href="{{ route('register') }}" class="btn btn-outline-success">Register</a>
+            </div>
+        </form>
     </div>
 </div>
 @endsection

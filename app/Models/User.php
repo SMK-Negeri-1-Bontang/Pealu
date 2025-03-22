@@ -5,9 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 
-class User extends Authenticatable // <== Perbaikan di sini
+class User extends Authenticatable
 {
     use HasFactory, Notifiable;
 
@@ -17,6 +16,7 @@ class User extends Authenticatable // <== Perbaikan di sini
         'hp',
         'email',
         'password',
+        'role', // Pastikan kolom role ada di database users
     ];
 
     protected $hidden = [
@@ -32,18 +32,19 @@ class User extends Authenticatable // <== Perbaikan di sini
         ];
     }
 
-    public function hasRole(): HasOne
-    {
-        return $this->hasOne(Role::class);
-    }
-
+    /**
+     * Cek apakah user adalah admin.
+     */
     public function isAdmin()
     {
-        return $this->hasRole()->where('role', 'admin')->exists();
+        return $this->role === 'admin';
     }
 
+    /**
+     * Cek apakah user adalah user biasa.
+     */
     public function isUser()
     {
-        return $this->hasRole()->where('role', 'user')->exists();
+        return $this->role === 'user';
     }
 }

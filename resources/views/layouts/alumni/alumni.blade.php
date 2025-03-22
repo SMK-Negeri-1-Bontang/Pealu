@@ -21,8 +21,8 @@
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
         @endif
-        <div class="col-md-8">
-            <div class="card">
+        <div class="card">
+            <div class="card-body">
                 <div class="card-header d-flex justify-content-evenly align-items-center">
                     <a href="#" data-bs-toggle="modal" data-bs-target="#tambah" class="btn btn-success btn-sm">Tambah Data</a>
                     
@@ -35,8 +35,8 @@
                         </div>
                     </form>
                 </div>
-                <div class="card-body text-capitalize">
-                    <table class="table table-striped table-hover">
+                <div class="">
+                    <table class="table table-hover">
                         <thead>
                             <tr>
                                 <th scope="col">No</th>

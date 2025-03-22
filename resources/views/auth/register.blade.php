@@ -1,77 +1,111 @@
-@extends('layouts.app')
+@extends('welcome')
 
 @section('content')
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">{{ __('Register') }}</div>
+<div class="d-flex justify-content-center align-items-center">
+    <div class="card shadow p-4"
+        style="width: 500px; border-radius: 12px; background-color: #f9f9f9; position: relative;">
 
-                <div class="card-body">
-                    <form method="POST" action="{{ route('register') }}">
-                        @csrf
+        <!-- Tombol Close -->
+        <a href="{{ url('/') }}" class="position-absolute top-0 end-0 m-3 text-dark text-decoration-none">
+            <i class="fas fa-times fs-5"></i>
+        </a>
 
-                        <div class="row mb-3">
-                            <label for="name" class="col-md-4 col-form-label text-md-end">{{ __('Name') }}</label>
+        <!-- Judul Register -->
+        <h2 class="fw-bold text-center mb-5">Register</h2>
 
-                            <div class="col-md-6">
-                                <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus>
+        <!-- Menampilkan pesan sukses -->
+        @if(session('success'))
+            <div class="alert alert-success">{{ session('success') }}</div>
+        @endif
 
-                                @error('name')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                        </div>
+        <!-- Menampilkan pesan error -->
+        @if(session('error'))
+            <div class="alert alert-danger">{{ session('error') }}</div>
+        @endif
 
-                        <div class="row mb-3">
-                            <label for="email" class="col-md-4 col-form-label text-md-end">{{ __('Email Address') }}</label>
-
-                            <div class="col-md-6">
-                                <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email">
-
-                                @error('email')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                        </div>
-
-                        <div class="row mb-3">
-                            <label for="password" class="col-md-4 col-form-label text-md-end">{{ __('Password') }}</label>
-
-                            <div class="col-md-6">
-                                <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="new-password">
-
-                                @error('password')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                        </div>
-
-                        <div class="row mb-3">
-                            <label for="password-confirm" class="col-md-4 col-form-label text-md-end">{{ __('Confirm Password') }}</label>
-
-                            <div class="col-md-6">
-                                <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password">
-                            </div>
-                        </div>
-
-                        <div class="row mb-0">
-                            <div class="col-md-6 offset-md-4">
-                                <button type="submit" class="btn btn-primary">
-                                    {{ __('Register') }}
-                                </button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
+        <!-- Menampilkan semua pesan error validasi -->
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul class="mb-0">
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
             </div>
-        </div>
+        @endif
+
+        <form method="POST" action="{{ route('user.store') }}">
+            @csrf
+
+            <div class="mb-3">
+                <label for="name" class="form-label">Nama</label>
+                <input type="text" id="name" name="name" class="form-control @error('name') is-invalid @enderror"
+                    value="{{ old('name') }}" style="background-color: #e9ecef; border: none; height: 40px;" required>
+                @error('name')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
+            </div>
+
+            <div class="mb-3">
+                <label for="nama_lengkap" class="form-label">Nama Lengkap</label>
+                <input type="text" id="nama_lengkap" name="nama_lengkap"
+                    class="form-control @error('nama_lengkap') is-invalid @enderror"
+                    value="{{ old('nama_lengkap') }}" style="background-color: #e9ecef; border: none; height: 40px;" required>
+                @error('nama_lengkap')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
+            </div>
+
+            <div class="mb-3">
+                <label for="hp" class="form-label">No. HP</label>
+                <input type="text" id="hp" name="hp" class="form-control @error('hp') is-invalid @enderror"
+                    value="{{ old('hp') }}" style="background-color: #e9ecef; border: none; height: 40px;" required>
+                @error('hp')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
+            </div>
+
+            <div class="mb-3">
+                <label for="email" class="form-label">Email</label>
+                <input type="email" id="email" name="email" class="form-control @error('email') is-invalid @enderror"
+                    value="{{ old('email') }}" style="background-color: #e9ecef; border: none; height: 40px;" required>
+                @error('email')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
+            </div>
+
+            <div class="mb-3">
+                <label for="password" class="form-label">Password</label>
+                <input type="password" id="password" name="password"
+                    class="form-control @error('password') is-invalid @enderror"
+                    style="background-color: #e9ecef; border: none; height: 40px;" required>
+                @error('password')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
+            </div>
+
+            <div class="mb-5">
+                <label for="role" class="form-label">Level</label>
+                <select id="role" name="role" class="form-select @error('role') is-invalid @enderror"
+                    style="background-color: #e9ecef; border: none; height: 40px;" required>
+                    <option value="" disabled selected>Pilih Level</option>
+                    @if (Auth::check() && Auth::user()->isAdmin())
+                        <option value="admin">Admin</option>
+                        <option value="petugas">Petugas</option>
+                    @endif
+                    <option value="user">User</option>
+                </select>
+                @error('role')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
+            </div>
+
+            <!-- Tombol Register & Login -->
+            <div class="d-grid gap-2">
+                <button type="submit" class="btn" style="background-color: #28a745; color: white;">Register</button>
+                <a href="{{ route('login') }}" class="btn btn-outline-success">Sudah punya akun?</a>
+            </div>
+        </form>
     </div>
 </div>
 @endsection
