@@ -24,7 +24,7 @@
         <div class="card">
             <div class="card-body">
                 <div class="card-header d-flex justify-content-evenly align-items-center">
-                    <a href="#" data-bs-toggle="modal" data-bs-target="#tambah" class="btn btn-success btn-sm">Tambah Data</a>
+                    <a href="#" data-bs-toggle="modal" data-bs-target="#tambah" class="btn btn-success">Tambah Data</a>
                     
                     <form action="{{ route('alumni.index') }}" method="GET" class="w-50 pt-3">
                         <div class="input-group">
@@ -58,12 +58,12 @@
                                 <td>{{ $a->tahun_lulus}}</td>
                                 <td class="text-center align-middle">
                                     <a href="#" data-bs-toggle="modal" data-bs-target="#edit{{$a->id}}"
-                                        class="btn btn-secondary btn-sm">Edit</a>
+                                        class="btn btn-secondary">Edit</a>
                                     <a href="#" data-bs-toggle="modal" data-bs-target="#delete{{$a->id}}"
-                                        class="btn btn-danger btn-sm">Hapus</a>
+                                        class="btn btn-danger">Hapus</a>
                                     <a href="#" data-bs-toggle="modal" data-bs-target="#lihat{{$a->id}}"
-                                        class="btn btn-info btn-sm">Lihat</a><hr>
-                                    <a href="{{ route('alumni.create', ['id' => $a->id]) }}" class="btn btn-primary btn-sm">Download</a>
+                                        class="btn btn-info">Show</a><hr>
+                                    <a href="{{ route('alumni.invoice', ['id' => $a->id]) }}" class="btn btn-primary">Download</a>
                                 </td>
                                 @empty
                                 <div class="alert alert-primary d-flex align-items-center" role="alert">
@@ -638,28 +638,34 @@
     });
 </script>
 @endforeach
-
 @foreach($alumni as $a)
 <!-- Modal Delete -->
-<div class="modal fade" id="delete{{ $a->id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h1 class="modal-title fs-5" id="exampleModalLabel">Hapus Data Siswa</h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+<div class="modal fade" id="delete{{ $a->id }}" tabindex="-1" aria-labelledby="deleteModalLabel{{ $a->id }}" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow-lg">
+            <div class="modal-header bg-danger text-white">
+                <h5 class="modal-title fw-bold" id="deleteModalLabel{{ $a->id }}">
+                    <i class="fas fa-exclamation-triangle"></i> Konfirmasi Penghapusan
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body">
-                <p>Apakah Anda Yakin Ingin Menghapus Data <b>{{ $a->nama }}</b></p>
+            <div class="modal-body text-center">
+                <i class="fas fa-trash-alt text-danger fa-3x mb-3"></i>
+                <p class="mb-0">Apakah Anda yakin ingin menghapus pengguna:</p>
+                <h5 class="fw-bold text-uppercase mt-2">{{ $a->nama_lengk }}</h5>
+                <p class="text-muted">Tindakan ini tidak dapat dibatalkan!</p>
             </div>
-            <div class="modal-footer justify-content-between">
-                <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">keluar</button>
-                <form action="{{ route('alumni.destroy', $a->id) }}" method="POST">
+            <div class="modal-footer border-0 d-flex justify-content-center">
+                <button type="button" class="btn btn-secondary px-4" data-bs-dismiss="modal">
+                    <i class="fas fa-times"></i> Batal
+                </button>
+                <form action="{{ route('user.destroy', $a->id) }}" method="POST">
                     @csrf
                     @method('DELETE')
-                    <button type="submit" class="btn btn-danger btn-sm">hapus</button>
+                    <button type="submit" class="btn btn-danger px-4">
+                        <i class="fas fa-trash"></i> Hapus
+                    </button>
                 </form>
-
-
             </div>
         </div>
     </div>

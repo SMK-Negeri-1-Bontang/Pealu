@@ -38,7 +38,8 @@ Route::get('/home', [HomeController::class, 'index'])->name('home');
 
 // Rute untuk Alumni
 Route::resource('alumni', AlumniController::class);
-Route::get('/alumni/pdf/{id}', [AlumniController::class, 'invoice'])->name('alumni.invoice');
+Route::get('/alumni/pdf/{id}', [AlumniController::class, 'generatePdf'])->name('alumni.invoice');
+Route::get('/alumni/{id}', [AlumniController::class, 'show'])->name('alumni.show');
 
 // Rute untuk Berita
 Route::resource('tmbberita', TambahBeritaController::class);

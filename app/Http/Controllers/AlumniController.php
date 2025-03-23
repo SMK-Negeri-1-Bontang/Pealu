@@ -28,25 +28,20 @@ class AlumniController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create($id)
+    public function generatePdf($id)
     {
-        // Mencari alumni berdasarkan ID
-        $data = Alumni::find($id); // Gunakan find() bukan findOrFail()
-    
-        // Cek jika data ditemukan
+        $data = Alumni::find($id);
         if (!$data) {
-            return redirect()->back()->with('error', 'Alumni dengan ID tersebut tidak ditemukan.');
+            return redirect()->back()->with('error', 'Data alumni tidak ditemukan.');
         }
-    
+
         $status_map = [1 => 'Bekerja', 2 => 'Kuliah', 3 => 'Tidak Ada Kabar'];
         $jalur_map = [1 => 'PTN', 2 => 'PTS', 3 => 'DINAS'];
-    
-        $pdf = PDF::loadView('invoice', compact('data', 'status_map', 'jalur_map'));
-    
+
+        $pdf = PDF::loadView('layouts.alumni.invoice', compact('data', 'status_map', 'jalur_map'));
+
         return $pdf->stream();
     }
-    
-
 
     /**
      * Store a newly created resource in storage.
@@ -108,9 +103,19 @@ class AlumniController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show($id)
     {
-        //
+        $alumni = Alumni::find($id); 
+        if (!$alumni) {
+            return redirect('alumni')->with(['error' => 'Data Tidak Ditemukan']);
+        }
+
+        // Map status to descriptive text
+        $status_map = [1 => 'Bekerja', 2 => 'Kuliah', 3 => 'Tidak Ada Kabar'];
+        $status_value = $status_map[$alumni->status];
+
+        // Kirim data ke view
+        return view('layouts.alumni.show', compact('alumni'));
     }
 
     /**
@@ -155,7 +160,6 @@ class AlumniController extends Controller
 
         $alumni = Alumni::findOrFail($id);
         $alumni->update([
-            'nis' => $request->input('nis'),
             'nis' => $request->input('nis'),
             'nama_lengk' => $request->input('nama_lengk'),
             'jur_sekolah' => $request->input('jur_sekolah'),
