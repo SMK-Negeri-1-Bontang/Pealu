@@ -40,7 +40,7 @@ class UserController extends Controller
             'hp' => 'required|min:9|numeric',
             'email' => 'required|email|unique:users',
             'password' => 'required|min:5', // Tanpa confirmed
-            'role' => 'required',
+            'role' => 'required|in:user,admin,petugas',
         ]);
 
         try {
@@ -50,6 +50,7 @@ class UserController extends Controller
                 'hp' => $request->hp,
                 'email' => $request->email,
                 'password' => Hash::make($request->password),
+                'role' => $request->role,
             ]);
 
             if ($user) {
@@ -93,7 +94,7 @@ class UserController extends Controller
             'hp' => 'required|min:9|numeric',
             'email' => ['required', 'string', 'email', 'unique:users,email,' . $id],
             'password' => 'nullable|min:5', // Tanpa confirmed
-            'role' => 'required',
+            'role' => 'required|in:user,admin,petugas',
         ]);
 
         try {
@@ -102,6 +103,7 @@ class UserController extends Controller
             $user->nama_lengkap = $request->nama_lengkap;
             $user->hp = $request->hp;
             $user->email = $request->email;
+            $user->role = $request->role;
 
             // Update password hanya jika diisi
             if ($request->filled('password')) {

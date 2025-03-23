@@ -24,7 +24,7 @@
         <div class="card">
             <div class="card-body">
                 <div class="card-header d-flex justify-content-evenly align-items-center">
-                    <a href="#" data-bs-toggle="modal" data-bs-target="#tambah" class="btn btn-success">Tambah Data</a>
+                    <a href="#" data-bs-toggle="modal" data-bs-target="#tambah" class="btn btn-success"><i class="fa-solid fa-plus"></i> Tambah Data</a>
                     
                     <form action="{{ route('alumni.index') }}" method="GET" class="w-50 pt-3">
                         <div class="input-group">
@@ -58,12 +58,12 @@
                                 <td>{{ $a->tahun_lulus}}</td>
                                 <td class="text-center align-middle">
                                     <a href="#" data-bs-toggle="modal" data-bs-target="#edit{{$a->id}}"
-                                        class="btn btn-secondary">Edit</a>
+                                        class="btn btn-secondary"><i class="fa-solid fa-pen-to-square"></i></a>
                                     <a href="#" data-bs-toggle="modal" data-bs-target="#delete{{$a->id}}"
-                                        class="btn btn-danger">Hapus</a>
+                                        class="btn btn-danger"><i class="fa-solid fa-trash"></i></a>
                                     <a href="#" data-bs-toggle="modal" data-bs-target="#lihat{{$a->id}}"
-                                        class="btn btn-info">Show</a><hr>
-                                    <a href="{{ route('alumni.invoice', ['id' => $a->id]) }}" class="btn btn-primary">Download</a>
+                                        class="btn btn-info"><i class="fa-solid fa-eye"></i></a>
+                                    <a href="{{ route('alumni.invoice', ['id' => $a->id]) }}" class="btn btn-primary"><i class="fa-solid fa-file-arrow-down"></i></a>
                                 </td>
                                 @empty
                                 <div class="alert alert-primary d-flex align-items-center" role="alert">
