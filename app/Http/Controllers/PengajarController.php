@@ -1,0 +1,86 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\Pengajar;
+use Illuminate\Http\Request;
+use Barryvdh\DomPDF\Facade\Pdf; // Untuk generate PDF
+
+class PengajarController extends Controller
+{
+    public function index(Request $request)
+    {
+        if ($request->has('search')) {
+            $pengajar = Pengajar::where('nip', 'like', '%'.$request->search.'%')
+                              ->orWhere('nama_lengkap', 'like', '%'.$request->search.'%')
+                              ->paginate(5);
+        } else {
+            $pengajar = Pengajar::paginate(5);
+        }
+
+        return view('layouts.pengajar.pengajar', compact('pengajar'));
+    }
+
+    public function store(Request $request)
+    {
+        $validated = $request->validate([
+            'nip' => 'required|numeric|unique:pengajars',
+            'nama_lengkap' => 'required|string|max:255',
+            'mata_pelajaran' => 'required|string|max:255',
+            'tahun_bergabung' => 'nullable|string',
+            'nomor_telp' => 'required|numeric',
+            'alamat' => 'required|string',
+            'status' => 'required|in:1,2,3',
+            'pendidikan_terakhir' => 'required|string|max:255',
+            'jabatan' => 'required|string|max:255',
+        ]);
+
+        Pengajar::create($validated);
+
+        return redirect()->route('pengajar.index')
+            ->with('success', 'Data pengajar berhasil ditambahkan');
+    }
+
+    public function update(Request $request, $id)
+    {
+        $validated = $request->validate([
+            'nip' => 'required|numeric|unique:pengajars,nip,'.$id,
+            'nama_lengkap' => 'required|string|max:255',
+            'mata_pelajaran' => 'required|string|max:255',
+            'tahun_bergabung' => 'nullable|string',
+            'nomor_telp' => 'required|numeric',
+            'alamat' => 'required|string',
+            'status' => 'required|in:1,2,3',
+            'pendidikan_terakhir' => 'required|string|max:255',
+            'jabatan' => 'required|string|max:255',
+        ]);
+
+        $pengajar = Pengajar::findOrFail($id);
+        $pengajar->update($validated);
+
+        return redirect()->route('pengajar.index')
+            ->with('update', 'Data pengajar berhasil diperbarui');
+    }
+
+    public function destroy($id)
+    {
+        $pengajar = Pengajar::findOrFail($id);
+        $pengajar->delete();
+
+        return redirect()->route('pengajar.index')
+            ->with('delete', 'Data pengajar berhasil dihapus');
+    }
+
+    public function invoice($id)
+    {
+        $pengajar = Pengajar::findOrFail($id);
+        $status_map = [1 => 'Aktif', 2 => 'Tidak Aktif', 3 => 'Pensiun'];
+        
+        $pdf = PDF::loadView('layouts.pengajar.invoice', [
+            'pengajar' => $pengajar,
+            'status_map' => $status_map
+        ]);
+
+        return $pdf->stream('invoice_pengajar_'.$id.'.pdf');
+    }
+}

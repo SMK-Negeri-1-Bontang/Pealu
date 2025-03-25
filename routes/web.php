@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AlumniController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\PengajarController;
 use App\Http\Controllers\TambahBeritaController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BeritaController;
@@ -55,3 +56,13 @@ Route::middleware(['role:admin,petugas'])->group(function () {
 
 // Auth Routes (Tetap ada untuk fitur login/register)
 Auth::routes();
+
+// Rute untuk Pengajar
+
+Route::resource('pengajar', PengajarController::class);
+
+// ATAU jika hanya butuh index
+Route::get('/Pengajar', [\App\Http\Controllers\PengajarController::class, 'index'])->name('pengajar.index');
+
+// Route khusus untuk invoice
+Route::get('/pengajar/invoice/{id}', [PengajarController::class, 'invoice'])->name('pengajar.invoice');
