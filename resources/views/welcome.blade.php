@@ -3,7 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Penelusuran Alumni</title>
+    <title>Portal Alumni</title>
+     <!-- Favicon -->
+     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎓</text></svg>">
+     <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎓</text></svg>">
+
+    <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     
     <!-- Font Awesome -->
@@ -96,6 +101,7 @@
             <a href="{{ url('/berita') }}" class="menu-item"><i class="fas fa-newspaper"></i> Berita</a>
             <a href="#" class="menu-item"><i class="fas fa-briefcase"></i> Lowongan</a>
             <a href="{{ route('user.index') }}" class="menu-item"><i class="fas fa-user"></i> Table User</a>
+            <a href="{{ route('pengajar.index') }}" class="menu-item"><i class="fa-solid fa-person-chalkboard"></i>Pengajar</a>
             <a href="{{ route('tmbberita.index') }}" class="menu-item"><i class="fas fa-plus"></i> Tambah Berita</a>
             <a href="#" class="menu-item"><i class="fas fa-plus"></i> Tambah Lowongan</a>
         </div>
