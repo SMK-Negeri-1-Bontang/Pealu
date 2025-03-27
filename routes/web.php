@@ -66,3 +66,4 @@ Route::get('/Pengajar', [\App\Http\Controllers\PengajarController::class, 'index
 
 // Route khusus untuk invoice
 Route::get('/pengajar/invoice/{id}', [PengajarController::class, 'invoice'])->name('pengajar.invoice');
+// space aziz
