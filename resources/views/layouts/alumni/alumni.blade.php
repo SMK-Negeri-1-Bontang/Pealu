@@ -23,19 +23,50 @@
         @endif
         <div class="card">
             <div class="card-body">
-                <div class="card-header d-flex justify-content-evenly align-items-center">
-                    <a href="#" data-bs-toggle="modal" data-bs-target="#tambah" class="btn btn-success"><i class="fa-solid fa-plus"></i> Tambah Data</a>
-                    
-                    <form action="{{ route('alumni.index') }}" method="GET" class="w-50 pt-3">
-                        <div class="input-group">
-                            <input id="search-focus" type="search" name="search" class="form-control" placeholder="Search" />
-                            <button type="submit" class="btn btn-primary">
-                                <i class="fas fa-search"></i>
-                            </button>
-                        </div>
-                    </form>
-                </div>
                 <div class="">
+                    <div class="mb-3 mt-2">
+                        <a href="#" data-bs-toggle="modal" data-bs-target="#tambah" class="btn btn-success">
+                            <i class="fa-solid fa-plus"></i> Tambah Data
+                        </a>
+                    </div>
+
+                    <div class="card-body mb-3">
+                        <div class="d-flex justify-content-center">
+                            <form action="{{ route('alumni.index') }}" method="GET" class="w-100">
+                                <div class="row g-3 justify-content-center">
+                                    <div class="col-md-3">
+                                        <label class="fw-bold">Nama</label>
+                                        <input type="text" name="nama" class="form-control border-primary shadow-sm" 
+                                            placeholder="Masukkan Nama" value="{{ request('nama') }}">
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label class="fw-bold">NIS</label>
+                                        <input type="text" name="nis" class="form-control border-primary shadow-sm" 
+                                            placeholder="Masukkan NIS" value="{{ request('nis') }}">
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label class="fw-bold">Jurusan</label>
+                                        <input type="text" name="jurusan" class="form-control border-primary shadow-sm" 
+                                            placeholder="Masukkan Jurusan" value="{{ request('jurusan') }}">
+                                    </div>
+                                    <div class="col-md-2">
+                                        <label class="fw-bold">Tahun Lulus</label>
+                                        <input type="text" name="tahun_lulus" class="form-control border-primary shadow-sm" 
+                                            placeholder="Masukkan Tahun Lulus" value="{{ request('tahun_lulus') }}">
+                                    </div>
+                                    <div class="col-md-1 d-flex align-items-end">
+                                        <button type="submit" class="btn btn-primary w-100 shadow">
+                                            <i class="fas fa-search"></i> Cari
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="pt-10">
                     <table class="table table-hover">
                         <thead>
                             <tr>

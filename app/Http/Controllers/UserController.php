@@ -15,9 +15,21 @@ class UserController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $users = User::paginate(5);
+        $query = User::query();
+
+        if ($request->filled('nama')) {
+            $query->where('name', 'like', '%' . $request->nama . '%');
+        }
+        if ($request->filled('email')) {
+            $query->where('email', 'like', '%' . $request->email . '%');
+        }
+        if ($request->filled('hp')) {
+            $query->where('hp', 'like', '%' . $request->hp . '%');
+        }
+
+        $users = $query->paginate(5);
         return view('layouts.user.index', compact('users'));
     }
 

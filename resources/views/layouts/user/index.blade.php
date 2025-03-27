@@ -1,71 +1,102 @@
 @extends('welcome')
 
 @section('content')
-<div class="container">
-    <div class="row justify-content-center">
-                @if(session('success'))
-                    <div id="success-alert" class="alert alert-success alert-dismissible fade show" role="alert">
-                        <strong>{{ session('success') }}</strong>
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    <div class="container">
+        <div class="row justify-content-center">
+                    @if(session('success'))
+                        <div id="success-alert" class="alert alert-success alert-dismissible fade show" role="alert">
+                            <strong>{{ session('success') }}</strong>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    @endif
+                    @if ($message = Session::get('delete'))
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            <strong>{{ $message }}</strong>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    @endif
+            <div class="card">
+                <div class="card-body">
+                        <div class="">
+                            <div class="mb-3 mt-2">
+                                <a href="{{ route('user.create') }}" class="btn btn-success">
+                                    <i class="fa fa-plus"></i> Tambah User
+                                </a>
+                            </div>
+
+                            <div class="card-body mb-3">
+                                <div class="d-flex justify-content-center">
+                                    <form action="{{ route('user.index') }}" method="GET" class="w-100">
+                                        <div class="row g-3 justify-content-center">
+                                            <div class="col-md-3">
+                                                <label class="fw-bold">Nama</label>
+                                                <input type="text" name="name" class="form-control border-primary shadow-sm" 
+                                                    placeholder="Masukkan Nama" value="{{ request('name') }}">
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label class="fw-bold">Email</label>
+                                                <input type="text" name="email" class="form-control border-primary shadow-sm" 
+                                                    placeholder="Masukkan Email" value="{{ request('email') }}">
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label class="fw-bold">Hp</label>
+                                                <input type="text" name="hp" class="form-control border-primary shadow-sm" 
+                                                    placeholder="Masukkan Hp" value="{{ request('hp') }}">
+                                            </div>
+                                            <div class="col-md-1 d-flex align-items-end">
+                                                <button type="submit" class="btn btn-primary w-100 shadow">
+                                                    <i class="fas fa-search"></i> Cari
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    <div class="">
+                        <table class="table table-hover">
+                            <thead class="">
+                                <tr>
+                                    <th>No</th>
+                                    <th>Name</th>
+                                    <th>Nama Lengkap</th>
+                                    <th>Email</th>
+                                    <th>Role</th>
+                                    <th>Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($users as $user)
+                                <tr>
+                                    <td>{{ $loop->iteration + ($users instanceof \Illuminate\Pagination\LengthAwarePaginator ? $users->firstItem() - 1 : 0) }}</td>
+                                    <td>{{ $user->name }}</td>
+                                    <td>{{ $user->nama_lengkap }}</td>
+                                    <td>{{ $user->email }}</td>
+                                    <td>{{ ucfirst($user->role) }}</td>
+                                    <td>
+                                        <a href="{{ route('user.edit', $user->id) }}" class="btn btn-primary btn-sm">
+                                            <i class="fa fa-pen"></i>
+                                        </a>
+                                        <a href="#" data-bs-toggle="modal" data-bs-target="#delete{{$user->id}}" class="btn btn-danger btn-sm">
+                                            <i class="fa fa-trash"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
                     </div>
-                @endif
-                @if ($message = Session::get('delete'))
-                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                        <strong>{{ $message }}</strong>
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+
+                    <!-- Pagination -->
+                    <div class="mt-3">
+                        {{ $users->links() }}
                     </div>
-                @endif
-        <div class="card">
-            <div class="card-body">
-                <div class="d-flex justify-content-start mb-3 mt-2">
-                    <a href="{{ route('user.create') }}" class="btn btn-success">
-                        <i class="fa fa-plus"></i> Tambah User
-                    </a>
-                </div>
-
-
-                <div class="">
-                    <table class="table table-hover">
-                        <thead class="">
-                            <tr>
-                                <th>No</th>
-                                <th>Name</th>
-                                <th>Nama Lengkap</th>
-                                <th>Email</th>
-                                <th>Role</th>
-                                <th>Aksi</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($users as $user)
-                            <tr>
-                                <td>{{ $loop->iteration + ($users instanceof \Illuminate\Pagination\LengthAwarePaginator ? $users->firstItem() - 1 : 0) }}</td>
-                                <td>{{ $user->name }}</td>
-                                <td>{{ $user->nama_lengkap }}</td>
-                                <td>{{ $user->email }}</td>
-                                <td>{{ ucfirst($user->role) }}</td>
-                                <td>
-                                    <a href="{{ route('user.edit', $user->id) }}" class="btn btn-primary btn-sm">
-                                        <i class="fa fa-pen"></i>
-                                    </a>
-                                    <a href="#" data-bs-toggle="modal" data-bs-target="#delete{{$user->id}}" class="btn btn-danger btn-sm">
-                                        <i class="fa fa-trash"></i>
-                                    </a>
-                                </td>
-                            </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                </div>
-
-                <!-- Pagination -->
-                <div class="mt-3">
-                    {{ $users->links() }}
                 </div>
             </div>
         </div>
     </div>
-</div>
 
 @foreach($users as $user)
 <!-- Modal Delete -->

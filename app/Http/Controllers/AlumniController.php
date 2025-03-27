@@ -15,12 +15,27 @@ class AlumniController extends Controller
      */
     public function index(Request $request)
     {
-        //
-        if ($request->has('search')) {
-            $alumni = Alumni::where('nis', 'like', '%'.$request->search.'%')->paginate(5);
-        }else{
-            $alumni = Alumni::paginate(5);
+        $query = Alumni::query();
+
+        // Filter berdasarkan input yang diisi
+        if ($request->filled('nama')) {
+            $query->where('nama_lengk', 'like', '%' . $request->nama . '%');
         }
+
+        if ($request->filled('nis')) {
+            $query->where('nis', 'like', '%' . $request->nis . '%');
+        }
+
+        if ($request->filled('jurusan')) {
+            $query->where('jur_sekolah', 'like', '%' . $request->jurusan . '%');
+        }
+
+        if ($request->filled('tahun_lulus')) {
+            $query->where('tahun_lulus', $request->tahun_lulus);
+        }
+
+        // Paginate hasil pencarian
+        $alumni = $query->paginate(5);
 
         return view('layouts.alumni.alumni', compact('alumni'));
     }
