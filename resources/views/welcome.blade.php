@@ -98,10 +98,11 @@
             <a href="{{ url('/alumni') }}" class="menu-item"><i class="fas fa-users"></i> Alumni</a>
             <a href="{{ url('https://smkn1bontang.sch.id/') }}" class="menu-item"><i class="fas fa-school"></i> SMKN 1 Bontang</a>
             <a href="{{ url('/home') }}" class="menu-item"><i class="fas fa-sign-in-alt"></i> Status Login</a>
+            <a href="#" class="menu-item"><i class="fa-solid fa-person-chalkboard"></i>Data Pengajar</a>
             <a href="{{ url('/berita') }}" class="menu-item"><i class="fas fa-newspaper"></i> Berita</a>
             <a href="#" class="menu-item"><i class="fas fa-briefcase"></i> Lowongan</a>
             <a href="{{ route('user.index') }}" class="menu-item"><i class="fas fa-user"></i> Table User</a>
-            <a href="{{ route('pengajar.index') }}" class="menu-item"><i class="fa-solid fa-person-chalkboard"></i>Pengajar</a>
+            <a href="{{ route('pengajar.index') }}" class="menu-item"><i class="fas fa-plus"></i>Tambah Pengajar</a>
             <a href="{{ route('tmbberita.index') }}" class="menu-item"><i class="fas fa-plus"></i> Tambah Berita</a>
             <a href="#" class="menu-item"><i class="fas fa-plus"></i> Tambah Lowongan</a>
         </div>
