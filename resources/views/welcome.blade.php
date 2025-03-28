@@ -122,6 +122,8 @@
                                 Role Admin
                             @elseif (Auth::user()->isUser())
                                 Role User
+                            @elseif (Auth::user()->isPetugas())
+                                Role Petugas
                             @else
                                 Role Tidak Ada
                             @endif

@@ -47,4 +47,10 @@ class User extends Authenticatable
     {
         return $this->role === 'user';
     }
+    /**
+     * Cek apakah user adalah petugas.
+     */
+    public function isPetugas() {
+        return $this->role === 'petugas';
+    }
 }

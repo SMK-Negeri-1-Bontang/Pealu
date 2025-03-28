@@ -29,7 +29,9 @@ class UserController extends Controller
             $query->where('hp', 'like', '%' . $request->hp . '%');
         }
 
+        // Paginate hasil pencarian
         $users = $query->paginate(5);
+
         return view('layouts.user.index', compact('users'));
     }
 
@@ -46,14 +48,14 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        $validate = $request->validate([
-            'name' => 'required|unique:users|min:5',
-            'nama_lengkap' => 'required',
-            'hp' => 'required|min:9|numeric',
-            'email' => 'required|email|unique:users',
-            'password' => 'required|min:5', // Tanpa confirmed
+        $request->validate([
+            'name' => 'required|string|min:5|unique:users,name',
+            'nama_lengkap' => 'required|string',
+            'hp' => 'required|digits_between:9,15|numeric',
+            'email' => 'required|email|unique:users,email',
+            'password' => 'required|min:5',
             'role' => 'required|in:user,admin,petugas',
-        ]);
+        ]);        
 
         try {
             $user = User::create([
