@@ -120,16 +120,7 @@ class AlumniController extends Controller
      */
     public function show($id)
     {
-        $alumni = Alumni::find($id); 
-        if (!$alumni) {
-            return redirect('alumni')->with(['error' => 'Data Tidak Ditemukan']);
-        }
-
-        // Map status to descriptive text
-        $status_map = [1 => 'Bekerja', 2 => 'Kuliah', 3 => 'Tidak Ada Kabar'];
-        $status_value = $status_map[$alumni->status];
-
-        // Kirim data ke view
+        $alumni = Alumni::findOrFail($id);
         return view('layouts.alumni.show', compact('alumni'));
     }
 

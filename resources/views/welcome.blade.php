@@ -21,12 +21,12 @@
         }
         /* Sidebar */
         .sidebar {
-            width: 300px;
+            width: 350px;
             background: #2E2E2E;
             color: white;
             padding: 20px;
             position: fixed;
-            left: -300px;
+            left: -350px;
             top: 0;
             bottom: 0;
             transition: all 0.3s ease;
@@ -65,7 +65,7 @@
             transition: margin-left 0.3s ease;
         }
         .content.shift {
-            margin-left: 300px;
+            margin-left: 350px;
         }
         .top-bar {
             display: flex;

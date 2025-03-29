@@ -24,9 +24,12 @@
         <div class="card">
             <div class="card-body">
                 <div class="">
-                    <div class="mb-3 mt-2">
+                    <div class="mb-3 mt-2 d-flex justify-content-between align-items-center">
                         <a href="#" data-bs-toggle="modal" data-bs-target="#tambah" class="btn btn-success">
                             <i class="fa-solid fa-plus"></i> Tambah Data
+                        </a>
+                        <a href="#" data-bs-toggle="modal" data-bs-target="#notifModal">
+                            <i class="fa-solid fa-message text-secondary" style="font-size: 25px;"></i>
                         </a>
                     </div>
 
@@ -690,7 +693,7 @@
                 <button type="button" class="btn btn-secondary px-4" data-bs-dismiss="modal">
                     <i class="fas fa-times"></i> Batal
                 </button>
-                <form action="{{ route('user.destroy', $a->id) }}" method="POST">
+                <form action="{{ route('alumni.destroy', $a->id) }}" method="POST">
                     @csrf
                     @method('DELETE')
                     <button type="submit" class="btn btn-danger px-4">
@@ -810,3 +813,22 @@
     </div>
 </div>
 @endforeach
+
+<!-- Modal Notifikasi -->
+<div class="modal fade" id="notifModal" tabindex="-1" aria-labelledby="notifModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="notifModalLabel">Notifikasi</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div id="notifMessage"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+            </div>
+        </div>
+    </div>
+</div>
+
