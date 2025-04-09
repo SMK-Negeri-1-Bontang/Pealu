@@ -5,7 +5,6 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\PengajarController;
 use App\Http\Controllers\TambahBeritaController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\BeritaController;
 use App\Http\Controllers\HomeController;
 
 // Halaman utama
@@ -44,7 +43,6 @@ Route::get('/alumni/{id}', [AlumniController::class, 'show'])->name('alumni.show
 
 // Rute untuk Berita
 Route::resource('tmbberita', TambahBeritaController::class);
-Route::post('/berita/store', [BeritaController::class, 'store'])->name('berita.store');
 
 // Rute User (Bisa diakses tanpa login)
 Route::resource('user', UserController::class);

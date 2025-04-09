@@ -6,105 +6,101 @@ use App\Models\TambahBerita;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
-
 class TambahBeritaController extends Controller
 {
     /**
-     * Tampilkan daftar TambahBerita.
+     * Tampilkan daftar berita.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $berita = TambahBerita::latest()->paginate(10);
-        return view('layouts.berita.index', compact('berita'));
-
+        $tmbberita = TambahBerita::latest()->get(); // semua data (untuk kebutuhan modal)
+        return view('layouts.berita.index', compact('tmbberita'));
     }
 
     /**
-     * Tampilkan form tambah TambahBerita.
-     */
-    public function create()
-    {
-        return view('layouts.berita.index');
-    }
-
-    /**
-     * Simpan TambahBerita baru.
+     * Simpan berita baru.
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'title' => 'required|string|max:255',
-            'content' => 'required',
-            'image' => 'nullable|image|max:2048',
+        $validated = $request->validate([
+            'title'   => 'required|string|max:255',
+            'content' => 'required|string',
+            'image'   => 'nullable|image|max:2048',
         ]);
 
-        $imagePath = $request->file('image') ? $request->file('image')->store('TambahBerita', 'public') : null;
+        $imagePath = $request->file('image') 
+            ? $request->file('image')->store('TambahBerita', 'public') 
+            : null;
 
-        TambahBerita::create([
-            'title' => $request->title,
-            'content' => $request->content,
-            'image' => $imagePath,
+        $berita = TambahBerita::create([
+            'title'   => $validated['title'],
+            'content' => $validated['content'],
+            'image'   => $imagePath,
         ]);
 
-        return redirect()->route('tmbberita.index')->with('success', 'TambahBerita berhasil ditambahkan.');
+        if ($berita) {
+            return redirect()->route('tmbberita.index')->with(['success' => 'Berita berhasil ditambahkan.']);
+        } else {
+            return redirect()->route('tmbberita.index')->with(['error' => 'Gagal menambahkan berita.']);
+        }
     }
 
     /**
-     * Tampilkan detail TambahBerita.
+     * Update berita.
      */
-    public function show(TambahBerita $TambahBerita)
+    public function update(Request $request, $id)
     {
-        return view('layouts.berita.show', compact('berita'));
-    }
-
-    /**
-     * Tampilkan form edit TambahBerita.
-     */
-    public function edit(TambahBerita $TambahBerita)
-    {
-        return view('layouts.berita.edit', compact('berita'));
-    }
-
-    /**
-     * Update TambahBerita.
-     */
-    public function update(Request $request, TambahBerita $TambahBerita)
-    {
-        $request->validate([
-            'title' => 'required|string|max:255',
-            'content' => 'required',
-            'image' => 'nullable|image|max:2048',
+        $validated = $request->validate([
+            'title'   => 'required|string|max:255',
+            'content' => 'required|string',
+            'image'   => 'nullable|image|max:2048',
         ]);
+
+        $berita = TambahBerita::findOrFail($id);
 
         if ($request->hasFile('image')) {
-            // Hapus gambar lama jika ada
-            if ($TambahBerita->image) {
-                Storage::disk('public')->delete($TambahBerita->image);
+            if ($berita->image) {
+                Storage::disk('public')->delete($berita->image);
             }
 
-            $imagePath = $request->file('image')->store('TambahBerita', 'public');
-            $TambahBerita->update(['image' => $imagePath]);
+            $berita->image = $request->file('image')->store('TambahBerita', 'public');
         }
 
-        $TambahBerita->update([
-            'title' => $request->title,
-            'content' => $request->content,
+        $berita->update([
+            'title'   => $validated['title'],
+            'content' => $validated['content'],
+            'image'   => $berita->image, // sudah diperbarui di atas jika ada gambar baru
         ]);
 
-        return redirect()->route('tmbberita.index')->with('success', 'TambahBerita berhasil diperbarui.');
+        return redirect()->route('tmbberita.index')->with(['update' => 'Berita berhasil diperbarui.']);
     }
 
     /**
-     * Hapus TambahBerita.
+     * Hapus berita.
      */
-    public function destroy(TambahBerita $TambahBerita)
+    public function destroy($id)
     {
-        if ($TambahBerita->image) {
-            Storage::disk('public')->delete($TambahBerita->image);
+        $berita = TambahBerita::findOrFail($id);
+
+        if ($berita->image) {
+            Storage::disk('public')->delete($berita->image);
         }
 
-        $TambahBerita->delete();
+        $berita->delete();
 
-        return redirect()->route('tmbberita.index')->with('success', 'TambahBerita berhasil dihapus.');
+        if ($berita) {
+            return redirect()->route('tmbberita.index')->with(['delete' => 'Berita berhasil dihapus.']);
+        } else {
+            return redirect()->route('tmbberita.index')->with(['error' => 'Berita gagal dihapus.']);
+        }
+    }
+
+    /**
+     * Tampilkan detail berita (opsional).
+     */
+    public function show($id)
+    {
+        $berita = TambahBerita::findOrFail($id);
+        return view('layouts.berita.berita', compact('berita'));
     }
 }
