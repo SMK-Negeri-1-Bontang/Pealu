@@ -8,147 +8,98 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Halaman Berita</title>
-    <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        /* Garis tengah */
-        .divider {
-            border-right: 2px solid #ccc; /* Garis vertikal */
-            height: 100vh; /* Garis memenuhi tinggi layar */
+        .article-wrapper {
+            margin-bottom: 40px;
         }
 
-        /* Scroll independen untuk setiap bagian */
-        .scrollable {
-        height: 100vh; /* Tinggi penuh layar */
-        overflow-y: auto; /* Aktifkan scroll vertikal */
-        padding: 20px;
+        .col-left img {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+        }
+
+        h2 {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #212529;
+            margin-bottom: 10px;
+        }
+
+        .berita-desc {
+    font-size: 1.2rem; /* sedikit lebih besar */
+    color: #333;       /* lebih terang dari sebelumnya */
+    line-height: 1.8;  /* buat jarak baris yang lebih lega */
+    white-space: pre-line; /* jaga newline dari textarea tetap terlihat */
+    text-indent: 30px;
 }
 
-        /* Mengatur lebar scrollbar */
-        .scrollable::-webkit-scrollbar {
-            width: 6px; /* Lebar scrollbar lebih kecil */
-        }
-
-        /* Warna track scrollbar */
-        .scrollable::-webkit-scrollbar-track {
-            background: #f1f1f1; /* Warna latar belakang track */
-            border-radius: 10px;
-        }
-
-        /* Warna thumb (bagian yang bisa digeser) */
-        .scrollable::-webkit-scrollbar-thumb {
-            background: #888; /* Warna thumb */
-            border-radius: 10px; /* Membuatnya lebih bulat */
-        }
-
-        /* Efek saat hover di scrollbar */
-        .scrollable::-webkit-scrollbar-thumb:hover {
-            background: #555;
-        }
 
 
-        /* Pastikan row dan column mengambil tinggi penuh */
-        .full-height {
-            height: 100vh;
+        .divider {
+            border-bottom: 1px solid #ccc;
+            padding-bottom: 20px;
         }
-
-        /* Kolom kiri (30% lebar) */
-        .col-left {
-            width: 70%; /* Lebar 30% */
-        }
-
-        /* Kolom kanan (70% lebar) */
-        .col-right {
-            width: 30%; /* Lebar 70% */
-        }
-
-        /* Layout artikel dengan gambar dan teks sejajar */
-        .article {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 15px;
-        }
-
-        /* Ukuran gambar kecil dan seragam */
-        .article img {
-            width: 80px; 
-            height: auto;
-            flex-shrink: 0;
-        }
-
-        /* Ukuran gambar di bagian kiri harus sama */
-        .col-left img {
-            width: 100%; /* Menyesuaikan dengan lebar kontainer */
-            height: 400px; /* Menjaga aspek rasio */
-        }
-        .indent {
-        text-indent: 30px; /* Sesuaikan jaraknya */
-    }
     </style>
 </head>
 <body>
-
-    <div class="container">
-        <div class="row full-height">
+    <div class="container py-5">
         @forelse($tmbberita as $no => $b)
-            <!-- Bagian Kiri (30%) -->
-            <div class="col-left divider scrollable">
-                <div class="content">
-                  <h2>{{ $b->title }}</h2>
-                  <br>
-                
-                        <img src="{{ asset('storage/' . $b->image) }}">
-                  <br>
-                  <br>
-                  <p class="indent">{{ Str::limit($b->content, 50) }}</p>
-              
-                    <hr>
-                    <br>
-                </div>
-            </div>
-        @endforeach
+        <div class="row justify-content-center article-wrapper">
+            <div class="col-md-8 col-left divider">
+                <h2>{{ $b->title }}</h2>
+                <img src="{{ asset('storage/' . $b->image) }}" alt="Gambar {{ $b->title }}">
+                <br><br>
 
-            <!-- Bagian Kanan (70%) -->
-            <div class="col-right scrollable">
-                <h4>Artikel Terbaru</h4>
-                <div class="content">
-                    <div class="article">
-                        <img src="https://cdn-web-2.ruangguru.com/landing-pages/assets/0394debe-32f7-45b3-ad8e-ce8e3775331d.png" alt="Portofolio SNBP dan SNBT">
-                        <a href="#"><h6>Portofolio SNBP dan SNBT: Jenis, Ketentuan & Cara Mengisinya</h6></a>
-                    </div>
-                    <hr>
-                    <div class="article">
-                        <img src="https://cdn-web.ruangguru.com/landing-pages/assets/hs/kritik-sastra-dan-esai.png" alt="Kritik Sastra dan Esai">
-                        <a href="#"><h6>Perbedaan Kritik Sastra dan Esai: Ciri, Struktur, dan Contoh</h6></a>
-                    </div>
-                    <hr>
-                    <div class="article">
-                        <img src="https://cdn-web.ruangguru.com/landing-pages/assets/hs/teks-diskusi.png" alt="Teks Diskusi">
-                        <a href="#"><h6>Pengertian Teks Diskusi, Ciri, Struktur, Kebahasaan, & Jenis</h6></a>
-                    </div>
-                    <hr>
-                    <div class="article">
-                        <img src="https://cdn-web-2.ruangguru.com/landing-pages/assets/d30e3210-06a6-4ece-a01c-6d4a6df0d3ee.png" alt="SPAN PTKIN 2025">
-                        <a href="#"><h6>Jadwal Pendaftaran SPAN PTKIN 2025, Syarat dan Tahapannya</h6></a>
-                    </div>
-                    <hr>
-                    <div class="article">
-                        <img src="https://cdn-web.ruangguru.com/landing-pages/assets/hs/Header%20-%20Pojok%20Sekolah%20-%20Resensi.jpg" alt="Teks Resensi">
-                        <a href="#"><h6>Pengertian Teks Resensi, Struktur, Jenis, dan Contohnya!</h6></a>
-                    </div>
-                </div>
+                @php
+    $limit = 500;
+    $lineLimit = 5;
+
+    $content = $b->content;
+    $lineCount = substr_count($content, "\n") + 1;
+    $isLong = strlen($content) > $limit || $lineCount > $lineLimit;
+    $preview = Str::limit($content, $limit);
+@endphp
+
+
+<p class="berita-desc">
+    <span class="preview">{{ $preview }}</span>
+    @if($isLong)
+        <span class="full d-none">{{ $b->content }}</span>
+        <button class="btn btn-link p-0 m-0 baca-selengkapnya" style="font-size: 1rem;">Baca Selengkapnya</button>
+    @endif
+</p>
+
+
             </div>
         </div>
+        @empty
+        <p class="text-center">Belum ada berita tersedia.</p>
+        @endforelse
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 
-        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
-        <!-- Boostrap -->
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-    </body>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const buttons = document.querySelectorAll(".baca-selengkapnya");
 
-    
+            buttons.forEach(button => {
+                button.addEventListener("click", function () {
+                    const parent = button.closest(".berita-desc");
+                    const preview = parent.querySelector(".preview");
+                    const full = parent.querySelector(".full");
+
+                    preview.classList.add("d-none");
+                    full.classList.remove("d-none");
+                    button.classList.add("d-none");
+                });
+            });
+        });
+    </script>
+</body>
 </html>
 
 @endsection

@@ -108,23 +108,36 @@
                     @foreach($tmbberita as $b)
 
                     {{-- Modal Lihat --}}
-                    <div class="modal fade" id="modalLihat{{ $b->id }}" tabindex="-1" aria-labelledby="modalLihatLabel{{ $b->id }}" aria-hidden="true">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="modalLihatLabel{{ $b->id }}">Detail Berita</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    <h5>{{ $b->title }}</h5>
-                                    <p>{{ $b->content }}</p>
-                                    @if($b->image)
-                                        <img src="{{ asset('storage/' . $b->image) }}" class="img-fluid mt-2" alt="gambar">
-                                    @endif
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+<div class="modal fade" id="modalLihat{{ $b->id }}" tabindex="-1" aria-labelledby="modalLihatLabel{{ $b->id }}" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalLihatLabel{{ $b->id }}">Detail Berita</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                {{-- Judul --}}
+                <h5 class="fw-bold mb-3">{{ $b->title }}</h5>
+
+                {{-- Gambar --}}
+                @if($b->image)
+                    <img src="{{ asset('storage/' . $b->image) }}" class="img-fluid mb-4 rounded" alt="gambar">
+                @endif
+
+                {{-- Deskripsi / Konten --}}
+                <div class="berita-content">
+                    @foreach(explode("\n", $b->content) as $paragraph)
+                        @if(trim($paragraph) !== '')
+                            <p class="mb-3" style="text-indent: 30px; line-height: 1.7;">{{ $paragraph }}</p>
+                        @endif
+                    @endforeach
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 
                     {{-- Modal Edit --}}
                     <div class="modal fade" id="modalEdit{{ $b->id }}" tabindex="-1" aria-labelledby="modalEditLabel{{ $b->id }}" aria-hidden="true">
