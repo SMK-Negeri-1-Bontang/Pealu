@@ -40,6 +40,7 @@
                         <thead>
                             <tr>
                                 <th scope="col">No</th>
+                                <th scope="col">Foto</th>
                                 <th scope="col">NIP</th>
                                 <th scope="col">Nama</th>
                                 <th scope="col">Mata Pelajaran</th>
@@ -52,6 +53,7 @@
                             @forelse($pengajar as $no => $p)
                             <tr>
                                 <th scope="row">{{ ++$no }}</th>
+                                <td><img src="{{ asset('storage/' . $p->foto) }}" width="70" alt="Foto Pengajar"></td>
                                 <td>{{ $p->nip }}</td>
                                 <td>{{ $p->nama_lengkap }}</td>
                                 <td>{{ $p->mata_pelajaran }}</td>
@@ -139,9 +141,18 @@
                 <h1 class="modal-title fs-5" id="exampleModalLabel">Tambah Data Pengajar</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body text-capitalize">
-                <form action="{{ route('pengajar.store') }}" method="POST">
+                <div class="modal-body text-capitalize">
+                    <form action="{{ route('pengajar.store') }}" method="POST" enctype="multipart/form-data">
                     @csrf
+                    <div class="mb-3">
+                        <label class="form-label">Foto Pengajar</label>
+                        <input type="file" class="form-control @error('foto') is-invalid @enderror" name="foto">
+                        @error('foto')
+                        <div class="alert alert-danger" role="alert">
+                            {{ $message }}
+                        </div>
+                        @enderror
+                    </div>
                     <div class="mb-3">
                         <label class="form-label">NIP</label>
                         <input type="number" class="form-control @error('nip')
@@ -275,9 +286,26 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body text-capitalize">
-                <form action="{{ route('pengajar.update', $p->id) }}" method="POST">
+                <form action="{{ route('pengajar.update', $p->id) }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     @method('PUT')
+                    <div class="mb-3">
+                        <label class="form-label">Foto Pengajar</label>
+                        <input type="file" class="form-control @error('foto') is-invalid @enderror" name="foto">
+                        <input type="hidden" name="foto_lama" value="{{ $p->foto }}">
+                        
+                        @error('foto')
+                        <div class="alert alert-danger" role="alert">
+                            {{ $message }}
+                        </div>
+                        @enderror
+
+                        @if($p->foto)
+                        <div class="mt-2">
+                            <img src="{{ asset('storage/' . $p->foto) }}" width="100" alt="Foto Pengajar Sebelumnya">
+                        </div>
+                        @endif
+                    </div>
                     <div class="mb-3">
                         <label class="form-label">NIP</label>
                         <input type="number" class="form-control @error('nip')

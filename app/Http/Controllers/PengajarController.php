@@ -33,7 +33,15 @@ class PengajarController extends Controller
             'status' => 'required|in:1,2,3',
             'pendidikan_terakhir' => 'required|string|max:255',
             'jabatan' => 'required|string|max:255',
+            'foto' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
+
+            // Cek apakah ada file foto
+            if ($request->hasFile('foto')) {
+                $foto = $request->file('foto')->store('foto_pengajar', 'public');
+                $validated['foto'] = $foto;
+            }
+            
 
         Pengajar::create($validated);
 
@@ -53,9 +61,18 @@ class PengajarController extends Controller
             'status' => 'required|in:1,2,3',
             'pendidikan_terakhir' => 'required|string|max:255',
             'jabatan' => 'required|string|max:255',
+            'foto' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
         $pengajar = Pengajar::findOrFail($id);
+
+        // Simpan foto baru kalau ada
+        if ($request->hasFile('foto')) {
+            $fotoPath = $request->file('foto')->store('foto_pengajar', 'public');
+            $validated['foto'] = $fotoPath;
+        }
+
+        // Sekarang update semua data termasuk foto (jika ada)
         $pengajar->update($validated);
 
         return redirect()->route('pengajar.index')

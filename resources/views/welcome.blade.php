@@ -98,7 +98,7 @@
             <a href="{{ url('/alumni') }}" class="menu-item"><i class="fas fa-users"></i> Alumni</a>
             <a href="{{ url('https://smkn1bontang.sch.id/') }}" class="menu-item"><i class="fas fa-school"></i> SMKN 1 Bontang</a>
             <a href="{{ url('/home') }}" class="menu-item"><i class="fas fa-sign-in-alt"></i> Status Login</a>
-            <a href="#" class="menu-item"><i class="fa-solid fa-person-chalkboard"></i>Data Pengajar</a>
+            <a href="{{ url('/pengajar-tampilan') }}" class="menu-item"><i class="fa-solid fa-person-chalkboard"></i>Data Pengajar</a>
             <a href="{{ url('/berita') }}" class="menu-item"><i class="fas fa-newspaper"></i> Berita</a>
             <a href="#" class="menu-item"><i class="fas fa-briefcase"></i> Lowongan</a>
             <a href="{{ route('user.index') }}" class="menu-item"><i class="fas fa-user"></i> Table User</a>

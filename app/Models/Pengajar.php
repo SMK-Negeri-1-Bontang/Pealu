@@ -18,6 +18,7 @@ class Pengajar extends Model
         'alamat',
         'status',
         'pendidikan_terakhir',
-        'jabatan'
+        'jabatan',
+        'foto',
     ];
 }

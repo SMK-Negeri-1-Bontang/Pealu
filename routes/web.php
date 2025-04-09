@@ -61,6 +61,11 @@ Auth::routes();
 
 Route::resource('pengajar', PengajarController::class);
 
+Route::get('/pengajar-tampilan', function () {
+    $pengajar = App\Models\Pengajar::paginate(5);
+    return view('layouts.pengajar.tampilan', compact('pengajar'));
+});
+
 // ATAU jika hanya butuh index
 Route::get('/Pengajar', [\App\Http\Controllers\PengajarController::class, 'index'])->name('pengajar.index');
 
