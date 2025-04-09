@@ -91,43 +91,23 @@
 
     <div class="container">
         <div class="row full-height">
+        @forelse($tmbberita as $no => $b)
             <!-- Bagian Kiri (30%) -->
             <div class="col-left divider scrollable">
                 <div class="content">
-                  <h2>Pt Badak NGL Plant</h2>
+                  <h2>{{ $b->title }}</h2>
                   <br>
                 
-                        <img src="https://images.bisnis.com/posts/2021/08/16/1430146/bontanglngplant-ist.jpg" alt="PT  Badak">
+                        <img src="{{ asset('storage/' . $b->image) }}">
                   <br>
                   <br>
-                  <p class="indent">
-    PT Badak NGL (berbisnis dengan nama Badak LNG) adalah anak usaha dari Pertamina Hulu Energi yang bergerak di bidang produksi LNG dan LPG. Untuk mendukung kegiatan bisnisnya, perusahaan ini memiliki kilang di Bontang dan kantor perwakilan di Balikpapan.
-
-    Kilang milik perusahaan ini di Bontang memiliki 8 train yang dirancang dapat memproduksi LNG sebanyak 22,5 juta metrik ton per tahun, sehingga menjadikan perusahaan ini sebagai produsen LNG terbesar di Indonesia.
-</p>
+                  <p class="indent">{{ Str::limit($b->content, 50) }}</p>
               
                     <hr>
                     <br>
-                    <h2>Pupuk Kaltim</h2>
-                    <br>
-                  <img src="https://www.pupukkaltim.com/public/assets/files/img/Home%20Slider/banner-2.jpg" alt="Pupuk Kaltim">
-                  <br>
-                  <br>
-                    <p class="indent">PT Pupuk Kalimantan Timur (PKT) adalah salah satu produsen pupuk urea dan NPK terbesar di Asia yang didirikan pada tanggal 7 Desember 1977. Berawal dari fasilitas pabrik pupuk terapung yang dikelola oleh Pertamina, kemudian berdasarkan Keputusan Presiden No. 43 tahun 1975 dan Keputusan Presiden No. 39 tahun 1976 pengelolaannya diserahkan kepada Departemen Perindustrian. Pada Tahun 2012 PKT menjadi anak perusahaan PT Pupuk Indonesia (Persero).</p>
-                  <hr>
-                  <br>
-                   <h2>KIE (Kaltim Industrial Estate)</h2>
-                   <br>
-                  <img src="https://kie.co.id/wp-content/uploads/2023/01/WISMA-KIE-1-logo1.jpg" alt="KIE">
-                  <br>
-                  <br>
-                    <p class="indent">PT Kaltim Industrial Estate (KIE) merupakan anak perusahaan
-dari PT Pupuk Kalimantan Timur. Awalnya KIE memulai bisnis dengan menyediakan dan mengelola lahan kawasan industri bagi perusahaan berbasis gas bumi di Kawasan Bontang dengan total lahan kelolaan seluas 214,08 Hektar.Seiring dengan tuntutan perkembangan dunia bisnis, KIE berkembang dan tumbuh tidak hanya menyediakan dan mengelola kawasan industri, KIE telah bertransformasi menjadi perusahaan multilevel yang berbasis 5 (lima) pilar bisnis yaitu Kawasan Industri, Properti, Trading, Beton dan Konstruksi.
-
-</p>
-                  <hr>
                 </div>
             </div>
+        @endforeach
 
             <!-- Bagian Kanan (70%) -->
             <div class="col-right scrollable">

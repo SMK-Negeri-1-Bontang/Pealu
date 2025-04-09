@@ -43,6 +43,10 @@ Route::get('/alumni/{id}', [AlumniController::class, 'show'])->name('alumni.show
 
 // Rute untuk Berita
 Route::resource('tmbberita', TambahBeritaController::class);
+Route::get('/berita-tampilan', function () {
+    $tmbberita = App\Models\TambahBerita::paginate(5);
+    return view('layouts.berita.berita', compact('tmbberita'));
+});
 
 // Rute User (Bisa diakses tanpa login)
 Route::resource('user', UserController::class);
