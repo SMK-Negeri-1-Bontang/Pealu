@@ -10,13 +10,25 @@ class PengajarController extends Controller
 {
     public function index(Request $request)
     {
-        if ($request->has('search')) {
-            $pengajar = Pengajar::where('nip', 'like', '%'.$request->search.'%')
-                              ->orWhere('nama_lengkap', 'like', '%'.$request->search.'%')
-                              ->paginate(5);
-        } else {
-            $pengajar = Pengajar::paginate(5);
+        $query = Pengajar::query();
+
+        if ($request->filled('nip')) {
+            $query->where('nip', 'like', '%' . $request->nip . '%');
         }
+
+        if ($request->filled('nama_lengkap')) {
+            $query->where('nama_lengkap', 'like', '%' . $request->nama_lengkap . '%');
+        }
+
+        if ($request->filled('mata_pelajaran')) {
+            $query->where('mata_pelajaran', 'like', '%' . $request->mata_pelajaran . '%');
+        }
+
+        if ($request->filled('tahun_bergabung')) {
+            $query->where('tahun_bergabung', $request->tahun_bergabung);
+        }
+
+        $pengajar = $query->paginate(5);
 
         return view('layouts.pengajar.pengajar', compact('pengajar'));
     }

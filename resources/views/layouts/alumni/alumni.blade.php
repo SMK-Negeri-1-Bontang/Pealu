@@ -391,12 +391,10 @@
                         </div>
                     </div>
 
-                        <div class="modal-footer justify-content-between">
-                            <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">keluar</button>
-                            <button type="submit" class="btn btn-success btn-sm">simpan</button>
-                        </div>
-                    
-
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                        <button type="submit" class="btn btn-success">Simpan</button>
+                    </div>
                 </form>
             </div>
 
@@ -660,12 +658,10 @@
                         </div>
                     </div>
 
-                        <div class="modal-footer justify-content-between">
-                            <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">keluar</button>
-                            <button type="submit" class="btn btn-success btn-sm">simpan</button>
-                        </div>
-                    
-
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                        <button type="submit" class="btn btn-success">Simpan</button>
+                    </div>
                 </form>
             </div>
 

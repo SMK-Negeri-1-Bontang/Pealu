@@ -23,17 +23,43 @@
         @endif
         <div class="card">
             <div class="card-body">
-                <div class="card-header d-flex justify-content-evenly align-items-center">
-                    <a href="#" data-bs-toggle="modal" data-bs-target="#tambah" class="btn btn-success"><i class="fa-solid fa-plus"></i> Tambah Data</a>
-                    
-                    <form action="{{ route('pengajar.index') }}" method="GET" class="w-50 pt-3">
-                        <div class="input-group">
-                            <input id="search-focus" type="search" name="search" class="form-control" placeholder="Search" />
-                            <button type="submit" class="btn btn-primary">
-                                <i class="fas fa-search"></i>
-                            </button>
-                        </div>
-                    </form>
+                <div class="mb-3 mt-2">
+                    <a href="#" data-bs-toggle="modal" data-bs-target="#tambah" class="btn btn-success">
+                        <i class="fa-solid fa-plus"></i> Tambah Data
+                    </a>
+                </div>
+                <div class="card-body mb-3">
+                    <div class="d-flex justify-content-center">
+                        <form action="{{ route('pengajar.index') }}" method="GET" class="w-100">
+                            <div class="row g-3 justify-content-center">
+                                <div class="col-md-3">
+                                    <label class="fw-bold">NIP</label>
+                                    <input type="text" name="nip" class="form-control border-primary shadow-sm" 
+                                        placeholder="Masukkan NIP" value="{{ request('nip') }}">
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="fw-bold">Nama Lengkap</label>
+                                    <input type="text" name="nama_lengkap" class="form-control border-primary shadow-sm" 
+                                        placeholder="Masukkan Nama Lengkap" value="{{ request('nama_lengkap') }}">
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="fw-bold">Mata Pelajaran</label>
+                                    <input type="text" name="mata_pelajaran" class="form-control border-primary shadow-sm" 
+                                        placeholder="Masukkan Mata Pelajaran" value="{{ request('mata_pelajaran') }}">
+                                </div>
+                                <div class="col-md-2">
+                                    <label class="fw-bold">Tahun Bergabung</label>
+                                    <input type="text" name="tahun_bergabung" class="form-control border-primary shadow-sm" 
+                                        placeholder="Masukkan Tahun Bergabung" value="{{ request('tahun_bergabung') }}">
+                                </div>
+                                <div class="col-md-1 d-flex align-items-end">
+                                    <button type="submit" class="btn btn-primary w-100 shadow">
+                                        <i class="fas fa-search"></i> Cari
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
                 </div>
                 <div class="">
                     <table class="table table-hover">
@@ -76,14 +102,14 @@
                                         <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
                                     </svg>
                                     <div>
-                                        Data pengajar Belum Ada
+                                        Data Pengajar Belum Ada
                                     </div>
                                 </div>
-
                             </tr>
                             @endforelse
                         </tbody>
                     </table>
+                    
                     <div class="d-flex justify-content-between align-items-center p-2">
                         <div>
                             Showing <b>{{ $pengajar->firstItem() }}</b> to <b>{{ $pengajar->lastItem() }}</b> of
@@ -266,9 +292,9 @@
                         @enderror
                     </div>
 
-                    <div class="modal-footer justify-content-between">
-                        <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">keluar</button>
-                        <button type="submit" class="btn btn-success btn-sm">simpan</button>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                        <button type="submit" class="btn btn-success">Simpan</button>
                     </div>
                 </form>
             </div>
@@ -419,9 +445,9 @@
                         @enderror
                     </div>
 
-                    <div class="modal-footer justify-content-between">
-                        <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">keluar</button>
-                        <button type="submit" class="btn btn-success btn-sm">simpan</button>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                        <button type="submit" class="btn btn-success">Simpan</button>
                     </div>
                 </form>
             </div>

@@ -13,7 +13,8 @@ class TambahBeritaController extends Controller
      */
     public function index(Request $request)
     {
-        $tmbberita = TambahBerita::latest()->get(); // semua data (untuk kebutuhan modal)
+        $query = TambahBerita::query(); // definisikan dulu query-nya
+        $tmbberita = $query->paginate(5);
         return view('layouts.berita.index', compact('tmbberita'));
     }
 
