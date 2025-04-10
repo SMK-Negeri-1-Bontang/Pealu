@@ -5,19 +5,15 @@ namespace App\Http\Controllers;
 use App\Models\Alumni;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use Barryvdh\DomPDF\Facade\Pdf;
-
 
 class AlumniController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index(Request $request)
     {
         $query = Alumni::query();
 
-        // Filter berdasarkan input yang diisi
         if ($request->filled('nama')) {
             $query->where('nama_lengk', 'like', '%' . $request->nama . '%');
         }
@@ -34,15 +30,11 @@ class AlumniController extends Controller
             $query->where('tahun_lulus', $request->tahun_lulus);
         }
 
-        // Paginate hasil pencarian
         $alumni = $query->paginate(5);
 
         return view('layouts.alumni.alumni', compact('alumni'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function generatePdf($id)
     {
         $data = Alumni::find($id);
@@ -58,12 +50,8 @@ class AlumniController extends Controller
         return $pdf->stream();
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        //
         $validated = $request->validate([
             'nis' => 'required|numeric|unique:alumnis,nis',
             'nama_lengk' => 'required|string|max:255',
@@ -72,23 +60,21 @@ class AlumniController extends Controller
             'nomor_telp' => 'required|numeric',
             'alamat_rum' => 'required|string',
             'wirausaha' => 'nullable|string|max:255',
-            'status' => 'required|in:1,2,3', // 1 = Bekerja, 2 = Kuliah, 3 = Tidak Ada Kabar
+            'status' => 'required|in:1,2,3',
             'nama_per' => 'nullable|required_if:status,1|string|max:255',
             'nama_tok' => 'nullable|required_if:status,1|string|max:255',
             'lok_bekerja' => 'nullable|required_if:status,1|string|max:255',
-            'jalur' => 'nullable|in:1,2,3|required_if:status,2',  // 1 = PTN, 2 = PTS, 3 = DINAS
+            'jalur' => 'nullable|in:1,2,3|required_if:status,2',
             'nama_perti' => 'nullable|required_if:status,2|string|max:255',
             'jur_prodi' => 'nullable|required_if:status,2|string|max:255',
             'lok_kuliah' => 'nullable|required_if:status,2|string|max:255',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
-        // Map status to descriptive text
-        $status_map = [1 => 'Bekerja', 2 => 'Kuliah', 3 => 'Tidak Ada Kabar'];
-        $status_value = $status_map[$request->status];
-
-        // Map jalur to descriptive text (only if status is Kuliah)
-        $jalur_map = [1 => 'PTN', 2 => 'PTS', 3 => 'DINAS'];
-        $jalur_value = $request->status == 2 ? $jalur_map[$request->jalur] : null;
+        if ($request->hasFile('image')) {
+            $image = $request->file('image')->store('foto_siswa', 'public');
+            $validated['image'] = $image;
+        }
 
         $alumni = Alumni::create([
             'nis' => $request->input('nis'),
@@ -106,6 +92,7 @@ class AlumniController extends Controller
             'nama_perti' => $request->input('status') == 2 ? $request->input('nama_perti') : null,
             'jur_prodi' => $request->input('status') == 2 ? $request->input('jur_prodi') : null,
             'lok_kuliah' => $request->input('status') == 2 ? $request->input('lok_kuliah') : null,
+            'image' => $validated['image'] ?? null,
         ]);
 
         if($alumni) {
@@ -115,29 +102,20 @@ class AlumniController extends Controller
         }
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show($id)
     {
         $alumni = Alumni::findOrFail($id);
         return view('layouts.alumni.show', compact('alumni'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(string $id)
     {
-        //
+        $alumni = Alumni::findOrFail($id);
+        return view('layouts.alumni.edit', compact('alumni'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, string $id)
     {
-        //
         $validated = $request->validate([
             'nis' => 'required|numeric',
             'nama_lengk' => 'required|string|max:255',
@@ -146,25 +124,24 @@ class AlumniController extends Controller
             'nomor_telp' => 'required|numeric',
             'alamat_rum' => 'required|string',
             'wirausaha' => 'nullable|string|max:255',
-            'status' => 'required|in:1,2,3', // 1 = Bekerja, 2 = Kuliah, 3 = Tidak Ada Kabar
+            'status' => 'required|in:1,2,3',
             'nama_per' => 'nullable|required_if:status,1|string|max:255',
             'nama_tok' => 'nullable|required_if:status,1|string|max:255',
             'lok_bekerja' => 'nullable|required_if:status,1|string|max:255',
-            'jalur' => 'nullable|in:1,2,3|required_if:status,2',  // 1 = PTN, 2 = PTS, 3 = DINAS
+            'jalur' => 'nullable|in:1,2,3|required_if:status,2',
             'nama_perti' => 'nullable|required_if:status,2|string|max:255',
             'jur_prodi' => 'nullable|required_if:status,2|string|max:255',
             'lok_kuliah' => 'nullable|required_if:status,2|string|max:255',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
-        // Map status to descriptive text
-        $status_map = [1 => 'Bekerja', 2 => 'Kuliah', 3 => 'Tidak Ada Kabar'];
-        $status_value = $status_map[$request->status];
-
-        // Map jalur to descriptive text (only if status is Kuliah)
-        $jalur_map = [1 => 'PTN', 2 => 'PTS', 3 => 'DINAS'];
-        $jalur_value = $request->status == 2 ? $jalur_map[$request->jalur] : null;
-
         $alumni = Alumni::findOrFail($id);
+
+        if ($request->hasFile('image')) {
+            $imagePath = $request->file('image')->store('foto_siswa', 'public');
+            $validated['image'] = $imagePath;
+        }
+
         $alumni->update([
             'nis' => $request->input('nis'),
             'nama_lengk' => $request->input('nama_lengk'),
@@ -181,8 +158,8 @@ class AlumniController extends Controller
             'nama_perti' => $request->input('status') == 2 ? $request->input('nama_perti') : null,
             'jur_prodi' => $request->input('status') == 2 ? $request->input('jur_prodi') : null,
             'lok_kuliah' => $request->input('status') == 2 ? $request->input('lok_kuliah') : null,
+            'image' => $validated['image'] ?? $alumni->image,
         ]);
-
 
         if($alumni) {
             return redirect('alumni')->with(['update' => 'Data Berhasil Di Update']);
@@ -191,12 +168,8 @@ class AlumniController extends Controller
         }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(string $id)
     {
-        //
         $alumni = Alumni::findOrFail($id);
         $alumni->delete();
 

@@ -28,6 +28,7 @@ return new class extends Migration
             $table->string('nama_perti')->nullable();
             $table->string('jur_prodi')->nullable();
             $table->string('lok_kuliah')->nullable();
+            $table->string('image')->nullable();
             $table->timestamps();
         });
     }

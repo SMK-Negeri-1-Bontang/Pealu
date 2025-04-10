@@ -74,6 +74,7 @@
                         <thead>
                             <tr>
                                 <th scope="col">No</th>
+                                <th scope="col">Foto</th>
                                 <th scope="col">NIS</th>
                                 <th scope="col">Nama</th>
                                 <th scope="col">jurusan</th>
@@ -86,6 +87,13 @@
                             @forelse($alumni as $no => $a)
                             <tr>
                                 <th scope="row">{{ ++$no }}</th>
+                                <td class="text-center">
+                                    @if($a->image)
+                                        <img src="{{ asset('storage/' . $a->image) }}" width="70">
+                                    @else
+                                        <span class="text-muted">Tidak ada</span>
+                                    @endif
+                                </td>
                                 <td>{{ $a->nis }}</td>
                                 <td>{{ $a->nama_lengk}}</td>
                                 <td>{{ $a->jur_sekolah}}</td>
@@ -174,8 +182,17 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body text-capitalize">
-                <form action="{{ route('alumni.store') }}" method="POST">
+                <form action="{{ route('alumni.store') }}" method="POST" enctype="multipart/form-data">
                     @csrf
+                    <div class="mb-3">
+                        <label for="image" class="form-label">Gambar</label>
+                        <input type="file" class="form-control" id="image" name="image">
+                        @error('foto')
+                        <div class="alert alert-danger" role="alert">
+                            {{ $message }}
+                        </div>
+                        @enderror
+                    </div>
                     <div class="mb-3">
                         <label class="form-label">NIS</label>
                         <input type="number" class="form-control @error('nis')
@@ -430,9 +447,21 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body text-capitalize">
-                <form action="{{ route('alumni.update', $a->id) }}" method="POST">
+                <form action="{{ route('alumni.update', $a->id) }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     @method('PUT')
+                    <div class="mb-3">
+                        <label class="form-label">Gambar (opsional)</label>
+                        <input type="file" name="image" class="form-control">
+                        @error('image')
+                        <div class="alert alert-danger" role="alert">
+                            {{ $message }}
+                        @enderror
+
+                        @if($a->image)
+                            <small class="d-block mt-1">Gambar sekarang: <img src="{{ asset('storage/' . $a->image) }}" width="80"></small>
+                        @endif
+                    </div>
                     <div class="mb-3">
                         <label class="form-label">NIS</label>
                         <input type="number" class="form-control @error('nis')
