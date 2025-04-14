@@ -498,69 +498,42 @@
 @foreach($pengajar as $p)
 <!-- Modal Tampil -->
 <div class="modal fade" id="lihat{{$p->id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
+        
             <div class="modal-header">
                 <h1 class="modal-title fs-5" id="exampleModalLabel">Detail Data Pengajar</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <table class="table table-striped text-capitalize">
-                <tr>
-                    <th>1.</th>
-                    <th scope="row">NIP</th>
-                    <td>:</td>
-                    <td>{{ $p->nip }}</td>
-                </tr>   
-                <tr>
-                    <th>2.</th>
-                    <th scope="row">Nama Lengkap</th>
-                    <td>:</td>
-                    <td>{{ $p->nama_lengkap }}</td>
-                </tr>
-                <tr>
-                    <th>3.</th>
-                    <th scope="row">Mata Pelajaran</th>
-                    <td>:</td>
-                    <td>{{ $p->mata_pelajaran }}</td>
-                </tr>
-                <tr>
-                    <th>4.</th>
-                    <th scope="row">Tahun Bergabung</th>
-                    <td>:</td>
-                    <td>{{ $p->tahun_bergabung }}</td>
-                </tr>
-                <tr>
-                    <th>5.</th>
-                    <th scope="row">Nomor Telpon</th>
-                    <td>:</td>
-                    <td>{{ $p->nomor_telp }}</td>
-                </tr>
-                <tr>   
-                    <th>6.</th> 
-                    <th scope="row">Alamat Rumah</th>
-                    <td>:</td>
-                    <td>{{ $p->alamat }}</td>
-                </tr>
-                <tr>
-                    <th>7.</th>
-                    <th scope="row">Status</th>
-                    <td>:</td>
-                    <td>{{ $status_map[$p->status] ?? 'Tidak Diketahui' }}</td>
-                </tr>
-                <tr>
-                    <th>8.</th>
-                    <th scope="row">Pendidikan Terakhir</th>
-                    <td>:</td>
-                    <td>{{ $p->pendidikan_terakhir }}</td>
-                </tr>
-                <tr>
-                    <th>9.</th>
-                    <th scope="row">Jabatan</th>
-                    <td>:</td>
-                    <td>{{ $p->jabatan }}</td>
-                </tr>
-            </table>
+
+            <div class="modal-body p-4">
+                <h2 class="text-center mb-4 mt-2">BIODATA DIRI {{ strtoupper($p->nama_lengkap) }}</h2>
+
+                <div class="row justify-content-center align-items-start mt-5 mb-2">
+                    {{-- Kolom Data --}}
+                    <div class="col-md-6">
+                        <table class="table table-borderless text-capitalize">
+                            <tr><td>NIP</td><td>: {{ $p->nip ?? '-' }}</td></tr>
+                            <tr><td>Nama Lengkap</td><td>: {{ $p->nama_lengkap ?? '-' }}</td></tr>
+                            <tr><td>Mata Pelajaran</td><td>: {{ $p->mata_pelajaran ?? '-' }}</td></tr>
+                            <tr><td>Tahun Bergabung</td><td>: {{ $p->tahun_bergabung ?? '-' }}</td></tr>
+                            <tr><td>Nomor Telpon</td><td>: {{ $p->nomor_telp ?? '-' }}</td></tr>
+                            <tr><td>Alamat Rumah</td><td>: {{ $p->alamat ?? '-' }}</td></tr>
+                            <tr><td>Status</td><td>: {{ $status_map[$p->status] ?? '-' }}</td></tr>
+                            <tr><td>Pendidikan Terakhir</td><td>: {{ $p->pendidikan_terakhir ?? '-' }}</td></tr>
+                            <tr><td>Jabatan</td><td>: {{ $p->jabatan ?? '-' }}</td></tr>
+                        </table>
+                    </div>
+
+                    {{-- Kolom Gambar --}}
+                    <div class="col-md-5 text-center">
+                        <img src="{{ $p->foto ? asset('storage/' . $p->foto) : asset('img/default.jpg') }}" class="img-thumbnail mb-3" style="width: 180px; height: auto;" alt="Foto Pengajar">
+                    </div>
+                </div>
+            </div>
+
         </div>
     </div>
 </div>
+
 @endforeach

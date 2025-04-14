@@ -167,9 +167,9 @@
                                     <h5 class="modal-title" id="modalLihatLabel{{ $b->id }}">Detail Berita</h5>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
-                                <div class="modal-body">
+                                <div class="modal-body p-5">
                                     {{-- Judul --}}
-                                    <h2 class="fw-bold mb-3">{{ $b->title }}</h2>
+                                    <h2 class="fw-bold mb-5">{{ $b->title }}</h2>
 
                                     {{-- Gambar --}}
                                     @if($b->image)

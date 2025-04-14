@@ -741,99 +741,54 @@
 @foreach($alumni as $a)
 <!-- Modal Tampil -->
 <div class="modal fade" id="lihat{{$a->id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
+        
             <div class="modal-header">
-                <h1 class="modal-title fs-5" id="exampleModalLabel">Detail Data Siswa</h1>
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Detail Data Alumni</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <table class="table table-striped text-capitalize">
-                <tr>
-                    <th>1.</th>
-                    <th scope="row">NIS</th>
-                    <td>:</td>
-                    <td>{{ $a->nis }}</td>
-                </tr>   
-                <tr>
-                    <th>2.</th>
-                    <th scope="row">Nama Lengkap</th>
-                    <td>:</td>
-                    <td>{{ $a->nama_lengk }}</td>
-                </tr>
-                <tr>
-                    <th>3.</th>
-                    <th scope="row">Jurusan</th>
-                    <td>:</td>
-                    <td>{{ $a->jur_sekolah }}</td>
-                </tr>
-                <tr>
-                    <th>5.</th>
-                    <th scope="row">Nomor Telpon</th>
-                    <td>:</td>
-                    <td>{{ $a->nomor_telp }}</td>
-                </tr>
-                <tr>   
-                    <th>6.</th> 
-                    <th scope="row">Alamat Rumah</th>
-                    <td>:</td>
-                    <td>{{ $a->alamat_rum }}</td>
-                </tr>
-                <tr>
-                    <th>7.</th>
-                    <th scope="row">Wiraisaha</th>
-                    <td>:</td>
-                    <td>{{ $a->wiraisaha }}</td>
-                </tr>
-                <tr>
-                    <th>8.</th>
-                    <th scope="row">Status</th>
-                    <td>:</td>
-                    <td>{{ $status_map[$a->status] ?? 'Tidak Diketahui' }}</td>
-                </tr>
-                <tr>
-                    <th>9.</th>
-                    <th scope="row">Nama Perusahaan</th>
-                    <td>:</td>
-                    <td>{{ $a->nama_per }}</td>
-                </tr>
-                <tr>
-                    <th>10.</th>
-                    <th scope="row">Nama Tokoh</th>
-                    <td>:</td>
-                    <td>{{ $a->nama_tok }}</td>
-                </tr>
-                <tr>
-                    <th>11.</th>
-                    <th scope="row">Lokasi Bekerja</th>
-                    <td>:</td>
-                    <td>{{ $a->lok_bekerja }}</td>
-                </tr>
-                <tr>
-                    <th>12.</th>
-                    <th scope="row">Jalur</th>
-                    <td>:</td>
-                    <td>{{ $a->status == 2 ? $jalur_map[$a->jalur] ?? 'Tidak Diketahui' : '' }}</td>
-                </tr>
-                <tr>
-                    <th>13.</th>
-                    <th scope="row">Nama Perguruan Tinggi</th>
-                    <td>:</td>
-                    <td>{{ $a->nama_perti }}</td>
-                </tr>
-                <tr>
-                    <th>14.</th>
-                    <th scope="row">Jurusan Prodi</th>
-                    <td>:</td>
-                    <td>{{ $a->jur_prodi }}</td>
-                </tr>
-                <tr>
-                    <th>15.</th>
-                    <th scope="row">Lokasi Kuliah</th>
-                    <td>:</td>
-                    <td>{{ $a->lok_kuliah }}</td>
-                </tr>
-            </table>
+            
+            <div class="modal-body p-4">
+                <h2 class="text-center mb-4 mt-2">BIODATA DIRI {{ strtoupper($a->nama_lengk ?? '-') }}</h2>
 
+                <div class="row justify-content-center align-items-start mt-5 mb-2">
+                    {{-- Kolom Data --}}
+                    <div class="col-md-6">
+                        <table class="table table-borderless">
+                            <tr><td>NIS</td><td>: {{ $a->nis ?? '-' }}</td></tr>
+                            <tr><td>Nama Lengkap</td><td>: {{ $a->nama_lengk ?? '-' }}</td></tr>
+                            <tr><td>Jurusan</td><td>: {{ $a->jur_sekolah ?? '-' }}</td></tr>
+                            <tr><td>Nomor Telpon</td><td>: {{ $a->nomor_telp ?? '-' }}</td></tr>
+                            <tr><td>Alamat</td><td>: {{ $a->alamat_rum ?? '-' }}</td></tr>
+                            <tr><td>Wirausaha</td><td>: {{ $a->wirausaha ?? '-' }}</td></tr>
+                            <tr><td>Status</td><td>: {{ $status_map[$a->status] ?? '-' }}</td></tr>
+                        </table>
+
+                        @if($a->status == 1)
+                            <h5 class="mt-4"><strong>BEKERJA</strong></h5>
+                            <table class="table table-borderless">
+                                <tr><td>Nama Perusahaan</td><td>: {{ $a->nama_per ?? '-' }}</td></tr>
+                                <tr><td>Nama Tokoh</td><td>: {{ $a->nama_tok ?? '-' }}</td></tr>
+                                <tr><td>Lokasi Bekerja</td><td>: {{ $a->lok_bekerja ?? '-' }}</td></tr>
+                            </table>
+                        @elseif($a->status == 2)
+                            <h5 class="mt-4"><strong>KULIAH</strong></h5>
+                            <table class="table table-borderless">
+                                <tr><td>Jalur</td><td>: {{ $jalur_map[$a->jalur] ?? '-' }}</td></tr>
+                                <tr><td>Nama Perguruan Tinggi</td><td>: {{ $a->nama_perti ?? '-' }}</td></tr>
+                                <tr><td>Jurusan Prodi</td><td>: {{ $a->jur_prodi ?? '-' }}</td></tr>
+                                <tr><td>Lokasi Kuliah</td><td>: {{ $a->lok_kuliah ?? '-' }}</td></tr>
+                            </table>
+                        @endif
+                    </div>
+
+                    {{-- Kolom Gambar --}}
+                    <div class="col-md-5 text-center">
+                        <img src="{{ asset('storage/' . ($a->image ?? 'default.jpg')) }}" class="img-thumbnail mb-3" style="width: 180px; height: auto;" alt="Foto Alumni">
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
