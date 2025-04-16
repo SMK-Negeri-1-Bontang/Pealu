@@ -75,12 +75,12 @@
                                     <td>{{ $user->nama_lengkap }}</td>
                                     <td>{{ $user->email }}</td>
                                     <td>{{ ucfirst($user->role) }}</td>
-                                    <td>
-                                        <a href="{{ route('user.edit', $user->id) }}" class="btn btn-secondary">
-                                            <i class="fa-solid fa-pen-to-square"></i>
+                                    <td class="text-center align-middle">
+                                        <a href="{{ route('user.edit', $user->id) }}" class="text-primary mx-2" style="text-decoration: none;">
+                                            <i class="fa-solid fa-pen-to-square fa-lg"></i>
                                         </a>
-                                        <a href="#" data-bs-toggle="modal" data-bs-target="#delete{{$user->id}}" class="btn btn-danger">
-                                            <i class="fa fa-trash"></i>
+                                        <a href="#" data-bs-toggle="modal" data-bs-target="#delete{{$user->id}}" class="text-danger mx-2" style="text-decoration: none;">
+                                            <i class="fa-solid fa-xmark fa-lg"></i>
                                         </a>
                                     </td>
                                 @empty

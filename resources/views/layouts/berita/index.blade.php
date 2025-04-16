@@ -25,11 +25,20 @@
                     @endif
             <div class="card">
                 <div class="card-body">
-                    <div class="mb-3 mt-2">
-                        <a href="#" data-bs-toggle="modal" data-bs-target="#modalTambahBerita" class="btn btn-success">
-                            <i class="fa-solid fa-plus"></i> Tambah Berita
-                        </a>
-                    </div>
+                <div class="d-flex justify-content-between align-items-center mb-3 mt-2 flex-wrap gap-2">
+                    <a href="#" data-bs-toggle="modal" data-bs-target="#modalTambahBerita" class="btn btn-success">
+                        <i class="fa-solid fa-plus"></i> Tambah Berita
+                    </a>
+
+                    <form action="{{ route('tmbberita.index') }}" method="GET" class="d-flex align-items-center gap-2">
+                        <input id="search-focus" type="search" name="search" class="form-control border-primary shadow-sm" placeholder="Search" value="{{ request('search') }}">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </form>
+                </div>
+
+
                     <div class="pt-10">
                         {{-- Table --}}
                         <table class="table table-hover">
@@ -46,7 +55,7 @@
                                 
                                 @forelse($tmbberita as $no => $b)
                                 <tr>
-                                    <td class="text-center">{{ $no + 1 }}</td>
+                                    <th scope="row">{{ ++$no }}</th>
                                     <td>{{ $b->title }}</td>
                                     <td class="text-center">
                                         @if($b->image)
@@ -58,11 +67,17 @@
                                     <td>{{ Str::limit($b->content, 50) }}</td>
                                     <td class="text-center align-middle">
                                         <a href="#" data-bs-toggle="modal" data-bs-target="#modalEdit{{$b->id}}"
-                                            class="btn btn-secondary"><i class="fa-solid fa-pen-to-square"></i></a>
+                                            class="text-primary mx-2" style="text-decoration: none;">
+                                            <i class="fa-solid fa-pen-to-square fa-lg"></i>
+                                        </a>
                                         <a href="#" data-bs-toggle="modal" data-bs-target="#modalHapus{{$b->id}}"
-                                            class="btn btn-danger"><i class="fa-solid fa-trash"></i></a>
+                                            class="text-danger mx-2" style="text-decoration: none;">
+                                            <i class="fa-solid fa-xmark fa-lg"></i>
+                                        </a>
                                         <a href="#" data-bs-toggle="modal" data-bs-target="#modalLihat{{$b->id}}"
-                                            class="btn btn-info"><i class="fa-solid fa-eye"></i></a>
+                                            class="text-info mx-2" style="text-decoration: none;">
+                                            <i class="fa-solid fa-eye fa-lg"></i>
+                                        </a>
                                     </td>
                                     @empty
                                     <div class="alert alert-primary d-flex align-items-center" role="alert">
@@ -126,7 +141,7 @@
                     {{-- Modal Tambah --}}
                     <div class="modal fade" id="modalTambahBerita" tabindex="-1" aria-labelledby="modalTambahBeritaLabel" aria-hidden="true">
                         <div class="modal-dialog">
-                            <div class="modal-content">
+                            <div class="modal-content" style="background:rgb(240, 240, 240);">
                                 <div class="modal-header">
                                     <h5 class="modal-title" id="modalTambahBeritaLabel">Tambah Berita</h5>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -139,12 +154,12 @@
                                             <input type="text" class="form-control" id="title" name="title" required>
                                         </div>
                                         <div class="mb-3">
-                                            <label for="content" class="form-label">Deskripsi Berita</label>
-                                            <textarea class="form-control" id="content" name="content" rows="3" required></textarea>
-                                        </div>
-                                        <div class="mb-3">
                                             <label for="image" class="form-label">Gambar</label>
                                             <input type="file" class="form-control" id="image" name="image">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="content" class="form-label">Deskripsi Berita</label>
+                                            <textarea class="form-control" id="content" name="content" rows="3" required></textarea>
                                         </div>
                                     </div>
                                     <div class="modal-footer">
@@ -162,7 +177,7 @@
                     {{-- Modal Lihat --}}
                     <div class="modal fade" id="modalLihat{{ $b->id }}" tabindex="-1" aria-labelledby="modalLihatLabel{{ $b->id }}" aria-hidden="true">
                         <div class="modal-dialog modal-xl">
-                            <div class="modal-content">
+                            <div class="modal-content" style="background:rgb(240, 240, 240);">
                                 <div class="modal-header">
                                     <h5 class="modal-title" id="modalLihatLabel{{ $b->id }}">Detail Berita</h5>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -196,7 +211,7 @@
                     {{-- Modal Edit --}}
                     <div class="modal fade" id="modalEdit{{ $b->id }}" tabindex="-1" aria-labelledby="modalEditLabel{{ $b->id }}" aria-hidden="true">
                         <div class="modal-dialog">
-                            <div class="modal-content">
+                            <div class="modal-content" style="background:rgb(240, 240, 240);">
                                 <form action="{{ route('tmbberita.update', $b->id) }}" method="POST" enctype="multipart/form-data">
                                     @csrf
                                     @method('PUT')
@@ -210,15 +225,15 @@
                                             <input type="text" name="title" class="form-control" value="{{ $b->title }}" required>
                                         </div>
                                         <div class="mb-3">
-                                            <label class="form-label">Deskripsi</label>
-                                            <textarea name="content" class="form-control" rows="3" required>{{ $b->content }}</textarea>
-                                        </div>
-                                        <div class="mb-3">
                                             <label class="form-label">Gambar (opsional)</label>
                                             <input type="file" name="image" class="form-control">
                                             @if($b->image)
                                                 <small class="d-block mt-1">Gambar sekarang: <img src="{{ asset('storage/' . $b->image) }}" width="80"></small>
                                             @endif
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label">Deskripsi</label>
+                                            <textarea name="content" class="form-control" rows="3" required>{{ $b->content }}</textarea>
                                         </div>
                                     </div>
                                     <div class="modal-footer">

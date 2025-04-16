@@ -14,8 +14,13 @@ class TambahBeritaController extends Controller
     public function index(Request $request)
     {
         $query = TambahBerita::query(); // definisikan dulu query-nya
+        if ($request->filled('search')) {
+            $query->where('title', 'like', '%' . $request->search . '%')
+                ->orWhere('content', 'like', '%' . $request->search . '%');
+        }
         $tmbberita = $query->paginate(5);
         return view('layouts.berita.index', compact('tmbberita'));
+        
     }
 
     /**
