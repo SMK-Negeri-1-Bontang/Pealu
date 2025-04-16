@@ -104,7 +104,7 @@
             <a href="{{ route('user.index') }}" class="menu-item"><i class="fas fa-user"></i> Table User</a>
             <a href="{{ route('pengajar.index') }}" class="menu-item"><i class="fas fa-plus"></i>Tambah Pengajar</a>
             <a href="{{ route('tmbberita.index') }}" class="menu-item"><i class="fas fa-plus"></i> Tambah Berita</a>
-            <a href="#" class="menu-item"><i class="fas fa-plus"></i> Tambah Lowongan</a>
+            <a href="{{ route('lowongan.index') }}" class="menu-item"><i class="fas fa-plus"></i> Tambah Lowongan</a>
         </div>
     </nav>
 

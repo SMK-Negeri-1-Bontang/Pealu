@@ -4,6 +4,7 @@ use App\Http\Controllers\AlumniController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\PengajarController;
 use App\Http\Controllers\TambahBeritaController;
+use App\Http\Controllers\LowonganController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 
@@ -74,3 +75,11 @@ Route::get('/Pengajar', [\App\Http\Controllers\PengajarController::class, 'index
 // Route khusus untuk invoice
 Route::get('/pengajar/invoice/{id}', [PengajarController::class, 'invoice'])->name('pengajar.invoice');
 // space aziz
+
+Route::get('/lowongan', [LowonganController::class, 'index'])->name('lowongan.index');
+Route::get('/lowongan/create', [LowonganController::class, 'create'])->name('lowongan.create');
+Route::post('/lowongan', [LowonganController::class, 'store'])->name('lowongan.store');
+Route::get('/lowongan/{id}', [LowonganController::class, 'show'])->name('lowongan.show');
+Route::get('/lowongan/{id}/edit', [LowonganController::class, 'edit'])->name('lowongan.edit');
+Route::put('/lowongan/{id}', [LowonganController::class, 'update'])->name('lowongan.update');
+Route::delete('/lowongan/{id}', [LowonganController::class, 'destroy'])->name('lowongan.destroy');
