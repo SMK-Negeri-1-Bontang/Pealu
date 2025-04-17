@@ -17,6 +17,7 @@ class User extends Authenticatable
         'email',
         'password',
         'role', // Pastikan kolom role ada di database users
+        'image'
     ];
 
     protected $hidden = [

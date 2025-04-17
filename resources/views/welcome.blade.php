@@ -133,40 +133,60 @@
                         @endauth
                     </h4>
                 </div>
-                <ul class="d-flex justify-content-end list-unstyled gap-3 mt-2">
-                    @guest
-                        @if (Route::has('login'))
-                            <li class="nav-item">
-                                <a class="text-decoration-none text-dark" href="{{ route('login') }}">{{ __('Login') }}</a>
-                            </li>
-                        @endif
+                <div class="d-flex justify-content-end align-items-center gap-3">
+                    <ul class="d-flex justify-content-end list-unstyled gap-3 mt-2">
+                        @guest
+                            @if (Route::has('login'))
+                                <li class="nav-item">
+                                    <a class="text-decoration-none text-dark" href="{{ route('login') }}">{{ __('Login') }}</a>
+                                </li>
+                            @endif
 
-                        @if (Route::has('register'))
-                            <li class="nav-item">
-                                <a class="text-decoration-none text-dark" href="{{ route('register') }}">{{ __('Register') }}</a>
-                            </li>
-                        @endif  
-                    @else
-                        <li class="nav-item dropdown">
-                            <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                Halo {{ Auth::user()->name }}
-                            </a>
-
-                            <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item" href="{{ route('logout') }}"
-                                    onclick="event.preventDefault();
-                                                    document.getElementById('logout-form').submit();">
-                                    {{ __('Logout') }}
+                            @if (Route::has('register'))
+                                <li class="nav-item">
+                                    <a class="text-decoration-none text-dark" href="{{ route('register') }}">{{ __('Register') }}</a>
+                                </li>
+                            @endif  
+                        @else
+                            <li class="nav-item dropdown">
+                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                    Halo {{ Auth::user()->name }}
                                 </a>
 
-                                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                                    @csrf
-                                </form>
-                            </div>
-                        </li>
+                                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item" href="{{ url('/profile') }}">
+                                        {{ __('Profil') }}
+                                    </a>
+                                    <a class="dropdown-item" href="{{ route('logout') }}"
+                                        onclick="event.preventDefault();
+                                                        document.getElementById('logout-form').submit();">
+                                        {{ __('Logout') }}
+                                    </a>
 
-                    @endguest
-                </ul>
+                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                        @csrf
+                                    </form>
+                                </div>
+                            </li>
+                            
+                        @endguest
+                    </ul>
+                    @auth
+                        <div class="">
+                            @if(Auth::user()->image)
+                                <a href="{{ url('/profile') }}">
+                                    <img src="{{ asset('storage/' . Auth::user()->image) }}" alt="avatar"
+                                        class="rounded-circle" width="48" height="48" style="object-fit: cover;">
+                                </a>
+                            @else
+                                <a href="{{ url('/profile') }}">
+                                    <img src="https://img.freepik.com/free-vector/blue-circle-with-white-user_78370-4707.jpg?semt=ais_hybrid&w=740" alt="avatar"
+                                        class="rounded-circle" width="48" height="48" style="object-fit: cover;">
+                                </a>
+                            @endif
+                        </div>
+                    @endauth
+                </div>
             </div>
             <main class="py-4">
                 @yield('content')

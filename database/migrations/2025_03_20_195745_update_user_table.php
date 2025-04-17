@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::table('users', function (Blueprint $table) {
             $table->string('nama_lengkap');
             $table->string('hp');
+            $table->string('image')->nullable();
         });
     }
 

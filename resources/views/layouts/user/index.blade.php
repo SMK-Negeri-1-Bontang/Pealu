@@ -60,6 +60,7 @@
                             <thead class="">
                                 <tr>
                                     <th>No</th>
+                                    <th>Profile</th>
                                     <th>Name</th>
                                     <th>Nama Lengkap</th>
                                     <th>Email</th>
@@ -71,6 +72,13 @@
                                 @forelse ($users as $user)
                                 <tr>
                                     <td>{{ $loop->iteration + ($users instanceof \Illuminate\Pagination\LengthAwarePaginator ? $users->firstItem() - 1 : 0) }}</td>
+                                        <td class="text-center">
+                                        @if($user->image)
+                                            <img src="{{ asset('storage/' . $user->image) }}" width="70">
+                                        @else
+                                            <span class="text-muted">Tidak ada</span>
+                                        @endif
+                                    </td>
                                     <td>{{ $user->name }}</td>
                                     <td>{{ $user->nama_lengkap }}</td>
                                     <td>{{ $user->email }}</td>

@@ -7,6 +7,7 @@ use App\Http\Controllers\TambahBeritaController;
 use App\Http\Controllers\LowonganController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\ProfileController;
 
 // Halaman utama
 Route::get('/', function () {
@@ -51,6 +52,14 @@ Route::get('/berita-tampilan', function () {
 
 // Rute User (Bisa diakses tanpa login)
 Route::resource('user', UserController::class);
+
+//Profile
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show');
+    Route::put('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
+});
+
+
 
 // Proteksi hanya untuk fitur tertentu
 Route::middleware(['role:admin,petugas'])->group(function () {
