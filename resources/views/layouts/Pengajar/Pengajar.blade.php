@@ -180,74 +180,46 @@
                 <form action="{{ route('pengajar.store') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="row">
-                        <div class="col-md-6">
-                            <!-- Foto Pengajar -->
-                            <div class="mb-3">
-                                <label class="form-label">Foto Pengajar</label>
-                                <input type="file" class="form-control @error('foto') is-invalid @enderror" name="foto">
-                                @error('foto')
-                                <div class="alert alert-danger">{{ $message }}</div>
-                                @enderror
-                            </div>
-
-                            <!-- NIP -->
-                            <div class="mb-3">
-                                <label class="form-label">NIP</label>
-                                <input type="number" class="form-control @error('nip') is-invalid @enderror" name="nip" placeholder="Masukkan NIP Dengan Benar">
-                                @error('nip')
-                                <div class="alert alert-danger">{{ $message }}</div>
-                                @enderror
-                            </div>
-
-                            <!-- Nama Lengkap -->
-                            <div class="mb-3">
+                        <div class="col-md-6 mb-3">
                                 <label class="form-label">Nama Lengkap</label>
                                 <input type="text" class="form-control @error('nama_lengkap') is-invalid @enderror" name="nama_lengkap" placeholder="Masukkan Nama Lengkap Pengajar">
                                 @error('nama_lengkap')
                                 <div class="alert alert-danger">{{ $message }}</div>
                                 @enderror
-                            </div>
-
-                            <!-- Mata Pelajaran -->
-                            <div class="mb-3">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                                <label class="form-label">NIP</label>
+                                <input type="number" class="form-control @error('nip') is-invalid @enderror" name="nip" placeholder="Masukkan NIP Dengan Benar">
+                                @error('nip')
+                                <div class="alert alert-danger">{{ $message }}</div>
+                                @enderror
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
                                 <label class="form-label">Mata Pelajaran</label>
                                 <input type="text" class="form-control @error('mata_pelajaran') is-invalid @enderror" name="mata_pelajaran" placeholder="Contoh 'Matematika'">
                                 @error('mata_pelajaran')
                                 <div class="alert alert-danger">{{ $message }}</div>
                                 @enderror
-                            </div>
-
-                            <!-- Tahun Bergabung -->
-                            <div class="mb-3">
+                        </div>
+                        <div class="col-md-6 mb-3">
                                 <label class="form-label">Tahun Bergabung</label>
                                 <input type="text" class="form-control @error('tahun_bergabung') is-invalid @enderror" name="tahun_bergabung" placeholder="Contoh '2022'">
                                 @error('tahun_bergabung')
                                 <div class="alert alert-danger">{{ $message }}</div>
                                 @enderror
-                            </div>
                         </div>
-
-                        <div class="col-md-6">
-                            <!-- Nomor Telpon -->
-                            <div class="mb-3">
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
                                 <label class="form-label">Nomor Telpon</label>
                                 <input type="number" class="form-control @error('nomor_telp') is-invalid @enderror" name="nomor_telp" placeholder="Masukkan Nomor Telpon Dengan Benar">
                                 @error('nomor_telp')
                                 <div class="alert alert-danger">{{ $message }}</div>
                                 @enderror
-                            </div>
-
-                            <!-- Alamat Rumah -->
-                            <div class="mb-3">
-                                <label class="form-label">Alamat Rumah</label>
-                                <textarea class="form-control @error('alamat') is-invalid @enderror" name="alamat" rows="3" placeholder="Alamat Lengkap"></textarea>
-                                @error('alamat')
-                                <div class="alert alert-danger">{{ $message }}</div>
-                                @enderror
-                            </div>
-
-                            <!-- Status -->
-                            <div class="mb-3">
+                        </div>
+                        <div class="col-md-6 mb-3">
                                 <label class="form-label">Status</label>
                                 <select class="form-select @error('status') is-invalid @enderror" name="status">
                                     <option selected>Pilih</option>
@@ -258,26 +230,37 @@
                                 @error('status')
                                 <div class="alert alert-danger">{{ $message }}</div>
                                 @enderror
-                            </div>
-
-                            <!-- Pendidikan Terakhir -->
-                            <div class="mb-3">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
                                 <label class="form-label">Pendidikan Terakhir</label>
                                 <input type="text" class="form-control @error('pendidikan_terakhir') is-invalid @enderror" name="pendidikan_terakhir" placeholder="Contoh 'S1 Pendidikan Matematika'">
                                 @error('pendidikan_terakhir')
                                 <div class="alert alert-danger">{{ $message }}</div>
                                 @enderror
-                            </div>
-
-                            <!-- Jabatan -->
-                            <div class="mb-3">
-                                <label class="form-label">Jabatan</label>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Jabatan</label>
                                 <input type="text" class="form-control @error('jabatan') is-invalid @enderror" name="jabatan" placeholder="Contoh 'Guru Matematika'">
                                 @error('jabatan')
                                 <div class="alert alert-danger">{{ $message }}</div>
                                 @enderror
-                            </div>
                         </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Alamat Rumah</label>
+                        <textarea class="form-control @error('alamat') is-invalid @enderror" name="alamat" rows="3" placeholder="Alamat Lengkap"></textarea>
+                        @error('alamat')
+                        <div class="alert alert-danger">{{ $message }}</div>
+                        @enderror
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Foto Pengajar</label>
+                        <input type="file" class="form-control @error('foto') is-invalid @enderror" name="foto">
+                        @error('foto')
+                        <div class="alert alert-danger">{{ $message }}</div>
+                        @enderror
                     </div>
 
                     <div class="modal-footer">
@@ -305,108 +288,91 @@
                     @csrf
                     @method('PUT')
                     <div class="row">
-                        <div class="col-md-6">
-                            <!-- Foto Pengajar -->
-                            <div class="mb-3">
-                                <label class="form-label">Foto Pengajar</label>
-                                <input type="file" class="form-control @error('foto') is-invalid @enderror" name="foto">
-                                <input type="hidden" name="foto_lama" value="{{ $p->foto }}">
-                                @if($p->foto)
-                                    <small class="d-block mt-1">Foto sekarang: <img src="{{ asset('storage/' . $p->foto) }}" width="80"></small>
-                                @endif
-                                @error('foto')
-                                <div class="alert alert-danger">{{ $message }}</div>
-                                @enderror
-                            </div>
-
-                            <!-- NIP -->
-                            <div class="mb-3">
-                                <label class="form-label">NIP</label>
-                                <input type="number" class="form-control @error('nip') is-invalid @enderror" name="nip" value="{{ old('nip', $p->nip) }}" placeholder="Masukkan NIP Dengan Benar">
-                                @error('nip')
-                                <div class="alert alert-danger">{{ $message }}</div>
-                                @enderror
-                            </div>
-
-                            <!-- Nama Lengkap -->
-                            <div class="mb-3">
-                                <label class="form-label">Nama Lengkap</label>
-                                <input type="text" class="form-control @error('nama_lengkap') is-invalid @enderror" name="nama_lengkap" value="{{ old('nama_lengkap', $p->nama_lengkap) }}" placeholder="Masukkan Nama Lengkap Pengajar">
-                                @error('nama_lengkap')
-                                <div class="alert alert-danger">{{ $message }}</div>
-                                @enderror
-                            </div>
-
-                            <!-- Mata Pelajaran -->
-                            <div class="mb-3">
-                                <label class="form-label">Mata Pelajaran</label>
-                                <input type="text" class="form-control @error('mata_pelajaran') is-invalid @enderror" name="mata_pelajaran" value="{{ old('mata_pelajaran', $p->mata_pelajaran) }}" placeholder="Contoh 'Matematika'">
-                                @error('mata_pelajaran')
-                                <div class="alert alert-danger">{{ $message }}</div>
-                                @enderror
-                            </div>
-
-                            <!-- Tahun Bergabung -->
-                            <div class="mb-3">
-                                <label class="form-label">Tahun Bergabung</label>
-                                <input type="text" class="form-control @error('tahun_bergabung') is-invalid @enderror" name="tahun_bergabung" value="{{ old('tahun_bergabung', $p->tahun_bergabung) }}" placeholder="Contoh '2022'">
-                                @error('tahun_bergabung')
-                                <div class="alert alert-danger">{{ $message }}</div>
-                                @enderror
-                            </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Nama Lengkap</label>
+                            <input type="text" class="form-control @error('nama_lengkap') is-invalid @enderror" name="nama_lengkap" value="{{ old('nama_lengkap', $p->nama_lengkap) }}" placeholder="Masukkan Nama Lengkap Pengajar">
+                            @error('nama_lengkap')
+                            <div class="alert alert-danger">{{ $message }}</div>
+                            @enderror
                         </div>
-
-                        <div class="col-md-6">
-                            <!-- Nomor Telpon -->
-                            <div class="mb-3">
-                                <label class="form-label">Nomor Telpon</label>
-                                <input type="number" class="form-control @error('nomor_telp') is-invalid @enderror" name="nomor_telp" value="{{ old('nomor_telp', $p->nomor_telp) }}" placeholder="Masukkan Nomor Telpon Dengan Benar">
-                                @error('nomor_telp')
-                                <div class="alert alert-danger">{{ $message }}</div>
-                                @enderror
-                            </div>
-
-                            <!-- Alamat Rumah -->
-                            <div class="mb-3">
-                                <label class="form-label">Alamat Rumah</label>
-                                <textarea class="form-control @error('alamat') is-invalid @enderror" name="alamat" rows="3" placeholder="Alamat Lengkap">{{ old('alamat', $p->alamat) }}</textarea>
-                                @error('alamat')
-                                <div class="alert alert-danger">{{ $message }}</div>
-                                @enderror
-                            </div>
-
-                            <!-- Status -->
-                            <div class="mb-3">
-                                <label class="form-label">Status</label>
-                                <select class="form-select @error('status') is-invalid @enderror" name="status">
-                                    <option value="">Pilih</option>
-                                    <option value="1" {{ old('status', $p->status) == '1' ? 'selected' : '' }}>Aktif</option>
-                                    <option value="2" {{ old('status', $p->status) == '2' ? 'selected' : '' }}>Tidak Aktif</option>
-                                    <option value="3" {{ old('status', $p->status) == '3' ? 'selected' : '' }}>Pensiun</option>
-                                </select>
-                                @error('status')
-                                <div class="alert alert-danger">{{ $message }}</div>
-                                @enderror
-                            </div>
-
-                            <!-- Pendidikan Terakhir -->
-                            <div class="mb-3">
-                                <label class="form-label">Pendidikan Terakhir</label>
-                                <input type="text" class="form-control @error('pendidikan_terakhir') is-invalid @enderror" name="pendidikan_terakhir" value="{{ old('pendidikan_terakhir', $p->pendidikan_terakhir) }}" placeholder="Contoh 'S1 Pendidikan Matematika'">
-                                @error('pendidikan_terakhir')
-                                <div class="alert alert-danger">{{ $message }}</div>
-                                @enderror
-                            </div>
-
-                            <!-- Jabatan -->
-                            <div class="mb-3">
-                                <label class="form-label">Jabatan</label>
-                                <input type="text" class="form-control @error('jabatan') is-invalid @enderror" name="jabatan" value="{{ old('jabatan', $p->jabatan) }}" placeholder="Contoh 'Guru Matematika'">
-                                @error('jabatan')
-                                <div class="alert alert-danger">{{ $message }}</div>
-                                @enderror
-                            </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">NIP</label>
+                            <input type="number" class="form-control @error('nip') is-invalid @enderror" name="nip" value="{{ old('nip', $p->nip) }}" placeholder="Masukkan NIP Dengan Benar">
+                            @error('nip')
+                            <div class="alert alert-danger">{{ $message }}</div>
+                            @enderror
                         </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Mata Pelajaran</label>
+                            <input type="text" class="form-control @error('mata_pelajaran') is-invalid @enderror" name="mata_pelajaran" value="{{ old('mata_pelajaran', $p->mata_pelajaran) }}" placeholder="Contoh 'Matematika'">
+                            @error('mata_pelajaran')
+                            <div class="alert alert-danger">{{ $message }}</div>
+                            @enderror
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Tahun Bergabung</label>
+                            <input type="text" class="form-control @error('tahun_bergabung') is-invalid @enderror" name="tahun_bergabung" value="{{ old('tahun_bergabung', $p->tahun_bergabung) }}" placeholder="Contoh '2022'">
+                            @error('tahun_bergabung')
+                            <div class="alert alert-danger">{{ $message }}</div>
+                            @enderror
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Nomor Telpon</label>
+                            <input type="number" class="form-control @error('nomor_telp') is-invalid @enderror" name="nomor_telp" value="{{ old('nomor_telp', $p->nomor_telp) }}" placeholder="Masukkan Nomor Telpon Dengan Benar">
+                            @error('nomor_telp')
+                            <div class="alert alert-danger">{{ $message }}</div>
+                            @enderror
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Status</label>
+                            <select class="form-select @error('status') is-invalid @enderror" name="status">
+                                <option value="">Pilih</option>
+                                <option value="1" {{ old('status', $p->status) == '1' ? 'selected' : '' }}>Aktif</option>
+                                <option value="2" {{ old('status', $p->status) == '2' ? 'selected' : '' }}>Tidak Aktif</option>
+                                <option value="3" {{ old('status', $p->status) == '3' ? 'selected' : '' }}>Pensiun</option>
+                            </select>
+                            @error('status')
+                            <div class="alert alert-danger">{{ $message }}</div>
+                            @enderror
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Pendidikan Terakhir</label>
+                            <input type="text" class="form-control @error('pendidikan_terakhir') is-invalid @enderror" name="pendidikan_terakhir" value="{{ old('pendidikan_terakhir', $p->pendidikan_terakhir) }}" placeholder="Contoh 'S1 Pendidikan Matematika'">
+                            @error('pendidikan_terakhir')
+                            <div class="alert alert-danger">{{ $message }}</div>
+                            @enderror
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Jabatan</label>
+                            <input type="text" class="form-control @error('jabatan') is-invalid @enderror" name="jabatan" value="{{ old('jabatan', $p->jabatan) }}" placeholder="Contoh 'Guru Matematika'">
+                            @error('jabatan')
+                            <div class="alert alert-danger">{{ $message }}</div>
+                            @enderror
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Alamat Rumah</label>
+                        <textarea class="form-control @error('alamat') is-invalid @enderror" name="alamat" rows="3" placeholder="Alamat Lengkap">{{ old('alamat', $p->alamat) }}</textarea>
+                        @error('alamat')
+                        <div class="alert alert-danger">{{ $message }}</div>
+                        @enderror
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Foto Pengajar</label>
+                        <input type="file" class="form-control @error('foto') is-invalid @enderror" name="foto">
+                        <input type="hidden" name="foto_lama" value="{{ $p->foto }}">
+                        @if($p->foto)
+                            <small class="d-block mt-1">Foto sekarang: <img src="{{ asset('storage/' . $p->foto) }}" width="80"></small>
+                        @endif
+                        @error('foto')
+                        <div class="alert alert-danger">{{ $message }}</div>
+                        @enderror
                     </div>
 
                     <div class="modal-footer">
@@ -418,6 +384,7 @@
         </div>
     </div>
 </div>
+
 @endforeach
 
 @foreach($pengajar as $p)

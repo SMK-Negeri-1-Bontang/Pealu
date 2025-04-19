@@ -1,30 +1,44 @@
 @extends('welcome')
 
 @section('content')
+@php
+    use Illuminate\Support\Str;
+@endphp
+
+@if(session('success'))
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        {{ session('success') }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+@endif
+
+
 <section style="background-color: #f8f9fa;">
     <div class="container py-5">
-        @if(session('success'))
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                {{ session('success') }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-        @endif
-
+        <div class="d-flex justify-content-center mb-5">
+            <h1>Profile Anda</h1>
+        </div>
         <div class="row">
             <div class="col-lg-4">
                 <div class="card mb-4 shadow-sm">
                     <div class="card-body text-center">
-                        @if(Auth::user()->image)
-                            <a href="{{ url('/profile') }}">
+                    @if(Auth::user()->image)
+                        <a href="{{ url('/profile') }}">
+                            @if(Str::startsWith(Auth::user()->image, ['http://', 'https://']))
+                                <img src="{{ Auth::user()->image }}" alt="avatar"
+                                    class="rounded-circle" width="150" height="150" style="object-fit: cover;">
+                            @else
                                 <img src="{{ asset('storage/' . Auth::user()->image) }}" alt="avatar"
                                     class="rounded-circle" width="150" height="150" style="object-fit: cover;">
-                            </a>
-                        @else
-                            <a href="{{ url('/profile') }}">
-                                <img src="https://img.freepik.com/free-vector/blue-circle-with-white-user_78370-4707.jpg?semt=ais_hybrid&w=740" alt="avatar"
-                                    class="rounded-circle" width="150" height="150" style="object-fit: cover;">
-                            </a>
-                        @endif
+                            @endif
+                        </a>
+                    @else
+                        <a href="{{ url('/profile') }}">
+                            <img src="https://img.freepik.com/free-vector/blue-circle-with-white-user_78370-4707.jpg?semt=ais_hybrid&w=740" alt="avatar"
+                                class="rounded-circle" width="150" height="150" style="object-fit: cover;">
+                        </a>
+                    @endif
+
                         <h5 class="my-2 mb-3">{{ $user->name }}</h5>
                         <p class="text-muted mb-1">{{ $user->email }}</p>
                         <p class="text-muted mb-1">{{ $user->role }}</p>

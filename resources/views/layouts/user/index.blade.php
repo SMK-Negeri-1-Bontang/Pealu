@@ -72,13 +72,18 @@
                                 @forelse ($users as $user)
                                 <tr>
                                     <td>{{ $loop->iteration + ($users instanceof \Illuminate\Pagination\LengthAwarePaginator ? $users->firstItem() - 1 : 0) }}</td>
-                                        <td class="text-center">
+                                    <td class="text-center">
                                         @if($user->image)
-                                            <img src="{{ asset('storage/' . $user->image) }}" width="70">
+                                            @if(Str::startsWith($user->image, ['http://', 'https://']))
+                                                <img src="{{ $user->image }}" width="70">
+                                            @else
+                                                <img src="{{ asset('storage/' . $user->image) }}" width="70">
+                                            @endif
                                         @else
                                             <span class="text-muted">Tidak ada</span>
                                         @endif
                                     </td>
+
                                     <td>{{ $user->name }}</td>
                                     <td>{{ $user->nama_lengkap }}</td>
                                     <td>{{ $user->email }}</td>
@@ -153,5 +158,8 @@
     </div>
 </div>
 @endforeach
+@php
+    use Illuminate\Support\Str;
+@endphp
 
 @endsection

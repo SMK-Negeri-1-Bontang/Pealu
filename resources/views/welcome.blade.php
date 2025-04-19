@@ -173,17 +173,28 @@
                     </ul>
                     @auth
                         <div class="">
-                            @if(Auth::user()->image)
-                                <a href="{{ url('/profile') }}">
-                                    <img src="{{ asset('storage/' . Auth::user()->image) }}" alt="avatar"
-                                        class="rounded-circle" width="48" height="48" style="object-fit: cover;">
-                                </a>
-                            @else
-                                <a href="{{ url('/profile') }}">
+                        @auth
+                            @php
+                                $userImage = Auth::user()->image;
+                            @endphp
+
+                            <a href="{{ url('/profile') }}">
+                                @if($userImage)
+                                    @if(\Illuminate\Support\Str::startsWith($userImage, ['http://', 'https://']))
+                                        <img src="{{ $userImage }}" alt="avatar"
+                                            class="rounded-circle" width="48" height="48" style="object-fit: cover;">
+                                    @else
+                                        <img src="{{ asset('storage/' . $userImage) }}" alt="avatar"
+                                            class="rounded-circle" width="48" height="48" style="object-fit: cover;">
+                                    @endif
+                                @else
                                     <img src="https://img.freepik.com/free-vector/blue-circle-with-white-user_78370-4707.jpg?semt=ais_hybrid&w=740" alt="avatar"
                                         class="rounded-circle" width="48" height="48" style="object-fit: cover;">
-                                </a>
-                            @endif
+                                @endif
+                            </a>
+                        @endauth
+
+
                         </div>
                     @endauth
                 </div>
