@@ -8,6 +8,8 @@ use App\Http\Controllers\LowonganController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProfileController;
+use Illuminate\Support\Facades\Auth;
+
 
 // Halaman utama
 Route::get('/', function () {
@@ -83,7 +85,7 @@ Route::get('/Pengajar', [\App\Http\Controllers\PengajarController::class, 'index
 
 // Route khusus untuk invoice
 Route::get('/pengajar/invoice/{id}', [PengajarController::class, 'invoice'])->name('pengajar.invoice');
-// space aziz
+// space azis
 
 Route::get('/lowongan', [LowonganController::class, 'index'])->name('lowongan.index');
 Route::get('/lowongan/create', [LowonganController::class, 'create'])->name('lowongan.create');
