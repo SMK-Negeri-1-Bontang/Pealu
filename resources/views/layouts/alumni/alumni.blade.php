@@ -21,6 +21,7 @@
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
         @endif
+        
         <div class="card">
             <div class="card-body">
                 <div class="">
@@ -65,7 +66,6 @@
                     </div>
                 </div>
 
-
                 <div class="pt-10">
                     <table class="table table-hover">
                         <thead>
@@ -74,13 +74,12 @@
                                 <th scope="col">Foto</th>
                                 <th scope="col">NIS</th>
                                 <th scope="col">Nama</th>
-                                <th scope="col">jurusan</th>
+                                <th scope="col">Jurusan</th>
                                 <th scope="col">Tahun Lulus</th>
                                 <th scope="col">Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
-
                             @forelse($alumni as $no => $a)
                             <tr>
                                 <th scope="row">{{ ++$no }}</th>
@@ -92,16 +91,27 @@
                                     @endif
                                 </td>
                                 <td>{{ $a->nis }}</td>
-                                <td>{{ $a->nama_lengk}}</td>
-                                <td>{{ $a->jur_sekolah}}</td>
-                                <td>{{ $a->tahun_lulus}}</td>
+                                <td>{{ $a->nama_lengk }}</td>
+                                <td>{{ $a->jur_sekolah }}</td>
+                                <td>{{ $a->tahun_lulus }}</td>
                                 <td class="text-center align-middle">
-                                    <a href="#" data-bs-toggle="modal" data-bs-target="#edit{{$a->id}}" class="text-primary mx-2" style="text-decoration: none;">
-                                        <i class="fa-solid fa-pen-to-square fa-lg"></i>
-                                    </a>
-                                    <a href="#" data-bs-toggle="modal" data-bs-target="#delete{{$a->id}}" class="text-danger mx-2" style="text-decoration: none;">
-                                        <i class="fa-solid fa-xmark fa-lg"></i>
-                                    </a>
+                                    @auth
+                                        @if (Auth::user()->isAdmin())
+                                            <a href="#" data-bs-toggle="modal" data-bs-target="#edit{{$a->id}}" class="text-primary mx-2" style="text-decoration: none;">
+                                                <i class="fa-solid fa-pen-to-square fa-lg"></i>
+                                            </a>
+                                            <a href="#" data-bs-toggle="modal" data-bs-target="#delete{{$a->id}}" class="text-danger mx-2" style="text-decoration: none;">
+                                                <i class="fa-solid fa-xmark fa-lg"></i>
+                                            </a>
+                                        @elseif (Auth::user()->isPetugas())
+                                            <a href="#" data-bs-toggle="modal" data-bs-target="#edit{{$a->id}}" class="text-primary mx-2" style="text-decoration: none;">
+                                                <i class="fa-solid fa-pen-to-square fa-lg"></i>
+                                            </a>
+                                            <a href="#" data-bs-toggle="modal" data-bs-target="#delete{{$a->id}}" class="text-danger mx-2" style="text-decoration: none;">
+                                                <i class="fa-solid fa-xmark fa-lg"></i>
+                                            </a>
+                                        @endif
+                                    @endauth
                                     <a href="#" data-bs-toggle="modal" data-bs-target="#lihat{{$a->id}}" class="text-info mx-2" style="text-decoration: none;">
                                         <i class="fa-solid fa-eye fa-lg"></i>
                                     </a>
@@ -109,19 +119,22 @@
                                         <i class="fa-solid fa-file-arrow-down fa-lg"></i>
                                     </a>
                                 </td>
-                                @empty
-                                <div class="alert alert-primary d-flex align-items-center" role="alert">
-                                    <svg xmlns="http://www.w3.org/2000/svg" 
-                                        width="24" height="24" 
-                                        class="bi bi-exclamation-triangle-fill flex-shrink-0 me-2" 
-                                        viewBox="0 0 16 16" role="img" aria-label="Warning:">
-                                        <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
-                                    </svg>
-                                    <div>
-                                        Data alumni Belum Ada
+                            </tr>
+                            @empty
+                            <tr>
+                                <td colspan="7">
+                                    <div class="alert alert-primary d-flex align-items-center" role="alert">
+                                        <svg xmlns="http://www.w3.org/2000/svg" 
+                                            width="24" height="24" 
+                                            class="bi bi-exclamation-triangle-fill flex-shrink-0 me-2" 
+                                            viewBox="0 0 16 16" role="img" aria-label="Warning:">
+                                            <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
+                                        </svg>
+                                        <div>
+                                            Data alumni Belum Ada
+                                        </div>
                                     </div>
-                                </div>
-
+                                </td>
                             </tr>
                             @endforelse
                         </tbody>
@@ -166,7 +179,6 @@
                             </nav>
                         </div>
                     </div>
-
                 </div>
             </div>
         </div>
@@ -254,7 +266,7 @@
                         <select class="form-select @error('status')
       is-invalid
       @enderror" name="status" aria-label="Pilih Status">
-                            <option selected>Pilih</option>
+                            <option disabled selected>Pilih</option>
                             <option value="1">Bekerja</option>
                             <option value="2">Kuliah</option>
                             <option value="3">Tidak Ada Kabar</option>
@@ -294,7 +306,7 @@
                         <div class="mb-3">
                             <label class="form-label">Jalur</label>
                             <select class="form-select @error('jalur') is-invalid @enderror" name="jalur">
-                                <option selected>Pilih</option>
+                                <option disabled selected>Pilih</option>
                                 <option value="1">PTN</option>
                                 <option value="2">PTS</option>
                                 <option value="3">DINAS</option>
@@ -475,7 +487,7 @@
                                 <select class="form-select @error('status')
       is-invalid
       @enderror" name="status" aria-label="Pilih Status">
-                                    <option selected>Pilih</option>
+                                    <option disabled selected>Pilih</option>
                                     <option value="1" {{ old('status', $a->status) == '1' ? 'selected' : '' }}>Bekerja</option>
                                     <option value="2" {{ old('status', $a->status) == '2' ? 'selected' : '' }}>Kuliah</option>
                                     <option value="3" {{ old('status', $a->status) == '3' ? 'selected' : '' }}>Tidak Ada Kabar</option>
@@ -516,7 +528,7 @@
                         <div class="mb-3">
                             <label class="form-label">Jalur</label>
                             <select class="form-select @error('jalur') is-invalid @enderror" name="jalur">
-                                <option value="">Pilih</option>
+                                <option value="" disabled selected>Pilih</option>
                                 <option value="1" {{ old('jalur', $a->jalur) == '1' ? 'selected' : '' }}>PTN</option>
                                 <option value="2" {{ old('jalur', $a->jalur) == '2' ? 'selected' : '' }}>PTS</option>
                                 <option value="3" {{ old('jalur', $a->jalur) == '3' ? 'selected' : '' }}>DINAS</option>

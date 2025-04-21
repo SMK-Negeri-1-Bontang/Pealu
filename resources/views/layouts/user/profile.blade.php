@@ -88,8 +88,8 @@
     <!-- Modal Edit -->
     <div class="modal fade" id="editProfileModal" tabindex="-1" aria-labelledby="editProfileModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header bg-primary text-white">
+            <div class="modal-content" style="background:rgb(240, 240, 240);">
+                <div class="modal-header">
                     <h5 class="modal-title" id="editProfileModalLabel">Edit Profile</h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
@@ -97,7 +97,7 @@
                     @csrf
                     @method('PUT')
                     <div class="modal-body">
-                    <div class="row">
+                        <div class="row">
                             <div class="col-md-6 mb-3">
                                 <label for="name" class="form-label">Username</label>
                                 <input type="text" class="form-control" id="name" name="name" value="{{ old('name', $user->name) }}" required>
@@ -124,9 +124,13 @@
                             <label for="role" class="form-label">Role</label>
                                 <select class="form-select" name="role">
                                     <option value="" disabled>Pilih Level</option>
-                                    @if (Auth::check() && Auth::user()->isAdmin())
+                                    @if (Auth::check())
+                                        @if (Auth::user()->isAdmin())
                                         <option value="admin" {{ old('role', $user->role) == 'admin' ? 'selected' : '' }}>Admin</option>
                                         <option value="petugas" {{ old('role', $user->role) == 'petugas' ? 'selected' : '' }}>Petugas</option>
+                                        @elseif (Auth::user()->isPetugas())
+                                        <option value="petugas" {{ old('role', $user->role) == 'petugas' ? 'selected' : '' }}>Petugas</option>
+                                        @endif
                                     @endif
                                     <option value="user" {{ old('role', $user->role) == 'user' ? 'selected' : '' }}>User</option>
                                 </select>
@@ -146,7 +150,9 @@
                                 <label class="form-label">Gambar</label>
                                 <input type="file" class="form-control @error('image') is-invalid @enderror" name="image">
                                 @if($user->image)
-                                    <small class="d-block mt-1">Gambar sekarang: <img src="{{ asset('storage/' . $user->image) }}" width="80"></small>
+                                    <small class="d-block mt-1">Gambar sekarang:
+                                        <img src="{{ Str::startsWith($user->image, 'http') ? $user->image : asset('storage/' . $user->image) }}" width="80">
+                                    </small>
                                 @endif
                                 @error('image')
                                 <div class="alert alert-danger">{{ $message }}</div>
@@ -157,8 +163,8 @@
 
 
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-primary">Save Changes</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                        <button type="submit" class="btn btn-success">Simpan</button>
                     </div>
                 </form>
             </div>

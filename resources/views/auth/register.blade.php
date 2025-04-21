@@ -89,9 +89,13 @@
                 <select id="role" name="role" class="form-select @error('role') is-invalid @enderror"
                     style="background-color: #e9ecef; border: none; height: 40px;" required>
                     <option value="" disabled selected>Pilih Level</option>
-                    @if (Auth::check() && Auth::user()->isAdmin())
+                    @if (Auth::check())
+                        @if (Auth::user()->isAdmin())
                         <option value="admin">Admin</option>
                         <option value="petugas">Petugas</option>
+                        @elseif (Auth::user()->isPetugas())
+                        <option value="petugas">Petugas</option>
+                        @endif
                     @endif
                     <option value="user">User</option>
                 </select>

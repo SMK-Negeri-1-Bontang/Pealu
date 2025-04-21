@@ -74,7 +74,16 @@ class UserController extends Controller
                 $role->save();
             }
 
-            return redirect()->route('user.index')->with('success', 'Data Berhasil Disimpan');
+                // Logika redirect berdasarkan status autentikasi
+            if (Auth::check()) {
+                // Jika sudah login (admin/petugas menambah user)
+                return redirect()->route('user.index')->with('success', 'Data Berhasil Disimpan');
+            } else {
+                // Jika belum login (proses register)
+                Auth::login($user); // Auto-login setelah register (opsional)
+                return redirect()->route('login')->with('success', 'Registrasi berhasil! Silakan login');
+            }
+
         } catch (Exception $e) {
             return redirect()->back()->with('error', 'Data Gagal Disimpan');
         }

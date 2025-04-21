@@ -222,7 +222,7 @@
                         <div class="col-md-6 mb-3">
                                 <label class="form-label">Status</label>
                                 <select class="form-select @error('status') is-invalid @enderror" name="status">
-                                    <option selected>Pilih</option>
+                                    <option disabled selected>Pilih</option>
                                     <option value="1">Aktif</option>
                                     <option value="2">Tidak Aktif</option>
                                     <option value="3">Pensiun</option>
@@ -330,7 +330,7 @@
                         <div class="col-md-6 mb-3">
                             <label class="form-label">Status</label>
                             <select class="form-select @error('status') is-invalid @enderror" name="status">
-                                <option value="">Pilih</option>
+                                <option value="" disabled selected>Pilih</option>
                                 <option value="1" {{ old('status', $p->status) == '1' ? 'selected' : '' }}>Aktif</option>
                                 <option value="2" {{ old('status', $p->status) == '2' ? 'selected' : '' }}>Tidak Aktif</option>
                                 <option value="3" {{ old('status', $p->status) == '3' ? 'selected' : '' }}>Pensiun</option>
