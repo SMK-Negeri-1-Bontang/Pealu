@@ -1,3 +1,8 @@
+@php 
+$img = "https://us-tuna-sounds-images.voicemod.net/13e358e4-8406-4d0a-a724-b89c38e64a0a-1701486070717.jpg";
+$memeImg = "https://us-tuna-sounds-images.voicemod.net/13e358e4-8406-4d0a-a724-b89c38e64a0a-1701486070717.jpg";
+@endphp
+
 @extends('welcome')
 
 @section('content')
@@ -14,7 +19,7 @@
         <div id="carouselExampleControlsNoTouching" class="carousel slide" data-bs-touch="false">
             <div class="carousel-inner">
                 <div class="carousel-item active">
-                    <img src="https://images.bisnis.com/posts/2023/10/31/1709730/kilang_lng_badak_1696166689_1698744414.jpg" class="d-block w-100" alt="...">
+                    <img src="{{$memeImg}}" class="d-block w-100" alt="...">
                 </div>
                 <div class="carousel-item">
                     <img src="https://images.bisnis.com/posts/2023/10/31/1709730/kilang_lng_badak_1696166689_1698744414.jpg" class="d-block w-100" alt="...">
@@ -43,7 +48,7 @@
         <div class="d-flex justify-content-center gap-5">
             <!-- Card 1 -->
             <div class="card" style="width: 18rem;">
-                <img src="https://images.bisnis.com/posts/2023/10/31/1709730/kilang_lng_badak_1696166689_1698744414.jpg" class="card-img-top" alt="Fissure in Sandstone">
+                <img src="{{$memeImg}}" class="card-img-top" alt="Fissure in Sandstone">
                 <div class="card-body text-center">
                     <h5 class="card-title">Card title</h5>
                     <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
@@ -54,7 +59,7 @@
             </div>
             <!-- Card 2 -->
             <div class="card" style="width: 18rem;">
-                <img src="https://images.bisnis.com/posts/2023/10/31/1709730/kilang_lng_badak_1696166689_1698744414.jpg" class="card-img-top" alt="Fissure in Sandstone">
+                <img src="{{$memeImg}}" class="card-img-top" alt="Fissure in Sandstone">
                 <div class="card-body text-center">
                     <h5 class="card-title">Card title</h5>
                     <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
@@ -65,7 +70,7 @@
             </div>
             <!-- Card 3 -->
             <div class="card" style="width: 18rem;">
-                <img src="https://images.bisnis.com/posts/2023/10/31/1709730/kilang_lng_badak_1696166689_1698744414.jpg" class="card-img-top" alt="Fissure in Sandstone">
+                <img src="{{$memeImg}}" class="card-img-top" alt="Fissure in Sandstone">
                 <div class="card-body text-center">
                     <h5 class="card-title">Card title</h5>
                     <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
