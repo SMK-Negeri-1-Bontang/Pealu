@@ -100,19 +100,18 @@
             <a href="{{ url('/home') }}" class="menu-item"><i class="fas fa-sign-in-alt"></i> Status Login</a>
             <a href="{{ url('/pengajar-tampilan') }}" class="menu-item"><i class="fa-solid fa-person-chalkboard"></i>Data Pengajar</a>
             <a href="{{ url('/berita-tampilan') }}" class="menu-item"><i class="fas fa-newspaper"></i> Berita</a>
-            <a href="#" class="menu-item"><i class="fas fa-briefcase"></i> Lowongan</a>
+            <a href="{{ url('/lowongan') }}" class="menu-item"><i class="fas fa-briefcase"></i> Lowongan</a>
             @auth
-
                 @if (Auth::user()->isAdmin())
                 <a href="{{ route('user.index') }}" class="menu-item"><i class="fas fa-user"></i> Table User</a>
                 <a href="{{ route('pengajar.index') }}" class="menu-item"><i class="fas fa-plus"></i>Tambah Pengajar</a>
                 <a href="{{ route('tmbberita.index') }}" class="menu-item"><i class="fas fa-plus"></i> Tambah Berita</a>
-                <a href="{{ route('lowongan.index') }}" class="menu-item"><i class="fas fa-plus"></i> Tambah Lowongan</a>
+                <a href="{{ route('lowongan.create') }}" class="menu-item"><i class="fas fa-plus"></i> Tambah Lowongan</a>
                 @elseif (Auth::user()->isPetugas())
                 <a href="{{ route('user.index') }}" class="menu-item"><i class="fas fa-user"></i> Table User</a>
                 <a href="{{ route('pengajar.index') }}" class="menu-item"><i class="fas fa-plus"></i>Tambah Pengajar</a>
                 <a href="{{ route('tmbberita.index') }}" class="menu-item"><i class="fas fa-plus"></i> Tambah Berita</a>
-                <a href="{{ route('lowongan.index') }}" class="menu-item"><i class="fas fa-plus"></i> Tambah Lowongan</a>
+                <a href="{{ route('lowongan.create') }}" class="menu-item"><i class="fas fa-plus"></i> Tambah Lowongan</a>
                 @endif
             @endauth
         </div>
@@ -245,7 +244,6 @@
             });
         });
     </script>
-
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>

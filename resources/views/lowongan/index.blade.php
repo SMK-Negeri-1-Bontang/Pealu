@@ -2,6 +2,7 @@
 
 @section('content')
 <div class="container-fluid px-0">
+
     <!-- Hero Section -->
     <div class="bg-primary py-4">
         <div class="container">
@@ -24,7 +25,7 @@
             <form action="{{ route('lowongan.index') }}" method="GET" class="bg-white p-3 rounded shadow-sm">
                 <div class="row g-2">
                     <div class="col-md-5">
-                        <input type="text" name="nama_pekerjaan" class="form-control" 
+                        <input type="text" name="nama_pekerjaan" class="form-control"
                             placeholder="Masukkan kata kunci" value="{{ request('nama_pekerjaan') }}">
                     </div>
                     <div class="col-md-5">
@@ -115,7 +116,7 @@
                 @endif
 
                 <div class="mb-3">
-                    <a href="#" data-bs-toggle="modal" data-bs-target="#tambah" class="btn btn-success">
+                    <a href="{{ route('lowongan.create') }}" class="btn btn-success">
                         <i class="fa-solid fa-plus"></i> Tambah Lowongan
                     </a>
                 </div>
@@ -142,32 +143,32 @@
                                         <span class="badge bg-danger bg-opacity-10 text-danger">Segera</span>
                                     </div>
                                 </div>
-                                
+
                                 <div class="d-flex flex-wrap gap-2 mb-2">
                                     <span class="badge bg-light text-dark">
                                         <i class="fas fa-map-marker-alt me-1"></i>{{ $l->location }}
                                     </span>
                                     <span class="badge bg-light text-dark">
-                                        <i class="fas fa-money-bill-wave me-1"></i>Rp{{ number_format(rand(3000000, 10000000), 0, ',', '.') }}
+                                        <i class="fas fa-money-bill-wave me-1"></i>Rp{{ number_format($l->salary_min, 0, ',', '.') }}-{{ number_format($l->salary_max, 0, ',', '.') }}
                                     </span>
                                     <span class="badge bg-light text-dark">
                                         <i class="fas fa-briefcase me-1"></i>{{ $l->employment_type }}
                                     </span>
                                 </div>
-                                
+
                                 <p class="card-text">{{ Str::limit($l->description, 200) }}</p>
-                                
+
                                 <div class="d-flex justify-content-between align-items-center">
                                     <small class="text-muted">
                                         <i class="far fa-clock me-1"></i>Diposting {{ $l->created_at->diffForHumans() }}
                                     </small>
                                     <div>
-                                        <a href="#" data-bs-toggle="modal" data-bs-target="#edit{{$l->id}}" 
+                                        <a href="{{ route('lowongan.edit', $l->id) }}"
                                             class="btn btn-sm btn-outline-primary me-2">
                                             <i class="fas fa-edit"></i>
                                         </a>
-                                        <a href="#" data-bs-toggle="modal" data-bs-target="#delete{{$l->id}}" 
-                                            class="btn btn-sm btn-outline-danger me-2">
+
+                                        <a href="#" data-bs-toggle="modal" data-bs-target="#delete{{$l->id}}" class="btn btn-sm btn-outline-danger me-2" style="text-decoration: none;">
                                             <i class="fas fa-trash"></i>
                                         </a>
                                         <a href="#" class="btn btn-sm btn-danger">Lamar Sekarang</a>
@@ -197,6 +198,41 @@
 </div>
 
 <!-- Modal sections (keep your existing modal code) -->
+@foreach($lowongan as $l)
+<!-- Modal Delete -->
+<div class="modal fade" id="delete{{ $l->id }}" tabindex="-1" aria-labelledby="deleteModalLabel{{ $l->id }}" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow-lg">
+            <div class="modal-header bg-danger text-white">
+                <h5 class="modal-title fw-bold" id="deleteModalLabel{{ $l->id }}">
+                    <i class="fas fa-exclamation-triangle"></i> Konfirmasi Penghapusan
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center">
+                <i class="fas fa-trash-alt text-danger fa-3x mb-3"></i>
+                <p class="mb-0">Apakah Anda yakin ingin menghapus lowongan</p>
+                <h5 class="fw-bold text-uppercase mt-2">{{ $l->position }}</h5>
+                <p class="text-muted">Dari {{ $l->company_name }}</p>
+                <p class="text-muted">Tindakan ini tidak dapat dibatalkan!</p>
+            </div>
+            <div class="modal-footer border-0 d-flex justify-content-center">
+                <button type="button" class="btn btn-secondary px-4" data-bs-dismiss="modal">
+                    <i class="fas fa-times"></i> Batal
+                </button>
+                <form action="{{ route('lowongan.destroy', $l->id) }}" method="POST">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="btn btn-danger px-4">
+                        <i class="fas fa-trash"></i> Hapus
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+@endforeach
+
 @push('modal')
 <!-- Your existing modal code here -->
 @endpush
@@ -208,15 +244,18 @@
     .hover-effect:hover {
         transform: translateY(-3px);
         transition: all 0.3s ease;
-        box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
     }
+
     .badge {
         font-weight: normal;
         padding: 0.35em 0.65em;
     }
+
     .bg-primary {
         background-color: #2557a7 !important;
     }
+
     .btn-danger {
         background-color: #dc3545;
         border-color: #dc3545;

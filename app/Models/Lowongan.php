@@ -10,4 +10,17 @@ class Lowongan extends Model
     use HasFactory;
 
     protected $table = 'lowongans';
+
+    protected $fillable = [
+        'company_name',
+        'position',
+        'location',
+        'employment_type',
+        'education',
+        'experience',
+        'category',
+        'salary_min',
+        'salary_max',
+    ];
+    
 }
