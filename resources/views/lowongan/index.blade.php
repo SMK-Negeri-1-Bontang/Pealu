@@ -190,8 +190,9 @@
 
                 <!-- Pagination -->
                 <div class="d-flex justify-content-center mt-4">
-                    {{ $lowongan->links() }}
+                    {{ $lowongan->links('pagination::bootstrap-5') }}
                 </div>
+
             </div>
         </div>
     </div>

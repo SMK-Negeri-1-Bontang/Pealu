@@ -91,4 +91,6 @@ class LowonganController extends Controller
         return redirect()->route('lowongan.index')->with('success', 'Data Lowongan Kerja Berhasil Dihapus');
     }
 
+    
+
 }

@@ -1,24 +1,26 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Portal Alumni</title>
-     <!-- Favicon -->
-     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎓</text></svg>">
-     <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎓</text></svg>">
+    <!-- Favicon -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎓</text></svg>">
+    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎓</text></svg>">
 
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    
+
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    
+
     <style>
         body {
             transition: all 0.3s ease;
             background: #D9D9D9;
         }
+
         /* Sidebar */
         .sidebar {
             width: 350px;
@@ -32,15 +34,18 @@
             transition: all 0.3s ease;
             overflow-y: auto;
             max-height: 100vh;
-        }  
+        }
+
         .sidebar.show {
             left: 0;
         }
+
         .sidebar img {
             width: 100px;
             display: block;
             margin: 0 auto 15px;
         }
+
         .sidebar a {
             display: flex;
             align-items: center;
@@ -50,23 +55,29 @@
             text-decoration: none;
             border-radius: 5px;
         }
+
         .sidebar a i {
             width: 20px;
             text-align: center;
         }
-        .sidebar a:hover, .sidebar a.active {
+
+        .sidebar a:hover,
+        .sidebar a.active {
             background: #979797;
             color: white;
         }
+
         .content {
             flex-grow: 1;
             padding: 25px;
             margin-left: 0;
             transition: margin-left 0.3s ease;
         }
+
         .content.shift {
             margin-left: 350px;
         }
+
         .top-bar {
             display: flex;
             justify-content: space-between;
@@ -77,6 +88,7 @@
             box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
             transition: margin-left 0.3s ease;
         }
+
         .toggle-btn {
             background: none;
             border: none;
@@ -84,11 +96,13 @@
             cursor: pointer;
             color: #212529;
         }
+
         .toggle-btn:hover {
             color: #979797;
         }
     </style>
 </head>
+
 <body>
     <nav>
         <div class="sidebar" id="sidebarMenu">
@@ -102,17 +116,17 @@
             <a href="{{ url('/berita-tampilan') }}" class="menu-item"><i class="fas fa-newspaper"></i> Berita</a>
             <a href="{{ url('/lowongan') }}" class="menu-item"><i class="fas fa-briefcase"></i> Lowongan</a>
             @auth
-                @if (Auth::user()->isAdmin())
-                <a href="{{ route('user.index') }}" class="menu-item"><i class="fas fa-user"></i> Table User</a>
-                <a href="{{ route('pengajar.index') }}" class="menu-item"><i class="fas fa-plus"></i>Tambah Pengajar</a>
-                <a href="{{ route('tmbberita.index') }}" class="menu-item"><i class="fas fa-plus"></i> Tambah Berita</a>
-                <a href="{{ route('lowongan.create') }}" class="menu-item"><i class="fas fa-plus"></i> Tambah Lowongan</a>
-                @elseif (Auth::user()->isPetugas())
-                <a href="{{ route('user.index') }}" class="menu-item"><i class="fas fa-user"></i> Table User</a>
-                <a href="{{ route('pengajar.index') }}" class="menu-item"><i class="fas fa-plus"></i>Tambah Pengajar</a>
-                <a href="{{ route('tmbberita.index') }}" class="menu-item"><i class="fas fa-plus"></i> Tambah Berita</a>
-                <a href="{{ route('lowongan.create') }}" class="menu-item"><i class="fas fa-plus"></i> Tambah Lowongan</a>
-                @endif
+            @if (Auth::user()->isAdmin())
+            <a href="{{ route('user.index') }}" class="menu-item"><i class="fas fa-user"></i> Table User</a>
+            <a href="{{ route('pengajar.index') }}" class="menu-item"><i class="fas fa-plus"></i>Tambah Pengajar</a>
+            <a href="{{ route('tmbberita.index') }}" class="menu-item"><i class="fas fa-plus"></i> Tambah Berita</a>
+            <a href="{{ route('lowongan.create') }}" class="menu-item"><i class="fas fa-plus"></i> Tambah Lowongan</a>
+            @elseif (Auth::user()->isPetugas())
+            <a href="{{ route('user.index') }}" class="menu-item"><i class="fas fa-user"></i> Table User</a>
+            <a href="{{ route('pengajar.index') }}" class="menu-item"><i class="fas fa-plus"></i>Tambah Pengajar</a>
+            <a href="{{ route('tmbberita.index') }}" class="menu-item"><i class="fas fa-plus"></i> Tambah Berita</a>
+            <a href="{{ route('lowongan.create') }}" class="menu-item"><i class="fas fa-plus"></i> Tambah Lowongan</a>
+            @endif
             @endauth
         </div>
     </nav>
@@ -120,6 +134,7 @@
     <!-- Main Content -->
     <header class="">
         <div class="content" id="mainContent">
+            @if (!isset($showUserUI) || $showUserUI)
             <div class="top-bar">
                 <div class="d-flex align-items-center">
                     <!-- Tombol untuk menampilkan sidebar -->
@@ -128,86 +143,87 @@
                     </button>
                     <h4 class="ms-3 mt-1">
                         @auth
-                            @if (Auth::user()->isAdmin())
-                                Role Admin
-                            @elseif (Auth::user()->isUser())
-                                Role User
-                            @elseif (Auth::user()->isPetugas())
-                                Role Petugas
-                            @else
-                                Role Tidak Ada
-                            @endif
+                        @if (Auth::user()->isAdmin())
+                        Role Admin
+                        @elseif (Auth::user()->isUser())
+                        Role User
+                        @elseif (Auth::user()->isPetugas())
+                        Role Petugas
                         @else
-                            Belum Login
+                        Role Tidak Ada
+                        @endif
+                        @else
+                        Belum Login
                         @endauth
                     </h4>
                 </div>
                 <div class="d-flex justify-content-end align-items-center gap-3">
                     <ul class="d-flex justify-content-end list-unstyled gap-3 mt-2">
                         @guest
-                            @if (Route::has('login'))
-                                <li class="nav-item">
-                                    <a class="text-decoration-none text-dark" href="{{ route('login') }}">{{ __('Login') }}</a>
-                                </li>
-                            @endif
+                        @if (Route::has('login'))
+                        <li class="nav-item">
+                            <a class="text-decoration-none text-dark" href="{{ route('login') }}">{{ __('Login') }}</a>
+                        </li>
+                        @endif
 
-                            @if (Route::has('register'))
-                                <li class="nav-item">
-                                    <a class="text-decoration-none text-dark" href="{{ route('register') }}">{{ __('Register') }}</a>
-                                </li>
-                            @endif  
+                        @if (Route::has('register'))
+                        <li class="nav-item">
+                            <a class="text-decoration-none text-dark" href="{{ route('register') }}">{{ __('Register') }}</a>
+                        </li>
+                        @endif
                         @else
-                            <li class="nav-item dropdown">
-                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                    Halo {{ Auth::user()->name }}
+                        <li class="nav-item dropdown">
+                            <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                Halo {{ Auth::user()->name }}
+                            </a>
+
+                            <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" href="{{ url('/profile') }}">
+                                    {{ __('Profil') }}
+                                </a>
+                                <a class="dropdown-item" href="{{ route('logout') }}"
+                                    onclick="event.preventDefault();
+                                                        document.getElementById('logout-form').submit();">
+                                    {{ __('Logout') }}
                                 </a>
 
-                                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="{{ url('/profile') }}">
-                                        {{ __('Profil') }}
-                                    </a>
-                                    <a class="dropdown-item" href="{{ route('logout') }}"
-                                        onclick="event.preventDefault();
-                                                        document.getElementById('logout-form').submit();">
-                                        {{ __('Logout') }}
-                                    </a>
+                                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                    @csrf
+                                </form>
+                            </div>
+                        </li>
 
-                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                                        @csrf
-                                    </form>
-                                </div>
-                            </li>
-                            
                         @endguest
                     </ul>
                     @auth
-                        <div class="">
+                    <div class="">
                         @auth
-                            @php
-                                $userImage = Auth::user()->image;
-                            @endphp
+                        @php
+                        $userImage = Auth::user()->image;
+                        @endphp
 
-                            <a href="{{ url('/profile') }}">
-                                @if($userImage)
-                                    @if(\Illuminate\Support\Str::startsWith($userImage, ['http://', 'https://']))
-                                        <img src="{{ $userImage }}" alt="avatar"
-                                            class="rounded-circle" width="48" height="48" style="object-fit: cover;">
-                                    @else
-                                        <img src="{{ asset('storage/' . $userImage) }}" alt="avatar"
-                                            class="rounded-circle" width="48" height="48" style="object-fit: cover;">
-                                    @endif
-                                @else
-                                    <img src="https://img.freepik.com/free-vector/blue-circle-with-white-user_78370-4707.jpg?semt=ais_hybrid&w=740" alt="avatar"
-                                        class="rounded-circle" width="48" height="48" style="object-fit: cover;">
-                                @endif
-                            </a>
+                        <a href="{{ url('/profile') }}">
+                            @if($userImage)
+                            @if(\Illuminate\Support\Str::startsWith($userImage, ['http://', 'https://']))
+                            <img src="{{ $userImage }}" alt="avatar"
+                                class="rounded-circle" width="48" height="48" style="object-fit: cover;">
+                            @else
+                            <img src="{{ asset('storage/' . $userImage) }}" alt="avatar"
+                                class="rounded-circle" width="48" height="48" style="object-fit: cover;">
+                            @endif
+                            @else
+                            <img src="https://img.freepik.com/free-vector/blue-circle-with-white-user_78370-4707.jpg?semt=ais_hybrid&w=740" alt="avatar"
+                                class="rounded-circle" width="48" height="48" style="object-fit: cover;">
+                            @endif
+                        </a>
                         @endauth
 
 
-                        </div>
+                    </div>
                     @endauth
                 </div>
             </div>
+            @endif
             <main class="py-4">
                 @yield('content')
                 @stack('modal')
@@ -216,7 +232,7 @@
     </header>
 
     <script>
-        document.addEventListener("DOMContentLoaded", function () {
+        document.addEventListener("DOMContentLoaded", function() {
             const sidebar = document.getElementById("sidebarMenu");
             const content = document.getElementById("mainContent");
             const toggleBtn = document.getElementById("toggleSidebar");
@@ -228,7 +244,7 @@
             }
 
             // Event klik tombol toggle sidebar
-            toggleBtn.addEventListener("click", function () {
+            toggleBtn.addEventListener("click", function() {
                 sidebar.classList.toggle("show");
                 content.classList.toggle("shift");
 
@@ -247,4 +263,5 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
+
 </html>
