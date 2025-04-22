@@ -4,7 +4,7 @@
 <div class="container-fluid h-100 d-flex justify-content-center align-items-center">
     <div class="text-center">
 
-        <img src="https://us-tuna-sounds-images.voicemod.net/13e358e4-8406-4d0a-a724-b89c38e64a0a-1701486070717.jpg">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRFVKBEx3dem0ChuZ8F3rKMDay2rrFzySgL2g&s">
 
         <h1 class="display-1 text-danger fw-bold">404</h1>
         <h3 class="mb-3">Oops! Mau ke mana broo?</h3>
