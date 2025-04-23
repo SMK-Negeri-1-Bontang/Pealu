@@ -115,12 +115,6 @@
                 </div>
                 @endif
 
-                <div class="mb-3">
-                    <a href="{{ route('lowongan.create') }}" class="btn btn-success">
-                        <i class="fa-solid fa-plus"></i> Tambah Lowongan
-                    </a>
-                </div>
-
                 @forelse($lowongan as $l)
                 <div class="card mb-3 shadow-sm hover-effect">
                     <div class="card-body">
