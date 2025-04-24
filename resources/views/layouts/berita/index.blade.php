@@ -59,7 +59,7 @@
                                     <td>{{ $b->title }}</td>
                                     <td class="text-center">
                                         @if($b->image)
-                                            <img src="{{ asset('storage/' . $b->image) }}" width="70">
+                                            <img src="{{ asset('storage/' . $b->image) }}" width="70" height="70">
                                         @else
                                             <span class="text-muted">Tidak ada</span>
                                         @endif

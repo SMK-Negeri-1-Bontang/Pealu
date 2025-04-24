@@ -79,7 +79,7 @@
                             @forelse($pengajar as $no => $p)
                             <tr>
                                 <th scope="row">{{ ++$no }}</th>
-                                <td><img src="{{ asset('storage/' . $p->foto) }}" width="70" alt="Foto Pengajar"></td>
+                                <td><img src="{{ asset('storage/' . $p->foto) }}" width="70" height="70" alt="Foto Pengajar"></td>
                                 <td>{{ $p->nip }}</td>
                                 <td>{{ $p->nama_lengkap }}</td>
                                 <td>{{ $p->mata_pelajaran }}</td>

@@ -85,7 +85,7 @@
                                 <th scope="row">{{ ++$no }}</th>
                                 <td class="text-center">
                                     @if($a->image)
-                                        <img src="{{ asset('storage/' . $a->image) }}" width="70">
+                                        <img src="{{ asset('storage/' . $a->image) }}" width="70" height="70">
                                     @else
                                         <span class="text-muted">Tidak ada</span>
                                     @endif
