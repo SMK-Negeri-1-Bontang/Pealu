@@ -277,10 +277,10 @@
             </div>
             
             <div class="sidebar-menu">
-                <a href="{{ url('/') }}" class="menu-item"><i class="fas fa-home"></i> Beranda</a>
+                <a href="{{ url('/') }}" class="menu-item"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
                 <a href="{{ url('/alumni') }}" class="menu-item"><i class="fas fa-users"></i> Data Alumni</a>
                 <a href="{{ url('https://smkn1bontang.sch.id/') }}" class="menu-item"><i class="fas fa-school"></i> SMKN 1 Bontang</a>
-                <a href="{{ url('/home') }}" class="menu-item"><i class="fas fa-user-circle"></i> Profil Saya</a>
+                <a href="{{ url('/home') }}" class="menu-item"><i class="fas fa-user-circle"></i> Status Login</a>
                 <a href="{{ url('/pengajar-tampilan') }}" class="menu-item"><i class="fa-solid fa-chalkboard-user"></i> Pengajar</a>
                 <a href="{{ url('/berita-tampilan') }}" class="menu-item"><i class="fas fa-newspaper"></i> Berita</a>
                 <a href="{{ url('/lowongan') }}" class="menu-item"><i class="fas fa-briefcase"></i> Lowongan Kerja</a>
@@ -366,13 +366,6 @@
                                         <i class="fas fa-user-circle me-2"></i> Profil Saya
                                     </a>
                                 </li>
-                                @if (Auth::user()->isAdmin() || Auth::user()->isPetugas())
-                                    <li>
-                                        <a class="dropdown-item" href="{{ url('/dashboard') }}">
-                                            <i class="fas fa-tachometer-alt me-2"></i> Dashboard
-                                        </a>
-                                    </li>
-                                @endif
                                 <li><hr class="dropdown-divider"></li>
                                 <li>
                                     <a class="dropdown-item text-danger" href="{{ route('logout') }}"
@@ -398,53 +391,65 @@
         </div>
     </div>
 
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            const sidebar = document.getElementById("sidebarMenu");
-            const content = document.getElementById("mainContent");
-            const toggleBtn = document.getElementById("toggleSidebar");
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const sidebar = document.getElementById("sidebarMenu");
+        const content = document.getElementById("mainContent");
+        const toggleBtn = document.getElementById("toggleSidebar");
 
-            // Check local storage for sidebar state
-            if (localStorage.getItem("sidebarOpen") === "true") {
-                sidebar.classList.add("show");
-                content.classList.add("shift");
-            }
+        // Check local storage for sidebar state
+        if (localStorage.getItem("sidebarOpen") === "true") {
+            sidebar.classList.add("show");
+            content.classList.add("shift");
+        }
 
-            // Toggle sidebar
-            toggleBtn.addEventListener("click", function() {
-                sidebar.classList.toggle("show");
-                content.classList.toggle("shift");
-                localStorage.setItem("sidebarOpen", sidebar.classList.contains("show"));
-            });
+        // Toggle sidebar
+        toggleBtn.addEventListener("click", function() {
+            sidebar.classList.toggle("show");
+            content.classList.toggle("shift");
+            localStorage.setItem("sidebarOpen", sidebar.classList.contains("show"));
+        });
 
-            // Mark active menu item
-            document.querySelectorAll(".menu-item").forEach(item => {
-                if (item.href === window.location.href || 
-                    (window.location.href.includes(item.href) && item.href !== "{{ url('/') }}")) {
+        // Mark active menu item - IMPROVED VERSION
+        document.querySelectorAll(".menu-item").forEach(item => {
+            // Skip external links completely
+            try {
+                const itemUrl = new URL(item.href);
+                const currentUrl = new URL(window.location.href);
+                
+                if (itemUrl.host !== currentUrl.host) {
+                    return; // Skip external links
+                }
+                
+                const currentPath = currentUrl.pathname;
+                const itemPath = itemUrl.pathname;
+                
+                // Exact match for dashboard
+                if (itemPath === '/' && currentPath === '/') {
                     item.classList.add("active");
                 }
-            });
-
-            // Close sidebar when clicking outside on mobile
-            document.addEventListener('click', function(event) {
-                const isClickInsideSidebar = sidebar.contains(event.target);
-                const isClickOnToggleBtn = toggleBtn.contains(event.target);
-                
-                if (window.innerWidth <= 992 && !isClickInsideSidebar && !isClickOnToggleBtn && sidebar.classList.contains('show')) {
-                    sidebar.classList.remove('show');
-                    content.classList.remove('shift');
-                    localStorage.setItem("sidebarOpen", false);
+                // For other internal paths
+                else if (itemPath !== '/' && currentPath.startsWith(itemPath)) {
+                    item.classList.add("active");
                 }
-            });
+            } catch (e) {
+                console.error("Error processing menu item:", e);
+            }
         });
 
-        // Initialize Bootstrap tooltips
-        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
-        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-            return new bootstrap.Tooltip(tooltipTriggerEl)
+        // Close sidebar when clicking outside on mobile
+        document.addEventListener('click', function(event) {
+            const isClickInsideSidebar = sidebar.contains(event.target);
+            const isClickOnToggleBtn = toggleBtn.contains(event.target);
+            
+            if (window.innerWidth <= 992 && !isClickInsideSidebar && !isClickOnToggleBtn && sidebar.classList.contains('show')) {
+                sidebar.classList.remove('show');
+                content.classList.remove('shift');
+                localStorage.setItem("sidebarOpen", false);
+            }
         });
-    </script>
-
+    });
+</script>
     <!-- Bootstrap JS Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>

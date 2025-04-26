@@ -1,161 +1,211 @@
 @extends('welcome')
 
 @section('content')
-<div class="container">
+<div class="">
     <div class="row justify-content-center">
+        <!-- Notifikasi -->
         @if ($message = Session::get('success'))
-        <div class="alert alert-success alert-dismissible fade show" role="alert">
-            <strong>{{ $message }}</strong>
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        <div class="col-md-12">
+            <div class="alert alert-success alert-dismissible fade show shadow-sm border-0" role="alert">
+                <div class="d-flex align-items-center">
+                    <i class="fas fa-check-circle me-2"></i>
+                    <strong>{{ $message }}</strong>
+                </div>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
         </div>
         @endif
         @if ($message = Session::get('update'))
-        <div class="alert alert-primary alert-dismissible fade show" role="alert">
-            <strong>{{ $message }}</strong>
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        <div class="col-md-12">
+            <div class="alert alert-info alert-dismissible fade show shadow-sm border-0" role="alert">
+                <div class="d-flex align-items-center">
+                    <i class="fas fa-info-circle me-2"></i>
+                    <strong>{{ $message }}</strong>
+                </div>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
         </div>
         @endif
         @if ($message = Session::get('delete'))
-        <div class="alert alert-danger alert-dismissible fade show" role="alert">
-            <strong>{{ $message }}</strong>
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        <div class="col-md-12">
+            <div class="alert alert-danger alert-dismissible fade show shadow-sm border-0" role="alert">
+                <div class="d-flex align-items-center">
+                    <i class="fas fa-exclamation-triangle me-2"></i>
+                    <strong>{{ $message }}</strong>
+                </div>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
         </div>
         @endif
-        <div class="card">
-            <div class="card-body">
-                <div class="mb-3 mt-2">
-                    <a href="#" data-bs-toggle="modal" data-bs-target="#tambah" class="btn btn-success">
-                        <i class="fa-solid fa-plus"></i> Tambah Data
-                    </a>
+        
+        <!-- Card Utama -->
+        <div class="col-md-12">
+            <div class="card border-0 shadow-lg">
+                <div class="card-header bg-primary bg-gradient text-white py-3">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h4 class="mb-0">
+                            <i class="fas fa-chalkboard-teacher me-2"></i> Data Pengajar
+                        </h4>
+                        <a href="#" data-bs-toggle="modal" data-bs-target="#tambah" class="btn btn-light btn-sm rounded-pill">
+                            <i class="fa-solid fa-plus me-1"></i> Tambah Data
+                        </a>
+                    </div>
                 </div>
-                <div class="card-body mb-3">
-                    <div class="d-flex justify-content-center">
-                        <form action="{{ route('pengajar.index') }}" method="GET" class="w-100">
-                            <div class="row g-3 justify-content-center">
-                                <div class="col-md-3">
-                                    <label class="fw-bold">NIP</label>
-                                    <input type="text" name="nip" class="form-control border-primary shadow-sm" 
-                                        placeholder="Masukkan NIP" value="{{ request('nip') }}">
+                
+                <div class="card-body">
+                    <!-- Form Pencarian -->
+                    <div class="mb-4">
+                        <form action="{{ route('pengajar.index') }}" method="GET">
+                            <div class="row g-3">
+                                <div class="col-md-2">
+                                    <label class="form-label fw-semibold text-primary">NIP</label>
+                                    <input type="text" name="nip" class="form-control border-2 border-primary rounded-pill shadow-sm" 
+                                        placeholder="Cari NIP..." value="{{ request('nip') }}">
                                 </div>
                                 <div class="col-md-3">
-                                    <label class="fw-bold">Nama Lengkap</label>
-                                    <input type="text" name="nama_lengkap" class="form-control border-primary shadow-sm" 
-                                        placeholder="Masukkan Nama Lengkap" value="{{ request('nama_lengkap') }}">
+                                    <label class="form-label fw-semibold text-primary">Nama Lengkap</label>
+                                    <input type="text" name="nama_lengkap" class="form-control border-2 border-primary rounded-pill shadow-sm" 
+                                        placeholder="Cari Nama..." value="{{ request('nama_lengkap') }}">
                                 </div>
                                 <div class="col-md-3">
-                                    <label class="fw-bold">Mata Pelajaran</label>
-                                    <input type="text" name="mata_pelajaran" class="form-control border-primary shadow-sm" 
-                                        placeholder="Masukkan Mata Pelajaran" value="{{ request('mata_pelajaran') }}">
+                                    <label class="form-label fw-semibold text-primary">Mata Pelajaran</label>
+                                    <select name="mata_pelajaran" class="form-select border-2 border-primary rounded-pill shadow-sm">
+                                        <option value="">Semua Pelajaran</option>
+                                        @foreach($mataPelajaranList as $mapel)
+                                            <option value="{{ $mapel }}" {{ request('mata_pelajaran') == $mapel ? 'selected' : '' }}>
+                                                {{ $mapel }}
+                                            </option>
+                                        @endforeach
+                                    </select>
                                 </div>
                                 <div class="col-md-2">
-                                    <label class="fw-bold">Tahun Bergabung</label>
-                                    <input type="text" name="tahun_bergabung" class="form-control border-primary shadow-sm" 
-                                        placeholder="Masukkan Tahun Bergabung" value="{{ request('tahun_bergabung') }}">
+                                    <label class="form-label fw-semibold text-primary">Tahun Gabung</label>
+                                    <select name="tahun_bergabung" class="form-select border-2 border-primary rounded-pill shadow-sm">
+                                        <option value="">Semua Tahun</option>
+                                        @foreach($tahunBergabungList as $tahun)
+                                            <option value="{{ $tahun }}" {{ request('tahun_bergabung') == $tahun ? 'selected' : '' }}>
+                                                {{ $tahun }}
+                                            </option>
+                                        @endforeach
+                                    </select>
                                 </div>
-                                <div class="col-md-1 d-flex align-items-end">
-                                    <button type="submit" class="btn btn-primary w-100 shadow">
-                                        <i class="fas fa-search"></i> Cari
+                                <div class="col-md-2 d-flex align-items-end">
+                                    <button type="submit" class="btn btn-primary rounded-pill w-100 shadow-sm">
+                                        <i class="fas fa-search me-1"></i> Cari
                                     </button>
                                 </div>
                             </div>
                         </form>
                     </div>
-                </div>
-                <div class="">
-                    <table class="table table-hover">
-                        <thead>
-                            <tr>
-                                <th scope="col">No</th>
-                                <th scope="col">Foto</th>
-                                <th scope="col">NIP</th>
-                                <th scope="col">Nama</th>
-                                <th scope="col">Mata Pelajaran</th>
-                                <th scope="col">Tahun Bergabung</th>
-                                <th scope="col">Aksi</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-
-                            @forelse($pengajar as $no => $p)
-                            <tr>
-                                <th scope="row">{{ ++$no }}</th>
-                                <td><img src="{{ asset('storage/' . $p->foto) }}" width="70" height="70" alt="Foto Pengajar"></td>
-                                <td>{{ $p->nip }}</td>
-                                <td>{{ $p->nama_lengkap }}</td>
-                                <td>{{ $p->mata_pelajaran }}</td>
-                                <td>{{ $p->tahun_bergabung }}</td>
-                                <td class="text-center align-middle">
-                                    <a href="#" data-bs-toggle="modal" data-bs-target="#edit{{$p->id}}" 
-                                        class="text-primary mx-2" style="text-decoration: none;">
-                                        <i class="fa-solid fa-pen-to-square fa-lg"></i>
-                                    </a>
-                                    <a href="#" data-bs-toggle="modal" data-bs-target="#delete{{$p->id}}" 
-                                        class="text-danger mx-2" style="text-decoration: none;">
-                                        <i class="fa-solid fa-xmark fa-lg"></i>
-                                    </a>
-                                    <a href="#" data-bs-toggle="modal" data-bs-target="#lihat{{$p->id}}" 
-                                        class="text-info mx-2" style="text-decoration: none;">
-                                        <i class="fa-solid fa-eye fa-lg"></i>
-                                    </a>
-                                </td>
-                                @empty
-                                <div class="alert alert-primary d-flex align-items-center" role="alert">
-                                    <svg xmlns="http://www.w3.org/2000/svg" 
-                                        width="24" height="24" 
-                                        class="bi bi-exclamation-triangle-fill flex-shrink-0 me-2" 
-                                        viewBox="0 0 16 16" role="img" aria-label="Warning:">
-                                        <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
-                                    </svg>
-                                    <div>
-                                        Data Pengajar Belum Ada
-                                    </div>
-                                </div>
-                            </tr>
-                            @endforelse
-                        </tbody>
-                    </table>
                     
-                    <div class="d-flex justify-content-between align-items-center p-2">
-                        <div>
-                            Showing <b>{{ $pengajar->firstItem() }}</b> to <b>{{ $pengajar->lastItem() }}</b> of
-                            <b>{{ $pengajar->total() }}</b> results
-                        </div>
-                        <div>
-                            <nav aria-label="Page navigation">
-                                <ul class="pagination justify-content-center mb-0">
-                                    <!-- Tombol Previous -->
-                                    @if ($pengajar->onFirstPage())
-                                        <li class="page-item disabled">
-                                            <span class="page-link">Previous</span>
-                                        </li>
-                                    @else
-                                        <li class="page-item">
-                                            <a class="page-link" href="{{ $pengajar->previousPageUrl() }}" rel="prev">Previous</a>
-                                        </li>
-                                    @endif
-
-                                    <!-- Nomor Halaman -->
-                                    @foreach ($pengajar->links()->elements[0] as $page => $url)
-                                        <li class="page-item {{ $pengajar->currentPage() == $page ? 'active' : '' }}">
-                                            <a class="page-link" href="{{ $url }}">{{ $page }}</a>
-                                        </li>
-                                    @endforeach
-
-                                    <!-- Tombol Next -->
-                                    @if ($pengajar->hasMorePages())
-                                        <li class="page-item">
-                                            <a class="page-link" href="{{ $pengajar->nextPageUrl() }}" rel="next">Next</a>
-                                        </li>
-                                    @else
-                                        <li class="page-item disabled">
-                                            <span class="page-link">Next</span>
-                                        </li>
-                                    @endif
-                                </ul>
-                            </nav>
-                        </div>
+                    <!-- Tabel Data -->
+                    <div class="table-responsive">
+                        <table class="table table-hover table-striped align-middle mb-0">
+                            <thead class="table-light">
+                                <tr>
+                                    <th class="text-center" style="width: 60px;">No</th>
+                                    <th class="text-center" style="width: 100px;">Foto</th>
+                                    <th style="width: 120px;">NIP</th>
+                                    <th>Nama Lengkap</th>
+                                    <th>Mata Pelajaran</th>
+                                    <th class="text-center" style="width: 120px;">Tahun Bergabung</th>
+                                    <th class="text-center" style="width: 150px;">Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @forelse($pengajar as $no => $p)
+                                <tr class="hover-shadow">
+                                    <th scope="row" class="text-center">{{ ($pengajar->currentPage() - 1) * $pengajar->perPage() + $no + 1 }}</th>
+                                    <td class="text-center">
+                                        <div class="avatar avatar-md">
+                                            @if($p->foto)
+                                                <img src="{{ asset('storage/' . $p->foto) }}" class="rounded-circle border border-3 border-primary" width="70" height="70" style="object-fit: cover;">
+                                            @else
+                                                <div class="avatar-placeholder rounded-circle bg-light text-muted d-flex align-items-center justify-content-center" style="width: 70px; height: 70px;">
+                                                    <i class="fas fa-user-tie fa-lg"></i>
+                                                </div>
+                                            @endif
+                                        </div>
+                                    </td>
+                                    <td>{{ $p->nip }}</td>
+                                    <td>
+                                        <div class="fw-semibold">{{ $p->nama_lengkap }}</div>
+                                    </td>
+                                    <td>
+                                        <span class="badge bg-primary bg-opacity-10 text-primary">{{ $p->mata_pelajaran }}</span>
+                                    </td>
+                                    <td class="text-center">
+                                        <span class="badge bg-info bg-opacity-10 text-info">{{ $p->tahun_bergabung }}</span>
+                                    </td>
+                                    <td class="text-center">
+                                        <div class="btn-group btn-group-sm" role="group">
+                                            <a href="#" data-bs-toggle="modal" data-bs-target="#lihat{{$p->id}}" 
+                                                class="btn btn-outline-info rounded-start-pill" title="Lihat Detail">
+                                                <i class="fa-solid fa-eye"></i>
+                                            </a>
+                                            <a href="#" data-bs-toggle="modal" data-bs-target="#edit{{$p->id}}" 
+                                                class="btn btn-outline-primary" title="Edit">
+                                                <i class="fa-solid fa-pen-to-square"></i>
+                                            </a>
+                                            <a href="#" data-bs-toggle="modal" data-bs-target="#delete{{$p->id}}" 
+                                                class="btn btn-outline-danger rounded-end-pill" title="Hapus">
+                                                <i class="fa-solid fa-trash"></i>
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                                @empty
+                                <tr>
+                                    <td colspan="7" class="text-center py-4">
+                                        <div class="alert alert-info d-flex align-items-center justify-content-center">
+                                            <i class="fas fa-info-circle me-3 fa-2x"></i>
+                                            <div>
+                                                <h5 class="alert-heading mb-1">Data Pengajar Kosong</h5>
+                                                <p class="mb-0">Belum ada data pengajar yang tersedia.</p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                @endforelse
+                            </tbody>
+                        </table>
                     </div>
+                    
+                    <!-- Pagination -->
+                    <div class="d-flex justify-content-between align-items-center mt-4">
+                        <div class="text-muted">
+                            Menampilkan <b>{{ $pengajar->firstItem() }}</b> sampai <b>{{ $pengajar->lastItem() }}</b> dari <b>{{ $pengajar->total() }}</b> hasil
+                        </div>
+                        <nav aria-label="Page navigation">
+                            <ul class="pagination pagination-sm mb-0">
+                                @if ($pengajar->onFirstPage())
+                                    <li class="page-item disabled">
+                                        <span class="page-link rounded-pill">&laquo;</span>
+                                    </li>
+                                @else
+                                    <li class="page-item">
+                                        <a class="page-link rounded-pill" href="{{ $pengajar->previousPageUrl() }}" rel="prev">&laquo;</a>
+                                    </li>
+                                @endif
 
+                                @foreach ($pengajar->links()->elements[0] as $page => $url)
+                                    <li class="page-item {{ $pengajar->currentPage() == $page ? 'active' : '' }}">
+                                        <a class="page-link rounded-circle" href="{{ $url }}">{{ $page }}</a>
+                                    </li>
+                                @endforeach
+
+                                @if ($pengajar->hasMorePages())
+                                    <li class="page-item">
+                                        <a class="page-link rounded-pill" href="{{ $pengajar->nextPageUrl() }}" rel="next">&raquo;</a>
+                                    </li>
+                                @else
+                                    <li class="page-item disabled">
+                                        <span class="page-link rounded-pill">&raquo;</span>
+                                    </li>
+                                @endif
+                            </ul>
+                        </nav>
+                    </div>
                 </div>
             </div>
         </div>
@@ -163,6 +213,67 @@
 </div>
 @endsection
 
+@push('styles')
+<style>
+    .card-header.bg-gradient-primary {
+    background: linear-gradient(to right, #3a7bd5, #00d2ff) !important;
+    /* Warna bisa disesuaikan */
+    }
+    
+    .card {
+        border-radius: 12px;
+        overflow: hidden;
+    }
+    
+    .card-header {
+        border-bottom: none;
+    }
+    
+    .table th {
+        font-weight: 600;
+        text-transform: uppercase;
+        font-size: 0.8rem;
+        letter-spacing: 0.5px;
+    }
+    
+    .hover-shadow:hover {
+        box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+        transform: translateY(-2px);
+        transition: all 0.3s ease;
+    }
+    
+    .avatar-placeholder {
+        border: 2px dashed #dee2e6;
+    }
+    
+    .btn-outline-primary:hover, .btn-outline-info:hover, .btn-outline-danger:hover {
+        color: white !important;
+    }
+    
+    .rounded-pill {
+        border-radius: 50rem !important;
+    }
+    
+    .rounded-start-pill {
+        border-top-left-radius: 50rem !important;
+        border-bottom-left-radius: 50rem !important;
+    }
+    
+    .rounded-end-pill {
+        border-top-right-radius: 50rem !important;
+        border-bottom-right-radius: 50rem !important;
+    }
+    
+    .badge {
+        padding: 0.35em 0.65em;
+        font-weight: 500;
+    }
+    
+    .btn-group .btn {
+        border-radius: 0;
+    }
+</style>
+@endpush
 @push('modal')
 <!-- Modal Tambah Data Pengajar -->
 <div class="modal fade" id="tambah" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -308,7 +419,7 @@
                             @enderror
                         </div>
                         <div class="col-md-6 mb-3">
-                            <label class="form-label">Tahun Bergabung</label>
+                            <label class="form-label">Tahun Gabung</label>
                             <input type="text" class="form-control @error('tahun_bergabung') is-invalid @enderror" name="tahun_bergabung" value="{{ old('tahun_bergabung', $p->tahun_bergabung) }}" placeholder="Contoh '2022'">
                             @error('tahun_bergabung')
                             <div class="alert alert-danger">{{ $message }}</div>
