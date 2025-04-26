@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\Log;
 
 class AlumniController extends Controller
 {
@@ -41,13 +42,27 @@ class AlumniController extends Controller
         if (!$data) {
             return redirect()->back()->with('error', 'Data alumni tidak ditemukan.');
         }
-
+    
         $status_map = [1 => 'Bekerja', 2 => 'Kuliah', 3 => 'Tidak Ada Kabar'];
         $jalur_map = [1 => 'PTN', 2 => 'PTS', 3 => 'DINAS'];
-
-        $pdf = PDF::loadView('layouts.alumni.invoice', compact('data', 'status_map', 'jalur_map'));
-
-        return $pdf->stream();
+    
+        // Handle image conversion for PDF
+        if (!empty($data->image)) {
+            try {
+                $imagePath = storage_path('app/public/' . $data->image);
+                if (file_exists($imagePath)) {
+                    $imageData = base64_encode(file_get_contents($imagePath));
+                    $data->image_base64 = 'data:'.mime_content_type($imagePath).';base64,'.$imageData;
+                }
+            } catch (\Exception $e) {
+                Log::error("Error processing image: " . $e->getMessage());
+            }
+        }
+    
+        $pdf = PDF::loadView('layouts.alumni.invoice', compact('data', 'status_map', 'jalur_map'))
+                  ->setPaper('a4', 'portrait');
+    
+        return $pdf->stream('kartu_alumni_'.$data->nis.'.pdf');
     }
 
     public function store(Request $request)

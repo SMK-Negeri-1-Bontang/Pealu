@@ -25,7 +25,7 @@
             --accent-color: #4cc9f0;
             --dark-color: #2b2d42;
             --light-color: #f8f9fa;
-            --sidebar-width: 280px;
+            --sidebar-width: 300px;
             --transition-speed: 0.3s;
         }
 

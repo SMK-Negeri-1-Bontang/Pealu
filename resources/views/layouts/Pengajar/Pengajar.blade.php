@@ -97,10 +97,6 @@
                                         class="text-info mx-2" style="text-decoration: none;">
                                         <i class="fa-solid fa-eye fa-lg"></i>
                                     </a>
-                                    <a href="{{ route('pengajar.invoice', ['id' => $p->id]) }}" 
-                                        class="text-success mx-2" style="text-decoration: none;">
-                                        <i class="fa-solid fa-file-arrow-down fa-lg"></i>
-                                    </a>
                                 </td>
                                 @empty
                                 <div class="alert alert-primary d-flex align-items-center" role="alert">
