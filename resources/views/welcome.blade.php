@@ -15,221 +15,388 @@
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
     <style>
+        :root {
+            --primary-color: #4361ee;
+            --secondary-color: #3f37c9;
+            --accent-color: #4cc9f0;
+            --dark-color: #2b2d42;
+            --light-color: #f8f9fa;
+            --sidebar-width: 280px;
+            --transition-speed: 0.3s;
+        }
+
         body {
-            transition: all 0.3s ease;
-            background: #D9D9D9;
+            font-family: 'Poppins', sans-serif;
+            background-color: #f5f7ff;
+            color: #333;
+            transition: all var(--transition-speed) ease;
         }
 
         /* Sidebar */
         .sidebar {
-            width: 350px;
-            background: #2E2E2E;
+            width: var(--sidebar-width);
+            background: linear-gradient(180deg, var(--primary-color), var(--secondary-color));
             color: white;
-            padding: 20px;
             position: fixed;
-            left: -350px;
+            left: calc(-1 * var(--sidebar-width));
             top: 0;
             bottom: 0;
-            transition: all 0.3s ease;
+            transition: all var(--transition-speed) ease;
             overflow-y: auto;
-            max-height: 100vh;
+            z-index: 1000;
+            box-shadow: 4px 0 15px rgba(0, 0, 0, 0.1);
         }
 
         .sidebar.show {
             left: 0;
         }
 
-        .sidebar img {
-            width: 100px;
-            display: block;
-            margin: 0 auto 15px;
-        }
-
-        .sidebar a {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            color: #979797;
-            padding: 10px;
-            text-decoration: none;
-            border-radius: 5px;
-        }
-
-        .sidebar a i {
-            width: 20px;
+        .sidebar-header {
+            padding: 25px 20px;
             text-align: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
 
-        .sidebar a:hover,
-        .sidebar a.active {
-            background: #979797;
+        .sidebar img {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 50%;
+            border: 3px solid rgba(255, 255, 255, 0.2);
+            margin-bottom: 15px;
+        }
+
+        .sidebar h4 {
+            font-weight: 600;
+            margin-bottom: 0;
             color: white;
         }
 
+        .sidebar-menu {
+            padding: 20px 0;
+        }
+
+        .menu-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: rgba(255, 255, 255, 0.8);
+            padding: 12px 20px;
+            margin: 5px 15px;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+            font-weight: 500;
+        }
+
+        .menu-item i {
+            width: 20px;
+            text-align: center;
+            font-size: 1.1rem;
+        }
+
+        .menu-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            transform: translateX(5px);
+        }
+
+        .menu-item.active {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            font-weight: 600;
+        }
+
+        .menu-item.active::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            height: 100%;
+            width: 3px;
+            background: white;
+            border-radius: 0 3px 3px 0;
+        }
+
+        /* Main Content */
         .content {
             flex-grow: 1;
             padding: 25px;
             margin-left: 0;
-            transition: margin-left 0.3s ease;
+            transition: margin-left var(--transition-speed) ease;
+            min-height: 100vh;
         }
 
         .content.shift {
-            margin-left: 350px;
+            margin-left: var(--sidebar-width);
         }
 
+        /* Top Bar */
         .top-bar {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 12px;
-            background: #f8f9fa;
-            border-radius: 5px;
-            box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
-            transition: margin-left 0.3s ease;
+            padding: 15px 25px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            margin-bottom: 25px;
+            transition: margin-left var(--transition-speed) ease;
         }
 
         .toggle-btn {
             background: none;
             border: none;
-            font-size: 20px;
+            font-size: 1.25rem;
             cursor: pointer;
-            color: #212529;
+            color: var(--dark-color);
+            transition: all 0.2s ease;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
         }
 
         .toggle-btn:hover {
-            color: #979797;
+            background-color: rgba(0, 0, 0, 0.05);
+            color: var(--primary-color);
         }
+
+        .user-role {
+            font-weight: 600;
+            color: var(--primary-color);
+            background: rgba(67, 97, 238, 0.1);
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--primary-color);
+            transition: all 0.2s ease;
+        }
+
+        .user-avatar:hover {
+            transform: scale(1.1);
+        }
+
+        .dropdown-menu {
+            border: none;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            padding: 10px 0;
+        }
+
+        .dropdown-item {
+            padding: 8px 15px;
+            font-size: 0.9rem;
+            transition: all 0.2s ease;
+        }
+
+        .dropdown-item:hover {
+            background: rgba(67, 97, 238, 0.1);
+            color: var(--primary-color);
+        }
+
+        .dropdown-divider {
+            margin: 5px 0;
+        }
+
+        /* Navigation Links */
+        .nav-link {
+            color: var(--dark-color);
+            font-weight: 500;
+            transition: all 0.2s ease;
+            padding: 8px 12px;
+        }
+
+        .nav-link:hover {
+            color: var(--primary-color);
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 992px) {
+            .sidebar {
+                left: calc(-1 * var(--sidebar-width));
+            }
+            .sidebar.show {
+                left: 0;
+            }
+            .content.shift {
+                margin-left: 0;
+                position: relative;
+                z-index: 1;
+            }
+        }
+
+        /* Animation for sidebar toggle */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateX(-10px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .sidebar.show .menu-item {
+            animation: fadeIn 0.3s ease forwards;
+        }
+
+        .sidebar.show .menu-item:nth-child(1) { animation-delay: 0.1s; }
+        .sidebar.show .menu-item:nth-child(2) { animation-delay: 0.15s; }
+        .sidebar.show .menu-item:nth-child(3) { animation-delay: 0.2s; }
+        .sidebar.show .menu-item:nth-child(4) { animation-delay: 0.25s; }
+        .sidebar.show .menu-item:nth-child(5) { animation-delay: 0.3s; }
+        .sidebar.show .menu-item:nth-child(6) { animation-delay: 0.35s; }
+        .sidebar.show .menu-item:nth-child(7) { animation-delay: 0.4s; }
+        .sidebar.show .menu-item:nth-child(8) { animation-delay: 0.45s; }
+        .sidebar.show .menu-item:nth-child(9) { animation-delay: 0.5s; }
+        .sidebar.show .menu-item:nth-child(10) { animation-delay: 0.55s; }
     </style>
 </head>
 
 <body>
-    <nav>
-        <div class="sidebar" id="sidebarMenu">
-            <img class="rounded-circle" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS2SyMhZwBzUn-Uze93_uGz7JgA9agT_Rwz9w&s" alt="Logo Sekolah">
-            <h4 class="text-center pb-4">Penelusuran Alumni</h4>
-            <a href="{{ url('/') }}" class="menu-item"><i class="fas fa-home"></i> Dashboard</a>
-            <a href="{{ url('/alumni') }}" class="menu-item"><i class="fas fa-users"></i> Alumni</a>
-            <a href="{{ url('https://smkn1bontang.sch.id/') }}" class="menu-item"><i class="fas fa-school"></i> SMKN 1 Bontang</a>
-            <a href="{{ url('/home') }}" class="menu-item"><i class="fas fa-sign-in-alt"></i> Status Login</a>
-            <a href="{{ url('/pengajar-tampilan') }}" class="menu-item"><i class="fa-solid fa-person-chalkboard"></i>Data Pengajar</a>
-            <a href="{{ url('/berita-tampilan') }}" class="menu-item"><i class="fas fa-newspaper"></i> Berita</a>
-            <a href="{{ url('/lowongan') }}" class="menu-item"><i class="fas fa-briefcase"></i> Lowongan</a>
-            @auth
-            @if (Auth::user()->isAdmin())
-            <a href="{{ route('user.index') }}" class="menu-item"><i class="fas fa-user"></i> Table User</a>
-            <a href="{{ route('pengajar.index') }}" class="menu-item"><i class="fas fa-plus"></i>Tambah Pengajar</a>
-            <a href="{{ route('tmbberita.index') }}" class="menu-item"><i class="fas fa-plus"></i> Tambah Berita</a>
-            <a href="{{ route('lowongan.create') }}" class="menu-item"><i class="fas fa-plus"></i> Tambah Lowongan</a>
-            @elseif (Auth::user()->isPetugas())
-            <a href="{{ route('user.index') }}" class="menu-item"><i class="fas fa-user"></i> Table User</a>
-            <a href="{{ route('pengajar.index') }}" class="menu-item"><i class="fas fa-plus"></i>Tambah Pengajar</a>
-            <a href="{{ route('tmbberita.index') }}" class="menu-item"><i class="fas fa-plus"></i> Tambah Berita</a>
-            <a href="{{ route('lowongan.create') }}" class="menu-item"><i class="fas fa-plus"></i> Tambah Lowongan</a>
-            @endif
-            @endauth
-        </div>
-    </nav>
+    <div class="d-flex">
+        <!-- Sidebar Navigation -->
+        <nav class="sidebar" id="sidebarMenu">
+            <div class="sidebar-header">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS2SyMhZwBzUn-Uze93_uGz7JgA9agT_Rwz9w&s" alt="Logo Sekolah">
+                <h4>Portal Alumni</h4>
+            </div>
+            
+            <div class="sidebar-menu">
+                <a href="{{ url('/') }}" class="menu-item"><i class="fas fa-home"></i> Beranda</a>
+                <a href="{{ url('/alumni') }}" class="menu-item"><i class="fas fa-users"></i> Data Alumni</a>
+                <a href="{{ url('https://smkn1bontang.sch.id/') }}" class="menu-item"><i class="fas fa-school"></i> SMKN 1 Bontang</a>
+                <a href="{{ url('/home') }}" class="menu-item"><i class="fas fa-user-circle"></i> Profil Saya</a>
+                <a href="{{ url('/pengajar-tampilan') }}" class="menu-item"><i class="fa-solid fa-chalkboard-user"></i> Pengajar</a>
+                <a href="{{ url('/berita-tampilan') }}" class="menu-item"><i class="fas fa-newspaper"></i> Berita</a>
+                <a href="{{ url('/lowongan') }}" class="menu-item"><i class="fas fa-briefcase"></i> Lowongan Kerja</a>
+                
+                @auth
+                    @if (Auth::user()->isAdmin() || Auth::user()->isPetugas())
+                        <div class="sidebar-divider my-3 mx-3 border-top border-light opacity-25"></div>
+                        <h6 class="text-uppercase text-muted small fw-bold ps-4 mb-2 mt-3">Admin Panel</h6>
+                        
+                        @if (Auth::user()->isAdmin())
+                            <a href="{{ route('user.index') }}" class="menu-item"><i class="fas fa-user-cog"></i> Manajemen User</a>
+                        @endif
+                        
+                        <a href="{{ route('pengajar.index') }}" class="menu-item"><i class="fas fa-plus-circle"></i> Tambah Pengajar</a>
+                        <a href="{{ route('tmbberita.index') }}" class="menu-item"><i class="fas fa-plus-circle"></i> Tambah Berita</a>
+                        <a href="{{ route('lowongan.create') }}" class="menu-item"><i class="fas fa-plus-circle"></i> Tambah Lowongan</a>
+                    @endif
+                @endauth
+            </div>
+        </nav>
 
-    <!-- Main Content -->
-    <header class="">
+        <!-- Main Content -->
         <div class="content" id="mainContent">
             @if (!isset($showUserUI) || $showUserUI)
             <div class="top-bar">
                 <div class="d-flex align-items-center">
-                    <!-- Tombol untuk menampilkan sidebar -->
-                    <button class="toggle-btn" id="toggleSidebar">
+                    <button class="toggle-btn me-3" id="toggleSidebar">
                         <i class="fas fa-bars"></i>
                     </button>
-                    <h4 class="ms-3 mt-1">
+                    
+                    <span class="user-role">
                         @auth
-                        @if (Auth::user()->isAdmin())
-                        Role Admin
-                        @elseif (Auth::user()->isUser())
-                        Role User
-                        @elseif (Auth::user()->isPetugas())
-                        Role Petugas
+                            @if (Auth::user()->isAdmin())
+                                <i class="fas fa-shield-alt me-1"></i> Administrator
+                            @elseif (Auth::user()->isPetugas())
+                                <i class="fas fa-user-tie me-1"></i> Staff
+                            @elseif (Auth::user()->isUser())
+                                <i class="fas fa-user-graduate me-1"></i> Alumni
+                            @endif
                         @else
-                        Role Tidak Ada
-                        @endif
-                        @else
-                        Belum Login
+                            <i class="fas fa-user me-1"></i> Pengunjung
                         @endauth
-                    </h4>
+                    </span>
                 </div>
-                <div class="d-flex justify-content-end align-items-center gap-3">
-                    <ul class="d-flex justify-content-end list-unstyled gap-3 mt-2">
-                        @guest
-                        @if (Route::has('login'))
-                        <li class="nav-item">
-                            <a class="text-decoration-none text-dark" href="{{ route('login') }}">{{ __('Login') }}</a>
-                        </li>
-                        @endif
-
-                        @if (Route::has('register'))
-                        <li class="nav-item">
-                            <a class="text-decoration-none text-dark" href="{{ route('register') }}">{{ __('Register') }}</a>
-                        </li>
-                        @endif
-                        @else
-                        <li class="nav-item dropdown">
-                            <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                Halo {{ Auth::user()->name }}
+                
+                <div class="user-info">
+                    @guest
+                        <div class="d-flex gap-3">
+                            @if (Route::has('login'))
+                                <a class="btn btn-outline-primary btn-sm" href="{{ route('login') }}">
+                                    <i class="fas fa-sign-in-alt me-1"></i> Login
+                                </a>
+                            @endif
+                            
+                            @if (Route::has('register'))
+                                <a class="btn btn-primary btn-sm" href="{{ route('register') }}">
+                                    <i class="fas fa-user-plus me-1"></i> Daftar
+                                </a>
+                            @endif
+                        </div>
+                    @else
+                        <div class="dropdown">
+                            <a id="navbarDropdown" class="nav-link dropdown-toggle d-flex align-items-center" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <span class="d-none d-md-inline me-2 fw-medium">Halo, {{ Auth::user()->name }}</span>
+                                @php
+                                    $userImage = Auth::user()->image;
+                                @endphp
+                                
+                                @if($userImage)
+                                    @if(\Illuminate\Support\Str::startsWith($userImage, ['http://', 'https://']))
+                                        <img src="{{ $userImage }}" alt="avatar" class="user-avatar">
+                                    @else
+                                        <img src="{{ asset('storage/' . $userImage) }}" alt="avatar" class="user-avatar">
+                                    @endif
+                                @else
+                                    <img src="https://ui-avatars.com/api/?name={{ urlencode(Auth::user()->name) }}&background=4361ee&color=fff" alt="avatar" class="user-avatar">
+                                @endif
                             </a>
 
-                            <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item" href="{{ url('/profile') }}">
-                                    {{ __('Profil') }}
-                                </a>
-                                <a class="dropdown-item" href="{{ route('logout') }}"
-                                    onclick="event.preventDefault();
+                            <ul class="dropdown-menu dropdown-menu-end">
+                                <li>
+                                    <a class="dropdown-item" href="{{ url('/profile') }}">
+                                        <i class="fas fa-user-circle me-2"></i> Profil Saya
+                                    </a>
+                                </li>
+                                @if (Auth::user()->isAdmin() || Auth::user()->isPetugas())
+                                    <li>
+                                        <a class="dropdown-item" href="{{ url('/dashboard') }}">
+                                            <i class="fas fa-tachometer-alt me-2"></i> Dashboard
+                                        </a>
+                                    </li>
+                                @endif
+                                <li><hr class="dropdown-divider"></li>
+                                <li>
+                                    <a class="dropdown-item text-danger" href="{{ route('logout') }}"
+                                        onclick="event.preventDefault();
                                                         document.getElementById('logout-form').submit();">
-                                    {{ __('Logout') }}
-                                </a>
-
+                                        <i class="fas fa-sign-out-alt me-2"></i> Logout
+                                    </a>
+                                </li>
                                 <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                                     @csrf
                                 </form>
-                            </div>
-                        </li>
-
-                        @endguest
-                    </ul>
-                    @auth
-                    <div class="">
-                        @auth
-                        @php
-                        $userImage = Auth::user()->image;
-                        @endphp
-
-                        <a href="{{ url('/profile') }}">
-                            @if($userImage)
-                            @if(\Illuminate\Support\Str::startsWith($userImage, ['http://', 'https://']))
-                            <img src="{{ $userImage }}" alt="avatar"
-                                class="rounded-circle" width="48" height="48" style="object-fit: cover;">
-                            @else
-                            <img src="{{ asset('storage/' . $userImage) }}" alt="avatar"
-                                class="rounded-circle" width="48" height="48" style="object-fit: cover;">
-                            @endif
-                            @else
-                            <img src="https://img.freepik.com/free-vector/blue-circle-with-white-user_78370-4707.jpg?semt=ais_hybrid&w=740" alt="avatar"
-                                class="rounded-circle" width="48" height="48" style="object-fit: cover;">
-                            @endif
-                        </a>
-                        @endauth
-
-
-                    </div>
-                    @endauth
+                            </ul>
+                        </div>
+                    @endguest
                 </div>
             </div>
             @endif
+            
             <main class="py-4">
                 @yield('content')
                 @stack('modal')
             </main>
         </div>
-    </header>
+    </div>
 
     <script>
         document.addEventListener("DOMContentLoaded", function() {
@@ -237,30 +404,48 @@
             const content = document.getElementById("mainContent");
             const toggleBtn = document.getElementById("toggleSidebar");
 
-            // Cek apakah sidebar sebelumnya terbuka atau tidak
+            // Check local storage for sidebar state
             if (localStorage.getItem("sidebarOpen") === "true") {
                 sidebar.classList.add("show");
                 content.classList.add("shift");
             }
 
-            // Event klik tombol toggle sidebar
+            // Toggle sidebar
             toggleBtn.addEventListener("click", function() {
                 sidebar.classList.toggle("show");
                 content.classList.toggle("shift");
-
-                // Simpan status sidebar ke localStorage
                 localStorage.setItem("sidebarOpen", sidebar.classList.contains("show"));
             });
 
-            // Menandai menu aktif berdasarkan URL
+            // Mark active menu item
             document.querySelectorAll(".menu-item").forEach(item => {
-                if (item.href === window.location.href) {
+                if (item.href === window.location.href || 
+                    (window.location.href.includes(item.href) && item.href !== "{{ url('/') }}")) {
                     item.classList.add("active");
                 }
             });
+
+            // Close sidebar when clicking outside on mobile
+            document.addEventListener('click', function(event) {
+                const isClickInsideSidebar = sidebar.contains(event.target);
+                const isClickOnToggleBtn = toggleBtn.contains(event.target);
+                
+                if (window.innerWidth <= 992 && !isClickInsideSidebar && !isClickOnToggleBtn && sidebar.classList.contains('show')) {
+                    sidebar.classList.remove('show');
+                    content.classList.remove('shift');
+                    localStorage.setItem("sidebarOpen", false);
+                }
+            });
+        });
+
+        // Initialize Bootstrap tooltips
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl)
         });
     </script>
 
+    <!-- Bootstrap JS Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 

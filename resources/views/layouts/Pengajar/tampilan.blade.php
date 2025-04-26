@@ -1,28 +1,21 @@
 @extends('welcome')
 
 @section('content')
-<div class="container my-4">
-    <h3 class="mb-4 text-center">Daftar Pengajar</h3>
+<div class="container my-5">
+    <h2 class="text-center mb-5 fw-bold" style="color: #343a40;">Daftar Pengajar</h2>
 
-    <div class="row">
+    <div class="row g-4">
         @foreach ($pengajar as $p)
-        <div class="col-md-6 col-lg-4 mb-4">
-            <div class="card shadow-sm h-100">
-                <div class="card-body d-flex">
-                    <img src="{{ asset('storage/' . $p->foto) }}" class="rounded-circle me-3" width="80" height="80" style="object-fit: cover;" alt="Foto Pengajar">
-                    <div class="w-100">
-                        <div class="row mb-1">
-                            <div class="col-4 fw-bold">Nama</div>
-                            <div class="col-8">{{ $p->nama_lengkap }}</div>
+        <div class="col-md-6 col-lg-4">
+            <div class="card border-0 shadow-sm h-100 rounded-4" style="transition: all 0.3s;">
+                <div class="card-body text-center p-4">
+                    <div class="d-flex flex-column align-items-center">
+                        <div class="position-relative mb-3">
+                            <img src="{{ asset('storage/' . $p->foto) }}" class="rounded-circle shadow" width="100" height="100" style="object-fit: cover;" alt="Foto Pengajar">
                         </div>
-                        <div class="row mb-1">
-                            <div class="col-4 fw-bold">Jabatan</div>
-                            <div class="col-8">{{ $p->jabatan }}</div>
-                        </div>
-                        <div class="row">
-                            <div class="col-4 fw-bold">Mapel</div>
-                            <div class="col-8">{{ $p->mata_pelajaran }}</div>
-                        </div>
+                        <h5 class="fw-bold mb-1">{{ $p->nama_lengkap }}</h5>
+                        <p class="text-muted mb-2">{{ $p->jabatan }}</p>
+                        <span class="badge bg-primary">{{ $p->mata_pelajaran }}</span>
                     </div>
                 </div>
             </div>
@@ -30,4 +23,11 @@
         @endforeach
     </div>
 </div>
+
+<style>
+    .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+    }
+</style>
 @endsection
