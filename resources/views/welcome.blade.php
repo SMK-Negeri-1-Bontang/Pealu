@@ -419,10 +419,10 @@
             </div>
             
             <div class="sidebar-menu">
-                <a href="{{ url('/') }}" class="menu-item"><i class="fas fa-home"></i> Beranda</a>
+                <a href="{{ url('/') }}" class="menu-item"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
                 <a href="{{ url('/alumni') }}" class="menu-item"><i class="fas fa-users"></i> Data Alumni</a>
                 <a href="{{ url('https://smkn1bontang.sch.id/') }}" class="menu-item"><i class="fas fa-school"></i> SMKN 1 Bontang</a>
-                <a href="{{ url('/home') }}" class="menu-item"><i class="fas fa-user-circle"></i> Profil Saya</a>
+                <a href="{{ url('/home') }}" class="menu-item"><i class="fas fa-user-circle"></i> Status Login</a>
                 <a href="{{ url('/pengajar-tampilan') }}" class="menu-item"><i class="fa-solid fa-chalkboard-user"></i> Pengajar</a>
                 <a href="{{ url('/berita-tampilan') }}" class="menu-item"><i class="fas fa-newspaper"></i> Berita</a>
                 <a href="{{ url('/lowongan') }}" class="menu-item"><i class="fas fa-briefcase"></i> Lowongan Kerja</a>
@@ -622,13 +622,18 @@
             });
         });
 
-        // Initialize Bootstrap tooltips
-        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
-        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-            return new bootstrap.Tooltip(tooltipTriggerEl)
+        // Close sidebar when clicking outside on mobile
+        document.addEventListener('click', function(event) {
+            const isClickInsideSidebar = sidebar.contains(event.target);
+            const isClickOnToggleBtn = toggleBtn.contains(event.target);
+            
+            if (window.innerWidth <= 992 && !isClickInsideSidebar && !isClickOnToggleBtn && sidebar.classList.contains('show')) {
+                sidebar.classList.remove('show');
+                content.classList.remove('shift');
+                localStorage.setItem("sidebarOpen", false);
+            }
         });
-    </script>
-
+</script>
     <!-- Bootstrap JS Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
