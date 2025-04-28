@@ -10,46 +10,27 @@ class PengajarController extends Controller
 {
     public function index(Request $request)
     {
-        // Get distinct values for filters
-        $mataPelajaranList = Pengajar::select('mata_pelajaran')
-                                    ->distinct()
-                                    ->orderBy('mata_pelajaran')
-                                    ->pluck('mata_pelajaran');
-        
-        $tahunBergabungList = Pengajar::select('tahun_bergabung')
-                                    ->distinct()
-                                    ->orderBy('tahun_bergabung', 'desc')
-                                    ->pluck('tahun_bergabung');
-
-        // Base query
         $query = Pengajar::query();
-        
-        // Search filters
+
         if ($request->filled('nip')) {
             $query->where('nip', 'like', '%' . $request->nip . '%');
         }
-        
+
         if ($request->filled('nama_lengkap')) {
             $query->where('nama_lengkap', 'like', '%' . $request->nama_lengkap . '%');
         }
-        
-        // Exact match for dropdown filters
+
         if ($request->filled('mata_pelajaran')) {
-            $query->where('mata_pelajaran', $request->mata_pelajaran);
+            $query->where('mata_pelajaran', 'like', '%' . $request->mata_pelajaran . '%');
         }
-        
+
         if ($request->filled('tahun_bergabung')) {
             $query->where('tahun_bergabung', $request->tahun_bergabung);
         }
-        
-        // Default sorting
-        $query->orderBy('nama_lengkap');
-        
-        // Pagination with 10 items per page (better for the new layout)
-        $pengajar = $query->paginate(10)
-                        ->appends($request->query());
-        
-        return view('layouts.pengajar.pengajar', compact('pengajar', 'mataPelajaranList', 'tahunBergabungList'));
+
+        $pengajar = $query->paginate(5);
+
+        return view('layouts.pengajar.pengajar', compact('pengajar'));
     }
 
     public function store(Request $request)
@@ -117,5 +98,18 @@ class PengajarController extends Controller
 
         return redirect()->route('pengajar.index')
             ->with('delete', 'Data pengajar berhasil dihapus');
+    }
+
+    public function invoice($id)
+    {
+        $pengajar = Pengajar::findOrFail($id);
+        $status_map = [1 => 'Aktif', 2 => 'Tidak Aktif', 3 => 'Pensiun'];
+        
+        $pdf = PDF::loadView('layouts.pengajar.invoice', [
+            'pengajar' => $pengajar,
+            'status_map' => $status_map
+        ]);
+
+        return $pdf->stream('invoice_pengajar_'.$id.'.pdf');
     }
 }

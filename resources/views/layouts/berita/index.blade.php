@@ -1,184 +1,141 @@
 @extends('welcome')
 
 @section('content')
-<div class="">
-    <div class="">
+<div class="container">
+    <div class="row justify-content-center">
             
-                        {{-- Flash message --}}
+                    {{-- Flash message --}}
                     @if(session('success'))
-                        <div class="alert alert-success alert-dismissible fade show shadow-sm border-0" role="alert">
-                            <div class="d-flex align-items-center">
-                                <i class="fas fa-check-circle me-2"></i>
-                                <strong>{{ session('success') }}</strong>
-                            </div>
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            {{ session('success') }}
                             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                         </div>
                     @endif
                     @if(session('update'))
-                        <div class="alert alert-info alert-dismissible fade show shadow-sm border-0" role="alert">
-                            <div class="d-flex align-items-center">
-                                <i class="fas fa-info-circle me-2"></i>
-                                <strong>{{ session('update') }}</strong>
-                            </div>
+                        <div class="alert alert-info alert-dismissible fade show" role="alert">
+                            {{ session('update') }}
                             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                         </div>
                     @endif
                     @if(session('delete'))
-                        <div class="alert alert-danger alert-dismissible fade show shadow-sm border-0" role="alert">
-                            <div class="d-flex align-items-center">
-                                <i class="fas fa-exclamation-triangle me-2"></i>
-                                <strong>{{ session('delete') }}</strong>
-                            </div>
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            {{ session('delete') }}
                             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                         </div>
                     @endif
+            <div class="card">
+                <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center mb-3 mt-2 flex-wrap gap-2">
+                    <a href="#" data-bs-toggle="modal" data-bs-target="#modalTambahBerita" class="btn btn-success">
+                        <i class="fa-solid fa-plus"></i> Tambah Berita
+                    </a>
 
-                    <div class="card border-0 shadow-lg">
-                        <div class="card-header bg-primary bg-gradient text-white py-3">
-                            <div class="d-flex justify-content-between align-items-center">
-                                <h4 class="mb-0">
-                                    <i class="fas fa-newspaper me-2"></i> Manajemen Berita
-                                </h4>
-                                <div class="d-flex gap-2">
-                                    <a href="#" data-bs-toggle="modal" data-bs-target="#modalTambahBerita" 
-                                    class="btn btn-light btn-sm rounded-pill">
-                                        <i class="fa-solid fa-plus me-1"></i> Tambah Berita
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="card-body">
-                            <!-- Search Form -->
-                            <div class="mb-4">
-                                <form action="{{ route('tmbberita.index') }}" method="GET" class="row g-3 align-items-end">
-                                    <div class="col-md-8">
-                                        <div class="input-group">
-                                            <span class="input-group-text bg-white border-end-0">
-                                                <i class="fas fa-search text-muted"></i>
-                                            </span>
-                                            <input id="search-focus" type="search" name="search" 
-                                                class="form-control border-start-0 ps-0 shadow-none" 
-                                                placeholder="Cari judul atau deskripsi berita..." 
-                                                value="{{ request('search') }}">
+                    <form action="{{ route('tmbberita.index') }}" method="GET" class="d-flex align-items-center gap-2">
+                        <input id="search-focus" type="search" name="search" class="form-control border-primary shadow-sm" placeholder="Search" value="{{ request('search') }}">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </form>
+                </div>
+
+
+                    <div class="pt-10">
+                        {{-- Table --}}
+                        <table class="table table-hover">
+                            <thead class="">
+                                <tr>
+                                    <th>No</th>
+                                    <th>Judul</th>
+                                    <th>Gambar</th>
+                                    <th>Deskripsi</th>
+                                    <th>Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                
+                                @forelse($tmbberita as $no => $b)
+                                <tr>
+                                    <th scope="row">{{ ++$no }}</th>
+                                    <td>{{ $b->title }}</td>
+                                    <td class="text-center">
+                                        @if($b->image)
+                                            <img src="{{ asset('storage/' . $b->image) }}" width="70" height="70">
+                                        @else
+                                            <span class="text-muted">Tidak ada</span>
+                                        @endif
+                                    </td>
+                                    <td>{{ Str::limit($b->content, 50) }}</td>
+                                    <td class="text-center align-middle">
+                                        <a href="#" data-bs-toggle="modal" data-bs-target="#modalEdit{{$b->id}}"
+                                            class="text-primary mx-2" style="text-decoration: none;">
+                                            <i class="fa-solid fa-pen-to-square fa-lg"></i>
+                                        </a>
+                                        <a href="#" data-bs-toggle="modal" data-bs-target="#modalHapus{{$b->id}}"
+                                            class="text-danger mx-2" style="text-decoration: none;">
+                                            <i class="fa-solid fa-xmark fa-lg"></i>
+                                        </a>
+                                        <a href="#" data-bs-toggle="modal" data-bs-target="#modalLihat{{$b->id}}"
+                                            class="text-info mx-2" style="text-decoration: none;">
+                                            <i class="fa-solid fa-eye fa-lg"></i>
+                                        </a>
+                                    </td>
+                                    @empty
+                                    <div class="alert alert-primary d-flex align-items-center" role="alert">
+                                        <svg xmlns="http://www.w3.org/2000/svg" 
+                                            width="24" height="24" 
+                                            class="bi bi-exclamation-triangle-fill flex-shrink-0 me-2" 
+                                            viewBox="0 0 16 16" role="img" aria-label="Warning:">
+                                            <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
+                                        </svg>
+                                        <div>
+                                            Data Berita Belum Ada
                                         </div>
                                     </div>
-                                    <div class="col-md-4">
-                                        <button type="submit" class="btn btn-primary rounded-pill w-100">
-                                            <i class="fas fa-search me-1"></i> Cari
-                                        </button>
-                                    </div>
-                                </form>
-                            </div>
-
-                            <!-- Table -->
-                            <div class="table-responsive">
-                                <table class="table table-hover table-striped align-middle mb-0">
-                                    <thead class="table-light">
-                                        <tr>
-                                            <th class="text-center" style="width: 60px;">No</th>
-                                            <th>Judul</th>
-                                            <th class="text-center" style="width: 120px;">Gambar</th>
-                                            <th>Deskripsi</th>
-                                            <th class="text-center" style="width: 150px;">Aksi</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @forelse($tmbberita as $no => $b)
-                                        <tr class="hover-shadow">
-                                            <th scope="row" class="text-center">{{ ($tmbberita->currentPage() - 1) * $tmbberita->perPage() + $no + 1 }}</th>
-                                            <td>
-                                                <div class="fw-semibold">{{ $b->title }}</div>
-                                                <small class="text-muted">Terakhir diupdate: {{ $b->updated_at->format('d M Y') }}</small>
-                                            </td>
-                                            <td class="text-center">
-                                                @if($b->image)
-                                                    <img src="{{ asset('storage/' . $b->image) }}" 
-                                                        class="rounded border" 
-                                                        width="80" height="60" 
-                                                        style="object-fit: cover;">
-                                                @else
-                                                    <div class="bg-light rounded d-flex align-items-center justify-content-center" 
-                                                        style="width: 80px; height: 60px;">
-                                                        <i class="fas fa-image text-muted"></i>
-                                                    </div>
-                                                @endif
-                                            </td>
-                                            <td>
-                                                <div class="text-truncate" style="max-width: 300px;">
-                                                    {{ $b->content }}
-                                                </div>
-                                            </td>
-                                            <td class="text-center">
-                                                <div class="btn-group btn-group-sm" role="group">
-                                                    <a href="#" data-bs-toggle="modal" data-bs-target="#modalLihat{{$b->id}}"
-                                                        class="btn btn-outline-info rounded-start-pill" title="Lihat">
-                                                        <i class="fa-solid fa-eye"></i>
-                                                    </a>
-                                                    <a href="#" data-bs-toggle="modal" data-bs-target="#modalEdit{{$b->id}}"
-                                                        class="btn btn-outline-primary" title="Edit">
-                                                        <i class="fa-solid fa-pen-to-square"></i>
-                                                    </a>
-                                                    <a href="#" data-bs-toggle="modal" data-bs-target="#modalHapus{{$b->id}}"
-                                                        class="btn btn-outline-danger rounded-end-pill" title="Hapus">
-                                                        <i class="fa-solid fa-trash"></i>
-                                                    </a>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        @empty
-                                        <tr>
-                                            <td colspan="5" class="text-center py-4">
-                                                <div class="alert alert-info d-flex align-items-center justify-content-center">
-                                                    <i class="fas fa-info-circle me-3 fa-2x"></i>
-                                                    <div>
-                                                        <h5 class="alert-heading mb-1">Data Berita Kosong</h5>
-                                                        <p class="mb-0">Belum ada berita yang tersedia. Silakan tambah berita baru.</p>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        @endforelse
-                                    </tbody>
-                                </table>
-                            </div>
-                            
-                            <!-- Pagination -->
-                            <div class="d-flex justify-content-between align-items-center mt-4">
-                                <div class="text-muted">
-                                    Menampilkan <b>{{ $tmbberita->firstItem() }}</b> sampai <b>{{ $tmbberita->lastItem() }}</b> dari <b>{{ $tmbberita->total() }}</b> berita
-                                </div>
-                                <nav aria-label="Page navigation">
-                                    <ul class="pagination pagination-sm mb-0">
-                                        @if ($tmbberita->onFirstPage())
-                                            <li class="page-item disabled">
-                                                <span class="page-link rounded-pill">&laquo;</span>
-                                            </li>
-                                        @else
-                                            <li class="page-item">
-                                                <a class="page-link rounded-pill" href="{{ $tmbberita->previousPageUrl() }}" rel="prev">&laquo;</a>
-                                            </li>
-                                        @endif
-
-                                        @foreach ($tmbberita->links()->elements[0] as $page => $url)
-                                            <li class="page-item {{ $tmbberita->currentPage() == $page ? 'active' : '' }}">
-                                                <a class="page-link rounded-circle" href="{{ $url }}">{{ $page }}</a>
-                                            </li>
-                                        @endforeach
-
-                                        @if ($tmbberita->hasMorePages())
-                                            <li class="page-item">
-                                                <a class="page-link rounded-pill" href="{{ $tmbberita->nextPageUrl() }}" rel="next">&raquo;</a>
-                                            </li>
-                                        @else
-                                            <li class="page-item disabled">
-                                                <span class="page-link rounded-pill">&raquo;</span>
-                                            </li>
-                                        @endif
-                                    </ul>
-                                </nav>
-                            </div>
+                                </tr>
+                                @endforelse
+                            </tbody>
+                        </table>
+                        
+                        <div class="d-flex justify-content-between align-items-center p-2">
+                        <div>
+                            Showing <b>{{ $tmbberita->firstItem() }}</b> to <b>{{ $tmbberita->lastItem() }}</b> of
+                            <b>{{ $tmbberita->total() }}</b> results
                         </div>
+                        <div>
+                            <nav aria-label="Page navigation">
+                                <ul class="pagination justify-content-center mb-0">
+                                    <!-- Tombol Previous -->
+                                    @if ($tmbberita->onFirstPage())
+                                        <li class="page-item disabled">
+                                            <span class="page-link">Previous</span>
+                                        </li>
+                                    @else
+                                        <li class="page-item">
+                                            <a class="page-link" href="{{ $tmbberita->previousPageUrl() }}" rel="prev">Previous</a>
+                                        </li>
+                                    @endif
+
+                                    <!-- Nomor Halaman -->
+                                    @foreach ($tmbberita->links()->elements[0] as $page => $url)
+                                        <li class="page-item {{ $tmbberita->currentPage() == $page ? 'active' : '' }}">
+                                            <a class="page-link" href="{{ $url }}">{{ $page }}</a>
+                                        </li>
+                                    @endforeach
+
+                                    <!-- Tombol Next -->
+                                    @if ($tmbberita->hasMorePages())
+                                        <li class="page-item">
+                                            <a class="page-link" href="{{ $tmbberita->nextPageUrl() }}" rel="next">Next</a>
+                                        </li>
+                                    @else
+                                        <li class="page-item disabled">
+                                            <span class="page-link">Next</span>
+                                        </li>
+                                    @endif
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
                     </div>
 
                     {{-- Modal Tambah --}}
@@ -328,51 +285,3 @@
     </div>
 </div>
 @endsection
-@push('styles')
-<style>
-    .card-header.bg-gradient-primary {
-    background: linear-gradient(to right, #3a7bd5, #00d2ff) !important;
-    /* Warna bisa disesuaikan */
-    }
-    
-    .card {
-        border-radius: 12px;
-        overflow: hidden;
-    }
-    
-    .card-header {
-        border-bottom: none;
-    }
-    
-    .table th {
-        font-weight: 600;
-        text-transform: uppercase;
-        font-size: 0.8rem;
-        letter-spacing: 0.5px;
-    }
-    
-    .hover-shadow:hover {
-        box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
-        transform: translateY(-2px);
-        transition: all 0.3s ease;
-    }
-    
-    .rounded-pill {
-        border-radius: 50rem !important;
-    }
-    
-    .rounded-start-pill {
-        border-top-left-radius: 50rem !important;
-        border-bottom-left-radius: 50rem !important;
-    }
-    
-    .rounded-end-pill {
-        border-top-right-radius: 50rem !important;
-        border-bottom-right-radius: 50rem !important;
-    }
-    
-    .btn-group .btn {
-        border-radius: 0;
-    }
-</style>
-@endpush

@@ -1,244 +1,130 @@
 @extends('welcome')
 
 @section('content')
-<div class="">
-    <div class="row justify-content-center">
-        <!-- Notifikasi -->
-        @if(session('success'))
-        <div class="col-md-12">
-            <div class="alert alert-success alert-dismissible fade show shadow-sm border-0" role="alert">
-                <div class="d-flex align-items-center">
-                    <i class="fas fa-check-circle me-2"></i>
-                    <strong>{{ session('success') }}</strong>
-                </div>
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-        </div>
-        @endif
-        
-        @if ($message = Session::get('delete'))
-        <div class="col-md-12">
-            <div class="alert alert-danger alert-dismissible fade show shadow-sm border-0" role="alert">
-                <div class="d-flex align-items-center">
-                    <i class="fas fa-exclamation-triangle me-2"></i>
-                    <strong>{{ $message }}</strong>
-                </div>
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-        </div>
-        @endif
-        
-        <!-- Card Utama -->
-        <div class="col-md-12">
-            <div class="card border-0 shadow-lg">
-                <div class="card-header bg-primary bg-gradient text-white py-3">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <h4 class="mb-0">
-                            <i class="fas fa-users-cog me-2"></i> Manajemen Pengguna
-                        </h4>
-                        <a href="{{ route('user.create') }}" class="btn btn-light btn-sm rounded-pill">
-                            <i class="fa fa-plus me-1"></i> Tambah User
-                        </a>
-                    </div>
-                </div>
-                
+    <div class="container">
+        <div class="row justify-content-center">
+                    @if(session('success'))
+                        <div id="success-alert" class="alert alert-success alert-dismissible fade show" role="alert">
+                            <strong>{{ session('success') }}</strong>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    @endif
+                    @if ($message = Session::get('delete'))
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            <strong>{{ $message }}</strong>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    @endif
+            <div class="card">
                 <div class="card-body">
-                    <!-- Form Pencarian -->
-                    <div class="mb-4">
-                        <form action="{{ route('user.index') }}" method="GET">
-                            <div class="row g-3">
-                                <div class="col-md-3">
-                                    <label class="form-label fw-semibold text-primary">Nama</label>
-                                    <input type="text" name="name" class="form-control border-2 border-primary rounded-pill shadow-sm" 
-                                        placeholder="Cari nama..." value="{{ request('name') }}">
-                                </div>
-                                <div class="col-md-3">
-                                    <label class="form-label fw-semibold text-primary">Email</label>
-                                    <input type="text" name="email" class="form-control border-2 border-primary rounded-pill shadow-sm" 
-                                        placeholder="Cari email..." value="{{ request('email') }}">
-                                </div>
-                                <div class="col-md-3">
-                                    <label class="form-label fw-semibold text-primary">Nomor HP</label>
-                                    <input type="text" name="hp" class="form-control border-2 border-primary rounded-pill shadow-sm" 
-                                        placeholder="Cari nomor HP..." value="{{ request('hp') }}">
-                                </div>
-                                <div class="col-md-3 d-flex align-items-end">
-                                    <button type="submit" class="btn btn-primary rounded-pill w-100 shadow-sm">
-                                        <i class="fas fa-search me-1"></i> Cari
-                                    </button>
+                        <div class="">
+                            <div class="mb-3 mt-2">
+                                <a href="{{ route('user.create') }}" class="btn btn-success">
+                                    <i class="fa fa-plus"></i> Tambah User
+                                </a>
+                            </div>
+
+                            <div class="card-body mb-3">
+                                <div class="d-flex justify-content-center">
+                                    <form action="{{ route('user.index') }}" method="GET" class="w-100">
+                                        <div class="row g-3 justify-content-center">
+                                            <div class="col-md-3">
+                                                <label class="fw-bold">Nama</label>
+                                                <input type="text" name="name" class="form-control border-primary shadow-sm" 
+                                                    placeholder="Masukkan Nama" value="{{ request('name') }}">
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label class="fw-bold">Email</label>
+                                                <input type="text" name="email" class="form-control border-primary shadow-sm" 
+                                                    placeholder="Masukkan Email" value="{{ request('email') }}">
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label class="fw-bold">Hp</label>
+                                                <input type="text" name="hp" class="form-control border-primary shadow-sm" 
+                                                    placeholder="Masukkan Hp" value="{{ request('hp') }}">
+                                            </div>
+                                            <div class="col-md-1 d-flex align-items-end">
+                                                <button type="submit" class="btn btn-primary w-100 shadow">
+                                                    <i class="fas fa-search"></i> Cari
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </form>
                                 </div>
                             </div>
-                        </form>
-                    </div>
-                    
-                    <!-- Tabel Data -->
-                    <div class="table-responsive">
-                        <table class="table table-hover table-striped align-middle mb-0">
-                            <thead class="table-light">
+
+                        </div>
+
+                    <div class="">
+                        <table class="table table-hover">
+                            <thead class="">
                                 <tr>
-                                    <th class="text-center" style="width: 60px;">No</th>
-                                    <th class="text-center" style="width: 100px;">Foto</th>
-                                    <th>Username</th>
+                                    <th>No</th>
+                                    <th>Profile</th>
+                                    <th>Name</th>
                                     <th>Nama Lengkap</th>
                                     <th>Email</th>
-                                    <th style="width: 120px;">Role</th>
-                                    <th class="text-center" style="width: 120px;">Aksi</th>
+                                    <th>Role</th>
+                                    <th>Aksi</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @forelse ($users as $user)
-                                <tr class="hover-shadow">
-                                    <td class="text-center">{{ $loop->iteration + ($users->currentPage() - 1) * $users->perPage() }}</td>
+                                <tr>
+                                    <td>{{ $loop->iteration + ($users instanceof \Illuminate\Pagination\LengthAwarePaginator ? $users->firstItem() - 1 : 0) }}</td>
                                     <td class="text-center">
-                                        <div class="avatar avatar-md">
-                                            @if($user->image)
-                                                @if(Str::startsWith($user->image, ['http://', 'https://']))
-                                                    <img src="{{ $user->image }}" class="rounded-circle border border-2 border-primary" width="60" height="60">
-                                                @else
-                                                    <img src="{{ asset('storage/' . $user->image) }}" class="rounded-circle border border-2 border-primary" width="60" height="60">
-                                                @endif
+                                        @if($user->image)
+                                            @if(Str::startsWith($user->image, ['http://', 'https://']))
+                                                <img src="{{ $user->image }}" width="70">
                                             @else
-                                                <div class="avatar-placeholder rounded-circle bg-light text-muted d-flex align-items-center justify-content-center" style="width: 60px; height: 60px;">
-                                                    <i class="fas fa-user fa-lg"></i>
-                                                </div>
+                                                <img src="{{ asset('storage/' . $user->image) }}" width="70">
                                             @endif
-                                        </div>
+                                        @else
+                                            <span class="text-muted">Tidak ada</span>
+                                        @endif
                                     </td>
+
                                     <td>{{ $user->name }}</td>
                                     <td>{{ $user->nama_lengkap }}</td>
                                     <td>{{ $user->email }}</td>
-                                    <td>
-                                        <span class="badge bg-{{ $user->role == 'admin' ? 'primary' : 'success' }} bg-opacity-10 text-{{ $user->role == 'admin' ? 'primary' : 'success' }}">
-                                            {{ ucfirst($user->role) }}
-                                        </span>
+                                    <td>{{ ucfirst($user->role) }}</td>
+                                    <td class="text-center align-middle">
+                                        <a href="{{ route('user.edit', $user->id) }}" class="text-primary mx-2" style="text-decoration: none;">
+                                            <i class="fa-solid fa-pen-to-square fa-lg"></i>
+                                        </a>
+                                        <a href="#" data-bs-toggle="modal" data-bs-target="#delete{{$user->id}}" class="text-danger mx-2" style="text-decoration: none;">
+                                            <i class="fa-solid fa-xmark fa-lg"></i>
+                                        </a>
                                     </td>
-                                    <td class="text-center">
-                                        <div class="btn-group btn-group-sm" role="group">
-                                            <a href="{{ route('user.edit', $user->id) }}" class="btn btn-outline-primary rounded-start-pill" title="Edit">
-                                                <i class="fa-solid fa-pen-to-square"></i>
-                                            </a>
-                                            <a href="#" data-bs-toggle="modal" data-bs-target="#delete{{$user->id}}" class="btn btn-outline-danger rounded-end-pill" title="Hapus">
-                                                <i class="fa-solid fa-trash"></i>
-                                            </a>
-                                        </div>
-                                    </td>
-                                </tr>
                                 @empty
-                                <tr>
-                                    <td colspan="7" class="text-center py-4">
-                                        <div class="alert alert-info d-flex align-items-center justify-content-center">
-                                            <i class="fas fa-info-circle me-3 fa-2x"></i>
+                                        <div class="alert alert-primary d-flex align-items-center mb-0" role="alert">
+                                            <svg xmlns="http://www.w3.org/2000/svg" 
+                                                width="24" height="24" 
+                                                class="bi bi-exclamation-triangle-fill flex-shrink-0 me-2" 
+                                                viewBox="0 0 16 16" role="img" aria-label="Warning:">
+                                                <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
+                                            </svg>
                                             <div>
-                                                <h5 class="alert-heading mb-1">Data Pengguna Kosong</h5>
-                                                <p class="mb-0">Belum ada pengguna yang terdaftar.</p>
+                                                Data User Belum Ada
                                             </div>
                                         </div>
-                                    </td>
                                 </tr>
                                 @endforelse
                             </tbody>
+
                         </table>
+                        
                     </div>
-                    
+
                     <!-- Pagination -->
-                    <div class="d-flex justify-content-between align-items-center mt-4">
-                        <div class="text-muted">
-                            Menampilkan <b>{{ $users->firstItem() }}</b> sampai <b>{{ $users->lastItem() }}</b> dari <b>{{ $users->total() }}</b> pengguna
-                        </div>
-                        <nav aria-label="Page navigation">
-                            <ul class="pagination pagination-sm mb-0">
-                                @if ($users->onFirstPage())
-                                    <li class="page-item disabled">
-                                        <span class="page-link rounded-pill">&laquo;</span>
-                                    </li>
-                                @else
-                                    <li class="page-item">
-                                        <a class="page-link rounded-pill" href="{{ $users->previousPageUrl() }}" rel="prev">&laquo;</a>
-                                    </li>
-                                @endif
-
-                                @foreach ($users->links()->elements[0] as $page => $url)
-                                    <li class="page-item {{ $users->currentPage() == $page ? 'active' : '' }}">
-                                        <a class="page-link rounded-circle" href="{{ $url }}">{{ $page }}</a>
-                                    </li>
-                                @endforeach
-
-                                @if ($users->hasMorePages())
-                                    <li class="page-item">
-                                        <a class="page-link rounded-pill" href="{{ $users->nextPageUrl() }}" rel="next">&raquo;</a>
-                                    </li>
-                                @else
-                                    <li class="page-item disabled">
-                                        <span class="page-link rounded-pill">&raquo;</span>
-                                    </li>
-                                @endif
-                            </ul>
-                        </nav>
+                    <div class="mt-3">
+                        {{ $users->links() }}
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 
-@push('styles')
-<style>
-    .card-header.bg-gradient-primary {
-    background: linear-gradient(to right, #3a7bd5, #00d2ff) !important;
-    /* Warna bisa disesuaikan */
-    }
-    
-    .card {
-        border-radius: 12px;
-        overflow: hidden;
-    }
-    
-    .card-header {
-        border-bottom: none;
-    }
-    
-    .table th {
-        font-weight: 600;
-        text-transform: uppercase;
-        font-size: 0.8rem;
-        letter-spacing: 0.5px;
-    }
-    
-    .hover-shadow:hover {
-        box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
-        transform: translateY(-2px);
-        transition: all 0.3s ease;
-    }
-    
-    .avatar-placeholder {
-        border: 2px dashed #dee2e6;
-    }
-    
-    .btn-outline-primary:hover, .btn-outline-danger:hover {
-        color: white !important;
-    }
-    
-    .rounded-pill {
-        border-radius: 50rem !important;
-    }
-    
-    .rounded-start-pill {
-        border-top-left-radius: 50rem !important;
-        border-bottom-left-radius: 50rem !important;
-    }
-    
-    .rounded-end-pill {
-        border-top-right-radius: 50rem !important;
-        border-bottom-right-radius: 50rem !important;
-    }
-    
-    .badge {
-        padding: 0.35em 0.65em;
-        font-weight: 500;
-    }
-</style>
-@endpush
-@endsection
 @foreach($users as $user)
 <!-- Modal Delete -->
 <div class="modal fade" id="delete{{ $user->id }}" tabindex="-1" aria-labelledby="deleteModalLabel{{ $user->id }}" aria-hidden="true">
@@ -275,3 +161,5 @@
 @php
     use Illuminate\Support\Str;
 @endphp
+
+@endsection
