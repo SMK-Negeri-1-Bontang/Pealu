@@ -7,32 +7,57 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\Log;
 
 class AlumniController extends Controller
 {
     public function index(Request $request)
     {
+        // Query dasar
         $query = Alumni::query();
-
+        
+        // Filter berdasarkan nama (case insensitive)
         if ($request->filled('nama')) {
-            $query->where('nama_lengk', 'like', '%' . $request->nama . '%');
+            $query->where('nama_lengk', 'ilike', '%' . $request->nama . '%');
         }
-
+        
+        // Filter berdasarkan NIS (exact match)
         if ($request->filled('nis')) {
-            $query->where('nis', 'like', '%' . $request->nis . '%');
+            $query->where('nis', $request->nis);
         }
-
+        
+        // Filter berdasarkan jurusan (dropdown exact match)
         if ($request->filled('jurusan')) {
-            $query->where('jur_sekolah', 'like', '%' . $request->jurusan . '%');
+            $query->where('jur_sekolah', $request->jurusan);
         }
-
+        
+        // Filter berdasarkan tahun lulus (dropdown exact match)
         if ($request->filled('tahun_lulus')) {
             $query->where('tahun_lulus', $request->tahun_lulus);
         }
-
-        $alumni = $query->paginate(5);
-
-        return view('layouts.alumni.alumni', compact('alumni'));
+        
+        // Tambahkan eager loading jika ada relasi
+        // $query->with(['relasi1', 'relasi2']);
+        
+        // Sorting default
+        $query->orderBy('nama_lengk');
+        
+        // Get data untuk dropdown filter
+        $jurusanList = Alumni::select('jur_sekolah')
+                            ->distinct()
+                            ->orderBy('jur_sekolah')
+                            ->pluck('jur_sekolah');
+        
+        $tahunList = Alumni::select('tahun_lulus')
+                          ->distinct()
+                          ->orderBy('tahun_lulus', 'desc')
+                          ->pluck('tahun_lulus');
+        
+        // Pagination dengan 10 item per halaman
+        $alumni = $query->paginate(10)
+                      ->appends($request->query());
+        
+        return view('layouts.alumni.alumni', compact('alumni', 'jurusanList', 'tahunList'));
     }
 
     public function generatePdf($id)
@@ -44,10 +69,24 @@ class AlumniController extends Controller
 
         $status_map = [1 => 'Bekerja', 2 => 'Kuliah', 3 => 'Tidak Ada Kabar'];
         $jalur_map = [1 => 'PTN', 2 => 'PTS', 3 => 'DINAS'];
-
-        $pdf = PDF::loadView('layouts.alumni.invoice', compact('data', 'status_map', 'jalur_map'));
-
-        return $pdf->stream();
+    
+        // Handle image conversion for PDF
+        if (!empty($data->image)) {
+            try {
+                $imagePath = storage_path('app/public/' . $data->image);
+                if (file_exists($imagePath)) {
+                    $imageData = base64_encode(file_get_contents($imagePath));
+                    $data->image_base64 = 'data:'.mime_content_type($imagePath).';base64,'.$imageData;
+                }
+            } catch (\Exception $e) {
+                Log::error("Error processing image: " . $e->getMessage());
+            }
+        }
+    
+        $pdf = PDF::loadView('layouts.alumni.invoice', compact('data', 'status_map', 'jalur_map'))
+                  ->setPaper('a4', 'portrait');
+    
+        return $pdf->stream('kartu_alumni_'.$data->nis.'.pdf');
     }
 
     public function store(Request $request)
