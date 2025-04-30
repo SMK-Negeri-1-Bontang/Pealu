@@ -27,15 +27,17 @@
                     background: rgba(255, 255, 255, 0.85);">
             
             <!-- Gradient Border Effect -->
-            <div class="position-absolute top-0 start-0 end-0" style="height: 5px; background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);"></div>
+            <div class="position-absolute top-0 start-0 end-0" style="height: 5px; background: linear-gradient(45deg, #3a7bd5, #00d2ff);
+        border: none;"></div>
             
             <div class="card-body py-4">
                 <!-- Animated Welcome Text -->
-                <h2 class="fw-bold mb-4" style="background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+                <h2 class="fw-bold mb-4" style="background: linear-gradient(45deg, #3a7bd5, #00d2ff);
+        border: none;
                                           -webkit-background-clip: text;
                                           -webkit-text-fill-color: transparent;
                                           font-size: 2rem;">
-                    Selamat Datang, {{ Auth::user()->name }} <span class="animate_animated animatetada animate_infinite" style="display: inline-block;">🎉</span>
+                    Selamat Datang, {{ Auth::user()->name }} <span class="animate_animated animatetada animate_infinite" style="display: inline-block;"></span>
                 </h2>
                 
                 <!-- Profile Avatar -->
@@ -70,7 +72,8 @@
                 <div class="mb-4">
                     <p class="fs-5 text-dark mb-1">Anda login sebagai</p>
                     <span class="badge rounded-pill px-3 py-2" 
-                          style="font-size: 1rem; background: linear-gradient(90deg, #667eea 0%, #764ba2 100%); color: white;">
+                          style="font-size: 1rem; background: linear-gradient(45deg, #3a7bd5, #00d2ff);
+        border: none; color: white;">
                         {{ ucfirst(Auth::user()->role) }}
                     </span>
                 </div>
@@ -79,7 +82,8 @@
                 <div class="mt-5 d-flex justify-content-center gap-3">
                     <a href="{{ url('/') }}" class="btn btn-lg btn-primary px-4 fw-bold shadow-sm"
                        style="border-radius: 50px; border: none;
-                              background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+                              background: linear-gradient(45deg, #3a7bd5, #00d2ff);
+        border: none;
                               transition: all 0.3s ease;">
                         <i class="fas fa-home me-2"></i> Dashboard
                     </a>
