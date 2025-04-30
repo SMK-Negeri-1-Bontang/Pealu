@@ -11,12 +11,12 @@ class LowonganController extends Controller
     public function index()
     {
         $lowongan = Lowongan::paginate(10);
-        return view('lowongan.index', compact('lowongan'));
+        return view('layouts.lowongan.index', compact('lowongan'));
     }
 
     public function create()
     {
-        return view('lowongan.create');
+        return view('layouts.lowongan.create');
     }
 
     public function store(Request $request)
@@ -41,7 +41,7 @@ class LowonganController extends Controller
     public function edit($id)
     {
         $lowongan = Lowongan::find($id);
-        return view('lowongan.edit', compact('lowongan'));
+        return view('layouts.lowongan.edit', compact('lowongan'));
     }
 
     public function update(Request $request, $id)

@@ -1,4 +1,4 @@
-@extends('welcome')
+@extends('welcome') {{-- Ganti jika layout utamamu berbeda --}}
 
 @section('content')
 <div class="container-fluid px-0">
@@ -48,7 +48,7 @@
     <!-- Main Content -->
     <div class="container my-4">
         <div class="row">
-            <!-- Left Sidebar -->
+            <!-- Sidebar -->
             <div class="col-md-3">
                 <div class="card mb-3">
                     <div class="card-header bg-white fw-bold">
@@ -157,14 +157,6 @@
                                         <i class="far fa-clock me-1"></i>Diposting {{ $l->created_at->diffForHumans() }}
                                     </small>
                                     <div>
-                                        <a href="{{ route('lowongan.edit', $l->id) }}"
-                                            class="btn btn-sm btn-outline-primary me-2">
-                                            <i class="fas fa-edit"></i>
-                                        </a>
-
-                                        <a href="#" data-bs-toggle="modal" data-bs-target="#delete{{$l->id}}" class="btn btn-sm btn-outline-danger me-2" style="text-decoration: none;">
-                                            <i class="fas fa-trash"></i>
-                                        </a>
                                         <a href="#" class="btn btn-sm btn-danger">Lamar Sekarang</a>
                                     </div>
                                 </div>
@@ -186,52 +178,10 @@
                 <div class="d-flex justify-content-center mt-4">
                     {{ $lowongan->links('pagination::bootstrap-5') }}
                 </div>
-
             </div>
         </div>
     </div>
 </div>
-
-<!-- Modal sections (keep your existing modal code) -->
-@foreach($lowongan as $l)
-<!-- Modal Delete -->
-<div class="modal fade" id="delete{{ $l->id }}" tabindex="-1" aria-labelledby="deleteModalLabel{{ $l->id }}" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content border-0 shadow-lg">
-            <div class="modal-header bg-danger text-white">
-                <h5 class="modal-title fw-bold" id="deleteModalLabel{{ $l->id }}">
-                    <i class="fas fa-exclamation-triangle"></i> Konfirmasi Penghapusan
-                </h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body text-center">
-                <i class="fas fa-trash-alt text-danger fa-3x mb-3"></i>
-                <p class="mb-0">Apakah Anda yakin ingin menghapus lowongan</p>
-                <h5 class="fw-bold text-uppercase mt-2">{{ $l->position }}</h5>
-                <p class="text-muted">Dari {{ $l->company_name }}</p>
-                <p class="text-muted">Tindakan ini tidak dapat dibatalkan!</p>
-            </div>
-            <div class="modal-footer border-0 d-flex justify-content-center">
-                <button type="button" class="btn btn-secondary px-4" data-bs-dismiss="modal">
-                    <i class="fas fa-times"></i> Batal
-                </button>
-                <form action="{{ route('lowongan.destroy', $l->id) }}" method="POST">
-                    @csrf
-                    @method('DELETE')
-                    <button type="submit" class="btn btn-danger px-4">
-                        <i class="fas fa-trash"></i> Hapus
-                    </button>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
-@endforeach
-
-@push('modal')
-<!-- Your existing modal code here -->
-@endpush
-
 @endsection
 
 @push('styles')

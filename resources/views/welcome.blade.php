@@ -284,7 +284,7 @@
                 <a href="{{ url('/home') }}" class="menu-item"><i class="fas fa-user-circle"></i> Status Login</a>
                 <a href="{{ url('/pengajar-tampilan') }}" class="menu-item"><i class="fa-solid fa-chalkboard-user"></i> Pengajar</a>
                 <a href="{{ url('/berita-tampilan') }}" class="menu-item"><i class="fas fa-newspaper"></i> Berita</a>
-                <a href="{{ url('/lowongan') }}" class="menu-item"><i class="fas fa-briefcase"></i> Lowongan Kerja</a>
+                <a href="{{ url('/lowongan-tampilan') }}" class="menu-item"><i class="fas fa-briefcase"></i> Lowongan Kerja</a>
                 
                 @auth
                     @if (Auth::user()->isAdmin() || Auth::user()->isPetugas())
@@ -297,7 +297,7 @@
                         
                         <a href="{{ route('pengajar.index') }}" class="menu-item"><i class="fas fa-plus-circle"></i> Tambah Pengajar</a>
                         <a href="{{ route('tmbberita.index') }}" class="menu-item"><i class="fas fa-plus-circle"></i> Tambah Berita</a>
-                        <a href="{{ route('lowongan.create') }}" class="menu-item"><i class="fas fa-plus-circle"></i> Tambah Lowongan</a>
+                        <a href="{{ route('lowongan.index') }}" class="menu-item"><i class="fas fa-plus-circle"></i> Tambah Lowongan</a>
                     @endif
                 @endauth
             </div>

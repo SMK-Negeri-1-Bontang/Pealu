@@ -72,25 +72,15 @@ Route::middleware(['role:admin,petugas'])->group(function () {
 Auth::routes();
 
 // Rute untuk Pengajar
-
 Route::resource('pengajar', PengajarController::class);
-
 Route::get('/pengajar-tampilan', function () {
     $pengajar = App\Models\Pengajar::paginate(5);
     return view('layouts.pengajar.tampilan', compact('pengajar'));
 });
 
-// ATAU jika hanya butuh index
-Route::get('/Pengajar', [\App\Http\Controllers\PengajarController::class, 'index'])->name('pengajar.index');
-
-// Route khusus untuk invoice
-Route::get('/pengajar/invoice/{id}', [PengajarController::class, 'invoice'])->name('pengajar.invoice');
-
 // Lowongan
-Route::get('/lowongan', [LowonganController::class, 'index'])->name('lowongan.index');
-Route::get('/tmblowongan', [LowonganController::class, 'create'])->name('lowongan.create');
-Route::post('/lowongan', [LowonganController::class, 'store'])->name('lowongan.store');
-Route::get('/lowongan/{id}', [LowonganController::class, 'show'])->name('lowongan.show');
-Route::get('/lowongan/{id}/edit', [LowonganController::class, 'edit'])->name('lowongan.edit');
-Route::put('/lowongan/{id}', [LowonganController::class, 'update'])->name('lowongan.update');
-Route::delete('/lowongan/{id}/delete', [LowonganController::class, 'destroy'])->name('lowongan.destroy');
+Route::resource('lowongan', LowonganController::class);
+Route::get('/lowongan-tampilan', function () {
+    $lowongan = App\Models\Lowongan::paginate(5);
+    return view('layouts.lowongan.tampilan', compact('lowongan'));
+});
