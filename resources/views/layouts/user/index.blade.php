@@ -94,9 +94,9 @@
                                             <div class="avatar avatar-md">
                                                 @if($user->image)
                                                     @if(Str::startsWith($user->image, ['http://', 'https://']))
-                                                        <img src="{{ $user->image }}" class="rounded-circle border border-2 border-primary" width="60" height="60">
+                                                        <img src="{{ $user->image }}" class="rounded-circle border-2 border-primary" width="60" height="60">
                                                     @else
-                                                        <img src="{{ asset('storage/' . $user->image) }}" class="rounded-circle border border-2 border-primary" width="60" height="60">
+                                                        <img src="{{ asset('storage/' . $user->image) }}" class="rounded-circle border-2 border-primary" width="60" height="60">
                                                     @endif
                                                 @else
                                                     <div class="avatar-placeholder rounded-circle bg-light text-muted d-flex align-items-center justify-content-center" style="width: 60px; height: 60px;">

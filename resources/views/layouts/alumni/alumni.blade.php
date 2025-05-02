@@ -36,9 +36,13 @@
                         <h4 class="mb-0">
                             <i class="fas fa-user-graduate me-2"></i> Data Alumni
                         </h4>
-                        <a href="#" data-bs-toggle="modal" data-bs-target="#tambah" class="btn btn-light btn-sm rounded-pill">
-                            <i class="fa-solid fa-plus me-1"></i> Tambah Data
-                        </a>
+                        @if (Auth::check())
+                            @if (Auth::user()->isAdmin() || Auth::user()->isPetugas())
+                            <a href="#" data-bs-toggle="modal" data-bs-target="#tambah" class="btn btn-light btn-sm rounded-pill">
+                                <i class="fa-solid fa-plus me-1"></i> Tambah Data
+                            </a>
+                            @endif
+                        @endif
                     </div>
                 </div>
                 
@@ -109,7 +113,7 @@
                                     <td class="text-center">
                                         <div class="avatar avatar-md">
                                             @if($a->image)
-                                                <img src="{{ asset('storage/' . $a->image) }}" class="rounded-circle border border-2 border-primary" width="60" height="60">
+                                                <img src="{{ asset('storage/' . $a->image) }}" class="rounded-circle border-2 border-primary" width="60" height="60">
                                             @else
                                                 <div class="avatar-placeholder rounded-circle bg-light text-muted d-flex align-items-center justify-content-center" style="width: 60px; height: 60px;">
                                                     <i class="fas fa-user fa-lg"></i>
@@ -304,11 +308,22 @@
                                 @enderror
                         </div>
                         <div class="col-md-6 mb-3">
-                                <label class="form-label">Jurusan</label>
-                                <input type="text" class="form-control @error('jur_sekolah') is-invalid @enderror" name="jur_sekolah" placeholder="Contoh 'Rekayasa Perangkat Lunak'">
-                                @error('jur_sekolah')
-                                <div class="alert alert-danger">{{ $message }}</div>
-                                @enderror
+                            <label class="form-label">Jurusan</label>
+                            <select class="form-select @error('jur_sekolah')
+        is-invalid
+        @enderror" name="jur_sekolah" aria-label="Pilih Jurusan">
+                                <option disabled selected>Pilih</option>
+                                <option value="Rekayasa Perangkat Lunak">Rekayasa Perangkat Lunak</option>
+                                <option value="Kimia Industri">Kimia Industri</option>
+                                <option value="Kimia Analis">Kimia Analis</option>
+                                <option value="Tehnik Instalasi Listrik">Tehnik Instalasi Listrik</option>
+                                <option value="Tehnik Permesinan">Tehnik Permesinan</option>
+                                <option value="Tehnik Pendinginan">Tehnik Pendinginan</option>
+                                <option value="Tehnik Pengelasan">Tehnik Pengelasan</option>
+                            </select>
+                            @error('jur_sekolah')
+                            <div class="alert alert-danger">{{ $message }}</div>
+                            @enderror
                         </div>
                     </div>
                     <div class="row">
@@ -523,11 +538,22 @@
                                 @enderror
                         </div>
                         <div class="col-md-6 mb-3">
-                                <label class="form-label">Jurusan</label>
-                                <input type="text" class="form-control @error('jur_sekolah') is-invalid @enderror" name="jur_sekolah" value="{{ old('jur_sekolah', $a->jur_sekolah) }}" placeholder="Contoh 'Rekayasa Perangkat Lunak'">
-                                @error('jur_sekolah')
-                                <div class="alert alert-danger">{{ $message }}</div>
-                                @enderror
+                            <label class="form-label">Jurusan</label>
+                            <select class="form-select @error('jur_sekolah')
+        is-invalid
+        @enderror" name="jur_sekolah" aria-label="Pilih Jurusan">
+                                <option disabled selected>Pilih</option>
+                                <option value="Rekayasa Perangkat Lunak" {{ old('jur_sekolah', $a->jur_sekolah) == 'Rekayasa Perangkat Lunak' ? 'selected' : '' }}>Rekayasa Perangkat Lunak</option>
+                                <option value="Kimia Industri" {{ old('jur_sekolah', $a->jur_sekolah) == 'Kimia Industri' ? 'selected' : '' }}>Kimia Industri</option>
+                                <option value="Kimia Analis" {{ old('jur_sekolah', $a->jur_sekolah) == 'Kimia Analis' ? 'selected' : '' }}>Kimia Analis</option>
+                                <option value="Tehnik Instalasi Listrik" {{ old('jur_sekolah', $a->jur_sekolah) == 'Tehnik Instalasi Listrik' ? 'selected' : '' }}>Tehnik Instalasi Listrik</option>
+                                <option value="Tehnik Permesinan" {{ old('jur_sekolah', $a->jur_sekolah) == 'Tehnik Permesinan' ? 'selected' : '' }}>Tehnik Permesinan</option>
+                                <option value="Tehnik Pendinginan" {{ old('jur_sekolah', $a->jur_sekolah) == 'Tehnik Pendinginan' ? 'selected' : '' }}>Tehnik Pendinginan</option>
+                                <option value="Tehnik Pengelasan" {{ old('jur_sekolah', $a->jur_sekolah) == 'Tehnik Pengelasan' ? 'selected' : '' }}>Tehnik Pengelasan</option>
+                            </select>
+                            @error('jur_sekolah')
+                            <div class="alert alert-danger">{{ $message }}</div>
+                            @enderror
                         </div>
                     </div>
                     <div class="row">
@@ -580,7 +606,7 @@
                     </div>
 
                     <!-- Section Bekerja -->
-                    <div id="edit-bekerja-section" style="display: {{ old('status', $a->status) == '1' ? 'block' : 'none' }};">
+                    <div id="edit-bekerja-section" style="display: old('status', a-status) = '1' 'block' 'none';">
                         <div class="text-center mt-3 mb-2">
                             <label class="form-label fw-bold">Bekerja</label>
                         </div>
@@ -602,7 +628,7 @@
                     </div>
 
                     <!-- Section Kuliah -->
-                    <div id="edit-kuliah-section" style="display: {{ old('status', $a->status) == '2' ? 'block' : 'none' }};">
+                    <div id="edit-kuliah-section" style="display: old('status', a-status) = '2' 'block' 'none';">
                         <div class="text-center mt-3 mb-2">
                             <label class="form-label fw-bold">Kuliah</label>
                         </div>

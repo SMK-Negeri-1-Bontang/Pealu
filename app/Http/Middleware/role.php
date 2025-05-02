@@ -5,6 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Illuminate\Support\Facades\Auth;
 
 class Role
 {
@@ -17,9 +18,9 @@ class Role
     public function handle(Request $request, Closure $next, ...$roles): Response
     {
         // Check if the user is authenticated
-        if (\Auth::check()) {
+        if (Auth::check()) {
             // Get the authenticated user's role
-            $userRole = \Auth::user()->hasRole()->value('role') ?? 'user'; // Default to 'user' if no role found
+            $userRole = Auth::user()->role ?? 'user'; // Default to 'user' if no role found
 
             // Check if the user's role is allowed to access the route
             if (in_array($userRole, $roles)) {

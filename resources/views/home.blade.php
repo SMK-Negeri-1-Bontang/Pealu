@@ -32,13 +32,11 @@
             
             <div class="card-body py-4">
                 <!-- Animated Welcome Text -->
-                <h2 class="fw-bold mb-4" style="background: linear-gradient(45deg, #3a7bd5, #00d2ff);
-        border: none;
-                                          -webkit-background-clip: text;
-                                          -webkit-text-fill-color: transparent;
-                                          font-size: 2rem;">
-                    Selamat Datang, {{ Auth::user()->name }} <span class="animate_animated animatetada animate_infinite" style="display: inline-block;"></span>
+                <h2 class="fw-bold mb-4 welcome-text">
+                    Selamat Datang, {{ Auth::user()->name }}
+                    <span class="animate_animated animate_tada animate_infinite" style="display: inline-block;"></span>
                 </h2>
+
                 
                 <!-- Profile Avatar -->
                 <div class="my-4 d-flex justify-content-center">
@@ -46,14 +44,14 @@
                         @if(Str::startsWith(Auth::user()->image, ['http://', 'https://']))
                             <img src="{{ Auth::user()->image }}" 
                                  alt="avatar" 
-                                 class="rounded-circle shadow border border-4 border-white"
+                                 class="rounded-circle shadow border-4 border-white"
                                  width="140" 
                                  height="140" 
                                  style="object-fit: cover;">
                         @else
                             <img src="{{ asset('storage/' . Auth::user()->image) }}" 
                                  alt="avatar" 
-                                 class="rounded-circle shadow border border-4 border-white"
+                                 class="rounded-circle shadow border-4 border-white"
                                  width="140" 
                                  height="140" 
                                  style="object-fit: cover;">
@@ -61,7 +59,7 @@
                     @else
                         <img src="https://img.freepik.com/free-vector/blue-circle-with-white-user_78370-4707.jpg?semt=ais_hybrid&w=740" 
                              alt="avatar" 
-                             class="rounded-circle shadow border border-4 border-white"
+                             class="rounded-circle shadow border-4 border-white"
                              width="140" 
                              height="140" 
                              style="object-fit: cover;">
@@ -159,6 +157,17 @@
     .welcome-container {
         background-color: #f8f9fa;
     }
+        .welcome-text {
+        font-size: 2rem;
+        font-weight: bold;
+        background-image: linear-gradient(45deg, #3a7bd5, #00d2ff);
+        background-clip: text;
+        -webkit-background-clip: text;
+        color: transparent;
+        -webkit-text-fill-color: transparent;
+    }
+
+
 </style>
 @endpush
 
