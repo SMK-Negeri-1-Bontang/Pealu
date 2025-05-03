@@ -27,7 +27,7 @@
                     background: rgba(255, 255, 255, 0.85);">
             
             <!-- Gradient Border Effect -->
-            <div class="position-absolute top-0 start-0 end-0" style="height: 5px; background: linear-gradient(45deg, #3a7bd5, #00d2ff);
+            <div class="position-absolute top-0 start-0 end-0" style="height: 5px; background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
         border: none;"></div>
             
             <div class="card-body py-4">
@@ -70,7 +70,7 @@
                 <div class="mb-4">
                     <p class="fs-5 text-dark mb-1">Anda login sebagai</p>
                     <span class="badge rounded-pill px-3 py-2" 
-                          style="font-size: 1rem; background: linear-gradient(45deg, #3a7bd5, #00d2ff);
+                          style="font-size: 1rem; background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
         border: none; color: white;">
                         {{ ucfirst(Auth::user()->role) }}
                     </span>
@@ -80,7 +80,7 @@
                 <div class="mt-5 d-flex justify-content-center gap-3">
                     <a href="{{ url('/') }}" class="btn btn-lg btn-primary px-4 fw-bold shadow-sm"
                        style="border-radius: 50px; border: none;
-                              background: linear-gradient(45deg, #3a7bd5, #00d2ff);
+                              background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
         border: none;
                               transition: all 0.3s ease;">
                         <i class="fas fa-home me-2"></i> Dashboard
@@ -160,7 +160,7 @@
         .welcome-text {
         font-size: 2rem;
         font-weight: bold;
-        background-image: linear-gradient(45deg, #3a7bd5, #00d2ff);
+        background-image: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
         background-clip: text;
         -webkit-background-clip: text;
         color: transparent;

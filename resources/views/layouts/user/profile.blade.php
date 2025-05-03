@@ -27,7 +27,7 @@
                         <div class="col-md-4 bg-white p-4 d-flex flex-column align-items-center">
                             <div class="profile-avatar-wrapper mb-3 position-relative">
                                 <div class="avatar-edit">
-                                    <button class="btn btn-sm btn-icon-only btn-primary rounded-circle" data-bs-toggle="modal" data-bs-target="#editProfileModal">
+                                    <button class="btn btn-sm btn-icon-only btn-primary-gradient rounded-circle" data-bs-toggle="modal" data-bs-target="#editProfileModal">
                                         <i class="fas fa-pencil-alt"></i>
                                     </button>
                                 </div>
@@ -58,7 +58,7 @@
                                 
                                 <div class="profile-detail-item">
                                     <div class="detail-label">
-                                        <i class="fas fa-user me-2 text-primary"></i>
+                                        <i class="fas fa-user me-2 text-gradient"></i>
                                         <span>Username</span>
                                     </div>
                                     <div class="detail-value">{{ $user->name }}</div>
@@ -66,7 +66,7 @@
                                 
                                 <div class="profile-detail-item">
                                     <div class="detail-label">
-                                        <i class="fas fa-id-card me-2 text-primary"></i>
+                                        <i class="fas fa-id-card me-2 text-gradient"></i>
                                         <span>Full Name</span>
                                     </div>
                                     <div class="detail-value">{{ $user->nama_lengkap ?? '-' }}</div>
@@ -74,7 +74,7 @@
                                 
                                 <div class="profile-detail-item">
                                     <div class="detail-label">
-                                        <i class="fas fa-phone me-2 text-primary"></i>
+                                        <i class="fas fa-phone me-2 text-gradient"></i>
                                         <span>Phone Number</span>
                                     </div>
                                     <div class="detail-value">{{ $user->hp ?? '-' }}</div>
@@ -82,7 +82,7 @@
                                 
                                 <div class="profile-detail-item">
                                     <div class="detail-label">
-                                        <i class="fas fa-envelope me-2 text-primary"></i>
+                                        <i class="fas fa-envelope me-2 text-gradient"></i>
                                         <span>Email</span>
                                     </div>
                                     <div class="detail-value">{{ $user->email }}</div>
@@ -90,7 +90,7 @@
                                 
                                 <div class="profile-detail-item">
                                     <div class="detail-label">
-                                        <i class="fas fa-user-tag me-2 text-primary"></i>
+                                        <i class="fas fa-user-tag me-2 text-gradient"></i>
                                         <span>Account Role</span>
                                     </div>
                                     <div class="detail-value">{{ ucfirst($user->role) }}</div>
@@ -211,7 +211,7 @@
     }
     
     .text-gradient {
-        background: linear-gradient(45deg, #3a7bd5, #00d2ff);
+        background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
         -webkit-background-clip: text;
         background-clip: text;
         color: transparent;
@@ -265,12 +265,12 @@
     }
     
     .bg-primary-gradient {
-        background: linear-gradient(45deg, #3a7bd5, #00d2ff);
+        background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
         border: none;
     }
     
     .btn-primary-gradient {
-        background: linear-gradient(45deg, #3a7bd5, #00d2ff);
+        background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
         border: none;
         color: white;
         transition: all 0.3s;

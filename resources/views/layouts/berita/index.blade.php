@@ -95,7 +95,7 @@
                             </div>
                         </div>
                         <div class="col-md-4">
-                            <button type="submit" class="btn btn-primary w-100">
+                            <button type="submit" class="btn btn-primary w-100" style="background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));">
                                 <i class="fas fa-search me-2"></i> Cari
                             </button>
                         </div>
@@ -334,7 +334,7 @@
         border-radius: 12px;
         overflow: hidden;
     }
-    
+
     .bg-gradient-primary-to-secondary {
         background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
     }
