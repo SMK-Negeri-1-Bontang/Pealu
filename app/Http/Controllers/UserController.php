@@ -17,22 +17,46 @@ class UserController extends Controller
      */
     public function index(Request $request)
     {
+        // Query dasar
         $query = User::query();
-
-        if ($request->filled('nama')) {
-            $query->where('name', 'like', '%' . $request->nama . '%');
+        
+        // Filter berdasarkan nama (case insensitive untuk MySQL)
+        if ($request->filled('name')) {
+            $query->where(function($q) use ($request) {
+                $q->where('name', 'like', '%' . $request->name . '%')
+                  ->orWhere('nama_lengkap', 'like', '%' . $request->name . '%');
+            });
         }
+        
+        // Filter berdasarkan email (exact match)
         if ($request->filled('email')) {
             $query->where('email', 'like', '%' . $request->email . '%');
         }
+        
+        // Filter berdasarkan role (dropdown exact match)
+        if ($request->filled('role')) {
+            $query->where('role', $request->role);
+        }
+    
+        // Filter berdasarkan nomor HP jika ada
         if ($request->filled('hp')) {
             $query->where('hp', 'like', '%' . $request->hp . '%');
         }
-
-        // Paginate hasil pencarian
-        $users = $query->paginate(5);
-
-        return view('layouts.user.index', compact('users'));
+        
+        // Sorting default
+        $query->orderBy('name');
+        
+        // Get data untuk dropdown filter role
+        $roleList = User::select('role')
+                       ->distinct()
+                       ->orderBy('role')
+                       ->pluck('role');
+        
+        // Pagination dengan 10 item per halaman dan batasi tampilan pagination
+        $users = $query->paginate(10)
+                     ->appends($request->query());
+        
+        return view('layouts.user.index', compact('users', 'roleList'));
     }
 
     /**

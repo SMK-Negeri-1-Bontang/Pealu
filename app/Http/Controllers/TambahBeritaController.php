@@ -13,14 +13,19 @@ class TambahBeritaController extends Controller
      */
     public function index(Request $request)
     {
-        $query = TambahBerita::query(); // definisikan dulu query-nya
+        $query = TambahBerita::query();
+        
         if ($request->filled('search')) {
             $query->where('title', 'like', '%' . $request->search . '%')
                 ->orWhere('content', 'like', '%' . $request->search . '%');
         }
-        $tmbberita = $query->paginate(5);
-        return view('layouts.berita.index', compact('tmbberita'));
         
+        // Pagination dengan 10 item per halaman
+        $tmbberita = $query->orderBy('created_at', 'desc')
+                          ->paginate(10)
+                          ->onEachSide(1);
+
+        return view('layouts.berita.index', compact('tmbberita'));
     }
 
     /**
@@ -38,17 +43,13 @@ class TambahBeritaController extends Controller
             ? $request->file('image')->store('TambahBerita', 'public') 
             : null;
 
-        $berita = TambahBerita::create([
+        $tmbberita = TambahBerita::create([
             'title'   => $validated['title'],
             'content' => $validated['content'],
             'image'   => $imagePath,
         ]);
 
-        if ($berita) {
-            return redirect()->route('tmbberita.index')->with(['success' => 'Berita berhasil ditambahkan.']);
-        } else {
-            return redirect()->route('tmbberita.index')->with(['error' => 'Gagal menambahkan berita.']);
-        }
+        return redirect()->route('tmbberita.index')->with('success', 'Berita berhasil ditambahkan.');
     }
 
     /**
@@ -62,23 +63,22 @@ class TambahBeritaController extends Controller
             'image'   => 'nullable|image|max:2048',
         ]);
 
-        $berita = TambahBerita::findOrFail($id);
+        $tmbberita = TambahBerita::findOrFail($id);
 
         if ($request->hasFile('image')) {
-            if ($berita->image) {
-                Storage::disk('public')->delete($berita->image);
+            if ($tmbberita->image) {
+                Storage::disk('public')->delete($tmbberita->image);
             }
 
-            $berita->image = $request->file('image')->store('TambahBerita', 'public');
+            $tmbberita->image = $request->file('image')->store('TambahBerita', 'public');
         }
 
-        $berita->update([
+        $tmbberita->update([
             'title'   => $validated['title'],
             'content' => $validated['content'],
-            'image'   => $berita->image, // sudah diperbarui di atas jika ada gambar baru
         ]);
 
-        return redirect()->route('tmbberita.index')->with(['update' => 'Berita berhasil diperbarui.']);
+        return redirect()->route('tmbberita.index')->with('update', 'Berita berhasil diperbarui.');
     }
 
     /**
@@ -86,27 +86,23 @@ class TambahBeritaController extends Controller
      */
     public function destroy($id)
     {
-        $berita = TambahBerita::findOrFail($id);
+        $tmbberita = TambahBerita::findOrFail($id);
 
-        if ($berita->image) {
-            Storage::disk('public')->delete($berita->image);
+        if ($tmbberita->image) {
+            Storage::disk('public')->delete($tmbberita->image);
         }
 
-        $berita->delete();
+        $tmbberita->delete();
 
-        if ($berita) {
-            return redirect()->route('tmbberita.index')->with(['delete' => 'Berita berhasil dihapus.']);
-        } else {
-            return redirect()->route('tmbberita.index')->with(['error' => 'Berita gagal dihapus.']);
-        }
+        return redirect()->route('tmbberita.index')->with('delete', 'Berita berhasil dihapus.');
     }
 
     /**
-     * Tampilkan detail berita (opsional).
+     * Tampilkan detail berita.
      */
     public function show($id)
     {
-        $berita = TambahBerita::findOrFail($id);
-        return view('layouts.berita.berita', compact('berita'));
+        $tmbberita = TambahBerita::findOrFail($id);
+        return view('layouts.berita.show', compact('tmbberita'));
     }
 }
