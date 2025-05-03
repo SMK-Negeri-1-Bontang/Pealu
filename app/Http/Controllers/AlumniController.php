@@ -16,9 +16,9 @@ class AlumniController extends Controller
         // Query dasar
         $query = Alumni::query();
         
-        // Filter berdasarkan nama (case insensitive)
+        // Filter berdasarkan nama (case insensitive untuk MySQL)
         if ($request->filled('nama')) {
-            $query->where('nama_lengk', 'ilike', '%' . $request->nama . '%');
+            $query->where('nama_lengk', 'like', '%' . $request->nama . '%');
         }
         
         // Filter berdasarkan NIS (exact match)
@@ -35,9 +35,6 @@ class AlumniController extends Controller
         if ($request->filled('tahun_lulus')) {
             $query->where('tahun_lulus', $request->tahun_lulus);
         }
-        
-        // Tambahkan eager loading jika ada relasi
-        // $query->with(['relasi1', 'relasi2']);
         
         // Sorting default
         $query->orderBy('nama_lengk');
@@ -59,7 +56,7 @@ class AlumniController extends Controller
         
         return view('layouts.alumni.alumni', compact('alumni', 'jurusanList', 'tahunList'));
     }
-
+    
     public function generatePdf($id)
     {
         $data = Alumni::find($id);

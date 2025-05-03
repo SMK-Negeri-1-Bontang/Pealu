@@ -1,209 +1,226 @@
 @extends('welcome')
 
 @section('content')
-<div class="">
-    <div class="row justify-content-center">
-        <!-- Notifikasi -->
+<div class="container-fluid">
+    <!-- Notifikasi -->
+    <div class="row mb-4">
         @if(session('success'))
-        <div class="col-md-12">
-            <div class="alert alert-success alert-dismissible fade show shadow-sm border-0" role="alert">
+        <div class="col-12">
+            <div class="alert alert-success alert-dismissible fade show shadow-sm" role="alert">
                 <div class="d-flex align-items-center">
-                    <i class="fas fa-check-circle me-2"></i>
-                    <strong>{{ session('success') }}</strong>
+                    <i class="fas fa-check-circle me-3 fs-4"></i>
+                    <div>
+                        <strong class="d-block">Sukses!</strong>
+                        {{ session('success') }}
+                    </div>
                 </div>
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Tutup"></button>
+            </div>
+        </div>
+        @endif
+        @if(session('error'))
+        <div class="col-12">
+            <div class="alert alert-danger alert-dismissible fade show shadow-sm" role="alert">
+                <div class="d-flex align-items-center">
+                    <i class="fas fa-exclamation-triangle me-3 fs-4"></i>
+                    <div>
+                        <strong class="d-block">Gagal!</strong>
+                        {{ session('error') }}
+                    </div>
+                </div>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Tutup"></button>
+            </div>
+        </div>
+        @endif
+
+        @if ($message = Session::get('update'))
+        <div class="col-12">
+            <div class="alert alert-success alert-dismissible fade show shadow-sm" role="alert">
+                <div class="d-flex align-items-center">
+                    <i class="fas fa-check-circle me-3 fs-4"></i>
+                    <div>
+                        <strong class="d-block">Diperbarui!</strong>
+                        {{ $message }}
+                    </div>
+                </div>
             </div>
         </div>
         @endif
         
         @if ($message = Session::get('delete'))
-        <div class="col-md-12">
-            <div class="alert alert-danger alert-dismissible fade show shadow-sm border-0" role="alert">
+        <div class="col-12">
+            <div class="alert alert-danger alert-dismissible fade show shadow-sm" role="alert">
                 <div class="d-flex align-items-center">
-                    <i class="fas fa-exclamation-triangle me-2"></i>
-                    <strong>{{ $message }}</strong>
+                    <i class="fas fa-exclamation-triangle me-3 fs-4"></i>
+                    <div>
+                        <strong class="d-block">Dihapus!</strong>
+                        {{ $message }}
+                    </div>
                 </div>
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Tutup"></button>
             </div>
         </div>
         @endif
+    </div>
         
-        <!-- Card Utama -->
-        <div class="col-md-12">
-            <div class="card border-0 shadow-lg">
-                <div class="card-header bg-primary bg-gradient text-white py-3">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <h4 class="mb-0">
-                            <i class="fas fa-user-graduate me-2"></i> Data Alumni
-                        </h4>
-                        @if (Auth::check())
-                            @if (Auth::user()->isAdmin() || Auth::user()->isPetugas())
-                            <a href="#" data-bs-toggle="modal" data-bs-target="#tambah" class="btn btn-light btn-sm rounded-pill">
-                                <i class="fa-solid fa-plus me-1"></i> Tambah Data
-                            </a>
-                            @endif
-                        @endif
-                    </div>
+    </div>
+    
+    <!-- Kartu Utama -->
+    <div class="card shadow-lg border-0">
+        <!-- Header Kartu -->
+        <div class="card-header bg-gradient-primary-to-secondary p-4">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <h3 class="mb-0 text-white">
+                        <i class="fas fa-user-graduate me-2"></i> Data Alumni
+                    </h3>
+                    <p class="text-white-50 mb-0">Kelola semua data alumni</p>
                 </div>
-                
-                <div class="card-body">
-                    <!-- Form Pencarian -->
-                    <div class="mb-4">
-                        <form action="{{ route('alumni.index') }}" method="GET">
-                            <div class="row g-3">
-                                <div class="col-md-3">
-                                    <label class="form-label fw-semibold text-primary">Nama</label>
-                                    <input type="text" name="nama" class="form-control border-2 border-primary rounded-pill shadow-sm" 
-                                        placeholder="Cari nama..." value="{{ request('nama') }}">
-                                </div>
-                                <div class="col-md-2">
-                                    <label class="form-label fw-semibold text-primary">NIS</label>
-                                    <input type="text" name="nis" class="form-control border-2 border-primary rounded-pill shadow-sm" 
-                                        placeholder="Cari NIS..." value="{{ request('nis') }}">
-                                </div>
-                                <div class="col-md-3">
-                                    <label class="form-label fw-semibold text-primary">Jurusan</label>
-                                    <select name="jurusan" class="form-select border-2 border-primary rounded-pill shadow-sm">
-                                        <option value="">Semua Jurusan</option>
-                                        @foreach($jurusanList as $jurusan)
-                                            <option value="{{ $jurusan }}" {{ request('jurusan') == $jurusan ? 'selected' : '' }}>
-                                                {{ $jurusan }}
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                                <div class="col-md-2">
-                                    <label class="form-label fw-semibold text-primary">Tahun Lulus</label>
-                                    <select name="tahun_lulus" class="form-select border-2 border-primary rounded-pill shadow-sm">
-                                        <option value="">Semua Tahun</option>
-                                        @foreach($tahunList as $tahun)
-                                            <option value="{{ $tahun }}" {{ request('tahun_lulus') == $tahun ? 'selected' : '' }}>
-                                                {{ $tahun }}
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                                <div class="col-md-2 d-flex align-items-end">
-                                    <button type="submit" class="btn btn-primary rounded-pill w-100 shadow-sm">
-                                        <i class="fas fa-search me-1"></i> Cari
-                                    </button>
-                                </div>
+                @if (Auth::check() && (Auth::user()->isAdmin() || Auth::user()->isPetugas()))
+                <button data-bs-toggle="modal" data-bs-target="#tambah" class="btn btn-light rounded-pill px-4">
+                    <i class="fa-solid fa-plus me-2"></i> Tambah Baru
+                </button>
+                @endif
+            </div>
+        </div>
+        
+        <!-- Isi Kartu -->
+        <div class="card-body p-4">
+            <!-- Form Pencarian -->
+            <div class="mb-4">
+                <form action="{{ route('alumni.index') }}" method="GET">
+                    <div class="row g-3 align-items-end">
+                        <div class="col-md-3">
+                            <label class="form-label small text-uppercase fw-bold text-muted">Nama</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-transparent"><i class="fas fa-search"></i></span>
+                                <input type="text" name="nama" class="form-control border-start-0 ps-0" 
+                                    placeholder="Cari berdasarkan nama..." value="{{ request('nama') }}">
                             </div>
-                        </form>
-                    </div>
-                    
-                    <!-- Tabel Data -->
-                    <div class="table-responsive">
-                        <table class="table table-hover table-striped align-middle mb-0">
-                            <thead class="table-light">
-                                <tr>
-                                    <th class="text-center" style="width: 60px;">No</th>
-                                    <th class="text-center" style="width: 80px;">Foto</th>
-                                    <th style="width: 100px;">NIS</th>
-                                    <th>Nama Lengkap</th>
-                                    <th>Jurusan</th>
-                                    <th class="text-center" style="width: 120px;">Tahun Lulus</th>
-                                    <th class="text-center" style="width: 150px;">Aksi</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @forelse($alumni as $no => $a)
-                                <tr class="hover-shadow">
-                                    <td class="text-center">{{ ($alumni->currentPage() - 1) * $alumni->perPage() + $no + 1 }}</td>
-                                    <td class="text-center">
-                                        <div class="avatar avatar-md">
-                                            @if($a->image)
-                                                <img src="{{ asset('storage/' . $a->image) }}" class="rounded-circle border-2 border-primary" width="60" height="60">
-                                            @else
-                                                <div class="avatar-placeholder rounded-circle bg-light text-muted d-flex align-items-center justify-content-center" style="width: 60px; height: 60px;">
-                                                    <i class="fas fa-user fa-lg"></i>
-                                                </div>
-                                            @endif
-                                        </div>
-                                    </td>
-                                    <td>{{ $a->nis }}</td>
-                                    <td>{{ $a->nama_lengk }}</td>
-                                    <td>
-                                        {{ $a->jur_sekolah }}
-                                    </td>
-                                    <td class="text-center">
-                                        {{ $a->tahun_lulus }}
-                                    </td>
-                                    <td class="text-center">
-                                        <div class="btn-group btn-group-sm" role="group">
-                                            <a href="#" data-bs-toggle="modal" data-bs-target="#lihat{{$a->id}}" class="btn btn-outline-info rounded-start-pill" title="Lihat Detail">
-                                                <i class="fa-solid fa-eye"></i>
-                                            </a>
-                                            
-                                            @auth
-                                                @if (Auth::user()->isAdmin() || Auth::user()->isPetugas())
-                                                    <a href="#" data-bs-toggle="modal" data-bs-target="#edit{{$a->id}}" class="btn btn-outline-primary" title="Edit">
-                                                        <i class="fa-solid fa-pen-to-square"></i>
-                                                    </a>
-                                                    <a href="#" data-bs-toggle="modal" data-bs-target="#delete{{$a->id}}" class="btn btn-outline-danger" title="Hapus">
-                                                        <i class="fa-solid fa-trash"></i>
-                                                    </a>
-                                                @endif
-                                            @endauth
-                                            
-                                            <a href="{{ route('alumni.invoice', ['id' => $a->id]) }}" class="btn btn-outline-success rounded-end-pill" title="Unduh Data">
-                                                <i class="fa-solid fa-file-arrow-down"></i>
-                                            </a>
-                                        </div>
-                                    </td>
-                                </tr>
-                                @empty
-                                <tr>
-                                    <td colspan="7" class="text-center py-4">
-                                        <div class="alert alert-info d-flex align-items-center justify-content-center">
-                                            <i class="fas fa-info-circle me-3 fa-2x"></i>
-                                            <div>
-                                                <h5 class="alert-heading mb-1">Data Alumni Kosong</h5>
-                                                <p class="mb-0">Belum ada data alumni yang tersedia.</p>
-                                            </div>
-                                        </div>
-                                    </td>
-                                </tr>
-                                @endforelse
-                            </tbody>
-                        </table>
-                    </div>
-                    
-                    <!-- Pagination -->
-                    <div class="d-flex justify-content-between align-items-center mt-4">
-                        <div class="text-muted">
-                            Menampilkan <b>{{ $alumni->firstItem() }}</b> sampai <b>{{ $alumni->lastItem() }}</b> dari <b>{{ $alumni->total() }}</b> alumni
                         </div>
-                        <nav aria-label="Page navigation">
-                            <ul class="pagination pagination-sm mb-0">
-                                @if ($alumni->onFirstPage())
-                                    <li class="page-item disabled">
-                                        <span class="page-link rounded-pill">&laquo;</span>
-                                    </li>
-                                @else
-                                    <li class="page-item">
-                                        <a class="page-link rounded-pill" href="{{ $alumni->previousPageUrl() }}" rel="prev">&laquo;</a>
-                                    </li>
-                                @endif
-
-                                @foreach ($alumni->links()->elements[0] as $page => $url)
-                                    <li class="page-item {{ $alumni->currentPage() == $page ? 'active' : '' }}">
-                                        <a class="page-link rounded-circle" href="{{ $url }}">{{ $page }}</a>
-                                    </li>
+                        <div class="col-md-2">
+                            <label class="form-label small text-uppercase fw-bold text-muted">NIS</label>
+                            <input type="text" name="nis" class="form-control" 
+                                placeholder="Cari NIS..." value="{{ request('nis') }}">
+                        </div>
+                        <div class="col-md-3 flex-grow-1">
+                            <label class="form-label small text-uppercase fw-bold text-muted">Jurusan</label>
+                            <select name="jurusan" class="form-select w-100">
+                                <option value="">Semua Jurusan</option>
+                                @foreach($jurusanList as $jurusan)
+                                    <option value="{{ $jurusan }}" {{ request('jurusan') == $jurusan ? 'selected' : '' }}>
+                                        {{ $jurusan }}
+                                    </option>
                                 @endforeach
-
-                                @if ($alumni->hasMorePages())
-                                    <li class="page-item">
-                                        <a class="page-link rounded-pill" href="{{ $alumni->nextPageUrl() }}" rel="next">&raquo;</a>
-                                    </li>
-                                @else
-                                    <li class="page-item disabled">
-                                        <span class="page-link rounded-pill">&raquo;</span>
-                                    </li>
-                                @endif
-                            </ul>
-                        </nav>
+                            </select>
+                        </div>
+                        <div class="col-md-2 flex-grow-1">
+                            <label class="form-label small text-uppercase fw-bold text-muted">Tahun Lulus</label>
+                            <select name="tahun_lulus" class="form-select w-100">
+                                <option value="">Semua Tahun</option>
+                                @foreach($tahunList as $tahun)
+                                    <option value="{{ $tahun }}" {{ request('tahun_lulus') == $tahun ? 'selected' : '' }}>
+                                        {{ $tahun }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="col-md-2">
+                            <button type="submit" class="btn btn-primary w-100">
+                                <i class="fas fa-search me-2"></i> Cari
+                            </button>
+                        </div>
                     </div>
+                </form>
+            </div>
+            
+            <!-- Tabel Data -->
+            <div class="table-responsive">
+                <table class="table table-striped align-middle mb-0">
+                    <thead class="bg-light">
+                        <tr>
+                            <th class="text-center" style="width: 60px;">No</th>
+                            <th class="text-center" style="width: 80px;">Foto</th>
+                            <th style="width: 100px;">NIS</th>
+                            <th>Nama Lengkap</th>
+                            <th>Jurusan</th>
+                            <th class="text-center" style="width: 120px;">Tahun Lulus</th>
+                            <th class="text-center" style="width: 150px;">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @forelse($alumni as $no => $a)
+                        <tr>
+                            <td class="text-center text-muted">{{ ($alumni->currentPage() - 1) * $alumni->perPage() + $no + 1 }}</td>
+                            <td class="text-center">
+                                <div class="avatar avatar-md position-relative">
+                                    @if($a->image)
+                                        <img src="{{ asset('storage/' . $a->image) }}" class="rounded-circle" width="50" height="50">
+                                    @else
+                                        <div class="avatar-placeholder rounded-circle bg-light text-muted d-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
+                                            <i class="fas fa-user"></i>
+                                        </div>
+                                    @endif
+                                </div>
+                            </td>
+                            <td class="fw-semibold">{{ $a->nis }}</td>
+                            <td>
+                                <div class="d-flex align-items-center">
+                                    <div>
+                                        <h6 class="mb-0">{{ $a->nama_lengk }}</h6>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <span class="badge bg-primary bg-opacity-10 text-primary">{{ $a->jur_sekolah }}</span>
+                            </td>
+                            <td class="text-center">
+                                <span class="badge bg-info bg-opacity-10 text-info">{{ $a->tahun_lulus }}</span>
+                            </td>
+                            <td class="text-center">
+                                <div class="d-flex justify-content-center">
+                                    @auth
+                                        @if (Auth::user()->isAdmin() || Auth::user()->isPetugas())
+                                            <button data-bs-toggle="modal" data-bs-target="#edit{{$a->id}}" class="btn btn-sm btn-icon btn-outline-secondary me-2 rounded-circle" title="Edit">
+                                                <i class="fa-solid fa-pen-to-square"></i>
+                                            </button>
+                                            <button data-bs-toggle="modal" data-bs-target="#delete{{$a->id}}" class="btn btn-sm btn-icon btn-outline-danger me-2 rounded-circle" title="Hapus">
+                                                <i class="fa-solid fa-trash"></i>
+                                            </button>
+                                        @endif
+                                    @endauth
+                                    
+                                    <button data-bs-toggle="modal" data-bs-target="#lihat{{$a->id}}" class="btn btn-sm btn-icon btn-outline-info me-2 rounded-circle" title="Lihat">
+                                        <i class="fa-solid fa-eye"></i>
+                                    </button>
+                                    <a href="{{ route('alumni.invoice', ['id' => $a->id]) }}" class="btn btn-sm btn-icon btn-outline-success rounded-circle" title="Unduh">
+                                        <i class="fa-solid fa-file-arrow-down"></i>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                        @empty
+                        <tr>
+                            <td colspan="7" class="text-center py-5">
+                                <div class="d-flex flex-column align-items-center">
+                                    <i class="fas fa-user-graduate fs-1 text-muted mb-3"></i>
+                                    <h5 class="text-muted">Data Alumni Tidak Ditemukan</h5>
+                                    <p class="text-muted">Tidak ada data alumni yang tersedia.</p>
+                                </div>
+                            </td>
+                        </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
+            
+            <!-- Paginasi -->
+            <div class="d-flex justify-content-between align-items-center mt-4">
+                <div class="text-muted small">
+                    Showing <b>{{ $alumni->firstItem() }}</b> to <b>{{ $alumni->lastItem() }}</b> of <b>{{ $alumni->total() }}</b> entries
+                </div>
+                <div>
+                    {{ $alumni->links() }}
                 </div>
             </div>
         </div>
@@ -212,60 +229,171 @@
 
 @push('styles')
 <style>
-    .card-header.bg-gradient-primary {
-        background: linear-gradient(to right, #3a7bd5, #00d2ff) !important;
+    :root {
+        --primary-color: #4e54c8;
+        --secondary-color: #8f94fb;
+        --light-color: #f8f9fa;
+        --dark-color: #212529;
     }
     
+    body {
+        background-color: #f5f7fa;
+    }
+    
+    /* Gaya Kartu */
     .card {
+        border: none;
         border-radius: 12px;
         overflow: hidden;
     }
     
-    .card-header {
-        border-bottom: none;
+    /* Gradient Header */
+    .bg-gradient-primary-to-secondary {
+        background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    }
+    
+    /* Gaya Tabel */
+    .table {
+        --bs-table-bg: transparent;
+        --bs-table-striped-bg: rgba(0, 0, 0, 0.02);
     }
     
     .table th {
+        letter-spacing: 0.5px;
         font-weight: 600;
         text-transform: uppercase;
-        font-size: 0.8rem;
-        letter-spacing: 0.5px;
+        font-size: 0.75rem;
+        color: #6c757d;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.05);
     }
     
-    .hover-shadow:hover {
-        box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
-        transform: translateY(-2px);
-        transition: all 0.3s ease;
+    /* Gaya Avatar */
+    .avatar {
+        position: relative;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
     }
     
     .avatar-placeholder {
-        border: 2px dashed #dee2e6;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #f8f9fa;
+        color: #adb5bd;
     }
     
-    .btn-outline-primary:hover, 
-    .btn-outline-info:hover, 
-    .btn-outline-danger:hover,
-    .btn-outline-success:hover {
-        color: white !important;
+    /* Gaya Tombol */
+    .btn-icon {
+        width: 36px;
+        height: 36px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0;
     }
     
-    .rounded-pill {
-        border-radius: 50rem !important;
+    .btn-icon i {
+        font-size: 0.9rem;
     }
     
-    .rounded-start-pill {
-        border-top-left-radius: 50rem !important;
-        border-bottom-left-radius: 50rem !important;
-    }
-    
-    .rounded-end-pill {
-        border-top-right-radius: 50rem !important;
-        border-bottom-right-radius: 50rem !important;
-    }
-    
+    /* Gaya Badge */
     .badge {
         padding: 0.35em 0.65em;
         font-weight: 500;
+    }
+    
+    /* Gaya Alert */
+    .alert {
+        border: none;
+        border-left: 4px solid;
+    }
+    
+    .alert-success {
+        border-left-color: var(--bs-success);
+    }
+    
+    .alert-danger {
+        border-left-color: var(--bs-danger);
+    }
+    
+    /* Gaya Form */
+    .form-control, .form-select {
+        border-radius: 8px;
+        border: 1px solid #e9ecef;
+        transition: all 0.3s ease;
+    }
+    
+    .form-control:focus, .form-select:focus {
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 0.25rem rgba(78, 84, 200, 0.25);
+    }
+    
+    .input-group-text {
+        background-color: transparent;
+        border-right: none;
+    }
+    
+    .input-group .form-control {
+        border-left: none;
+    }
+    
+    /* Dropdown yang menyesuaikan dengan isi */
+    .form-select {
+        width: auto;
+        min-width: 100%;
+    }
+    
+    /* Penyesuaian Responsif */
+    @media (max-width: 768px) {
+        .card-header {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+        
+        .card-header button {
+            margin-top: 1rem;
+            width: 100%;
+        }
+        
+        .table-responsive {
+            border: none;
+        }
+    }
+
+    .pagination {
+        margin: 0;
+    }
+
+    .pagination .page-item {
+        margin: 0 2px;
+    }
+
+    .pagination .page-link {
+        border-radius: 50rem !important;
+        padding: 0.4rem 0.8rem;
+        font-size: 0.85rem;
+        color: #6c757d;
+        border: 1px solid #dee2e6;
+    }
+
+    .pagination .page-item.active .page-link {
+        background-color: #4e54c8;
+        border-color: #4e54c8;
+        color: #fff;
+        font-weight: 600;
+    }
+
+    .pagination .page-link:hover {
+        background-color: #f0f2ff;
+        border-color: #bfc3ff;
+        color: #4e54c8;
+    }
+
+    .pagination .page-item.disabled .page-link {
+        background-color: #f8f9fa;
+        color: #adb5bd;
+        border-color: #dee2e6;
     }
 </style>
 @endpush
@@ -318,8 +446,8 @@
                                 <option value="Kimia Analis">Kimia Analis</option>
                                 <option value="Tehnik Instalasi Listrik">Tehnik Instalasi Listrik</option>
                                 <option value="Tehnik Permesinan">Tehnik Permesinan</option>
-                                <option value="Tehnik Pendinginan">Tehnik Pendinginan</option>
-                                <option value="Tehnik Pengelasan">Tehnik Pengelasan</option>
+                                <option value="zz">Tehnik Pendinginan</option>
+                                <option value="7">Tehnik Pengelasan</option>
                             </select>
                             @error('jur_sekolah')
                             <div class="alert alert-danger">{{ $message }}</div>

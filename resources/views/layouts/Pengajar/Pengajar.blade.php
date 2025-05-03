@@ -1,208 +1,206 @@
-
 @extends('welcome')
 
 @section('content')
-<div class="">
-    <div class="row justify-content-center">
-        <!-- Notifikasi -->
-        @if ($message = Session::get('success'))
-        <div class="col-md-12">
-            <div class="alert alert-success alert-dismissible fade show shadow-sm border-0" role="alert">
+<div class="container-fluid">
+    <!-- Notifikasi -->
+    <div class="row mb-4">
+        @if(session('success'))
+        <div class="col-12">
+            <div class="alert alert-success alert-dismissible fade show shadow-sm" role="alert">
                 <div class="d-flex align-items-center">
-                    <i class="fas fa-check-circle me-2"></i>
-                    <strong>{{ $message }}</strong>
+                    <i class="fas fa-check-circle me-3 fs-4"></i>
+                    <div>
+                        <strong class="d-block">Sukses!</strong>
+                        {{ session('success') }}
+                    </div>
                 </div>
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Tutup"></button>
             </div>
         </div>
         @endif
+        @if(session('error'))
+        <div class="col-12">
+            <div class="alert alert-danger alert-dismissible fade show shadow-sm" role="alert">
+                <div class="d-flex align-items-center">
+                    <i class="fas fa-exclamation-triangle me-3 fs-4"></i>
+                    <div>
+                        <strong class="d-block">Gagal!</strong>
+                        {{ session('error') }}
+                    </div>
+                </div>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Tutup"></button>
+            </div>
+        </div>
+        @endif
+
         @if ($message = Session::get('update'))
-        <div class="col-md-12">
-            <div class="alert alert-info alert-dismissible fade show shadow-sm border-0" role="alert">
+        <div class="col-12">
+            <div class="alert alert-success alert-dismissible fade show shadow-sm" role="alert">
                 <div class="d-flex align-items-center">
-                    <i class="fas fa-info-circle me-2"></i>
-                    <strong>{{ $message }}</strong>
+                    <i class="fas fa-check-circle me-3 fs-4"></i>
+                    <div>
+                        <strong class="d-block">Diperbarui!</strong>
+                        {{ $message }}
+                    </div>
                 </div>
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-        </div>
-        @endif
-        @if ($message = Session::get('delete'))
-        <div class="col-md-12">
-            <div class="alert alert-danger alert-dismissible fade show shadow-sm border-0" role="alert">
-                <div class="d-flex align-items-center">
-                    <i class="fas fa-exclamation-triangle me-2"></i>
-                    <strong>{{ $message }}</strong>
-                </div>
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
         </div>
         @endif
         
-        <!-- Card Utama -->
-        <div class="col-md-12">
-            <div class="card border-0 shadow-lg">
-                <div class="card-header bg-primary bg-gradient text-white py-3">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <h4 class="mb-0">
-                            <i class="fas fa-chalkboard-teacher me-2"></i> Data Pengajar
-                        </h4>
-                        <a href="#" data-bs-toggle="modal" data-bs-target="#tambah" class="btn btn-light btn-sm rounded-pill">
-                            <i class="fa-solid fa-plus me-1"></i> Tambah Data
-                        </a>
+        @if ($message = Session::get('delete'))
+        <div class="col-12">
+            <div class="alert alert-danger alert-dismissible fade show shadow-sm" role="alert">
+                <div class="d-flex align-items-center">
+                    <i class="fas fa-exclamation-triangle me-3 fs-4"></i>
+                    <div>
+                        <strong class="d-block">Dihapus!</strong>
+                        {{ $message }}
                     </div>
                 </div>
-                
-                <div class="card-body">
-                    <!-- Form Pencarian -->
-                    <div class="mb-4">
-                        <form action="{{ route('pengajar.index') }}" method="GET">
-                            <div class="row g-3">
-                                <div class="col-md-2">
-                                    <label class="form-label fw-semibold text-primary">NIP</label>
-                                    <input type="text" name="nip" class="form-control border-2 border-primary rounded-pill shadow-sm" 
-                                        placeholder="Cari NIP..." value="{{ request('nip') }}">
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Tutup"></button>
+            </div>
+        </div>
+        @endif
+    </div>
+    
+    <!-- Main Card -->
+    <div class="card shadow-lg border-0">
+        <!-- Card Header -->
+        <div class="card-header bg-gradient-primary-to-secondary p-4">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <h3 class="mb-0 text-white">
+                        <i class="fas fa-chalkboard-teacher me-2"></i> Data Pengajar
+                    </h3>
+                    <p class="text-white-50 mb-0">Kelola semua data pengajar</p>
+                </div>
+                <button data-bs-toggle="modal" data-bs-target="#tambah" class="btn btn-light rounded-pill px-4">
+                    <i class="fa-solid fa-plus me-2"></i> Tambah Baru
+                </button>
+            </div>
+        </div>
+        
+        <!-- Card Body -->
+        <div class="card-body p-4">
+            <!-- Search Form -->
+            <div class="mb-4">
+                <form action="{{ route('pengajar.index') }}" method="GET">
+                    <div class="row g-3 align-items-end">
+                        <div class="col-md-2">
+                            <label class="form-label small text-uppercase fw-bold text-muted">NIP</label>
+                            <input type="text" name="nip" class="form-control" placeholder="Cari NIP..." value="{{ request('nip') }}">
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label small text-uppercase fw-bold text-muted">Nama</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-transparent"><i class="fas fa-search"></i></span>
+                                <input type="text" name="nama_lengkap" class="form-control border-start-0 ps-0" placeholder="Cari nama..." value="{{ request('nama_lengkap') }}">
+                            </div>
+                        </div>
+                        <div class="col-md-3 flex-grow-1">
+                            <label class="form-label small text-uppercase fw-bold text-muted">Mata Pelajaran</label>
+                            <select name="mata_pelajaran" class="form-select w-100">
+                                <option value="">Semua Pelajaran</option>
+                                @foreach($mataPelajaranList as $mapel)
+                                    <option value="{{ $mapel }}" {{ request('mata_pelajaran') == $mapel ? 'selected' : '' }}>
+                                        {{ $mapel }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="col-md-2 flex-grow-1">
+                            <label class="form-label small text-uppercase fw-bold text-muted">Tahun Bergabung</label>
+                            <select name="tahun_bergabung" class="form-select w-100">
+                                <option value="">Semua Tahun</option>
+                                @foreach($tahunBergabungList as $tahun)
+                                    <option value="{{ $tahun }}" {{ request('tahun_bergabung') == $tahun ? 'selected' : '' }}>
+                                        {{ $tahun }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="col-md-2">
+                            <button type="submit" class="btn btn-primary w-100">
+                                <i class="fas fa-search me-2"></i> Cari
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            
+            <!-- Data Table -->
+            <div class="table-responsive">
+                <table class="table table-striped align-middle mb-0">
+                    <thead class="bg-light">
+                        <tr>
+                            <th class="text-center" style="width: 60px;">No</th>
+                            <th class="text-center" style="width: 80px;">Foto</th>
+                            <th style="width: 120px;">NIP</th>
+                            <th>Nama Lengkap</th>
+                            <th>Mata Pelajaran</th>
+                            <th class="text-center" style="width: 120px;">Tahun Bergabung</th>
+                            <th class="text-center" style="width: 150px;">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @forelse($pengajar as $no => $p)
+                        <tr>
+                            <td class="text-center text-muted">{{ ($pengajar->currentPage() - 1) * $pengajar->perPage() + $no + 1 }}</td>
+                            <td class="text-center">
+                                <div class="avatar avatar-md position-relative">
+                                    @if($p->foto)
+                                        <img src="{{ asset('storage/' . $p->foto) }}" class="rounded-circle" width="50" height="50">
+                                    @else
+                                        <div class="avatar-placeholder rounded-circle bg-light text-muted d-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
+                                            <i class="fas fa-user-tie"></i>
+                                        </div>
+                                    @endif
                                 </div>
-                                <div class="col-md-3">
-                                    <label class="form-label fw-semibold text-primary">Nama Lengkap</label>
-                                    <input type="text" name="nama_lengkap" class="form-control border-2 border-primary rounded-pill shadow-sm" 
-                                        placeholder="Cari Nama..." value="{{ request('nama_lengkap') }}">
-                                </div>
-                                <div class="col-md-3">
-                                    <label class="form-label fw-semibold text-primary">Mata Pelajaran</label>
-                                    <select name="mata_pelajaran" class="form-select border-2 border-primary rounded-pill shadow-sm">
-                                        <option value="">Semua Pelajaran</option>
-                                        @foreach($mataPelajaranList as $mapel)
-                                            <option value="{{ $mapel }}" {{ request('mata_pelajaran') == $mapel ? 'selected' : '' }}>
-                                                {{ $mapel }}
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                                <div class="col-md-2">
-                                    <label class="form-label fw-semibold text-primary">Tahun Gabung</label>
-                                    <select name="tahun_bergabung" class="form-select border-2 border-primary rounded-pill shadow-sm">
-                                        <option value="">Semua Tahun</option>
-                                        @foreach($tahunBergabungList as $tahun)
-                                            <option value="{{ $tahun }}" {{ request('tahun_bergabung') == $tahun ? 'selected' : '' }}>
-                                                {{ $tahun }}
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                                <div class="col-md-2 d-flex align-items-end">
-                                    <button type="submit" class="btn btn-primary rounded-pill w-100 shadow-sm">
-                                        <i class="fas fa-search me-1"></i> Cari
+                            </td>
+                            <td class="fw-semibold">{{ $p->nip }}</td>
+                            <td>{{ $p->nama_lengkap }}</td>
+                            <td>
+                                <span class="badge bg-primary bg-opacity-10 text-primary">{{ $p->mata_pelajaran }}</span>
+                            </td>
+                            <td class="text-center">
+                                <span class="badge bg-info bg-opacity-10 text-info">{{ $p->tahun_bergabung }}</span>
+                            </td>
+                            <td class="text-center">
+                                <div class="d-flex justify-content-center">
+                                    <button data-bs-toggle="modal" data-bs-target="#lihat{{$p->id}}" class="btn btn-sm btn-icon btn-outline-info me-2 rounded-circle" title="Lihat">
+                                        <i class="fa-solid fa-eye"></i>
+                                    </button>
+                                    <button data-bs-toggle="modal" data-bs-target="#edit{{$p->id}}" class="btn btn-sm btn-icon btn-outline-secondary me-2 rounded-circle" title="Edit">
+                                        <i class="fa-solid fa-pen-to-square"></i>
+                                    </button>
+                                    <button data-bs-toggle="modal" data-bs-target="#delete{{$p->id}}" class="btn btn-sm btn-icon btn-outline-danger rounded-circle" title="Hapus">
+                                        <i class="fa-solid fa-trash"></i>
                                     </button>
                                 </div>
-                            </div>
-                        </form>
-                    </div>
-                    
-                    <!-- Tabel Data -->
-                    <div class="table-responsive">
-                        <table class="table table-hover table-striped align-middle mb-0">
-                            <thead class="table-light">
-                                <tr>
-                                    <th class="text-center" style="width: 60px;">No</th>
-                                    <th class="text-center" style="width: 100px;">Foto</th>
-                                    <th style="width: 120px;">NIP</th>
-                                    <th>Nama Lengkap</th>
-                                    <th>Mata Pelajaran</th>
-                                    <th class="text-center" style="width: 120px;">Tahun Bergabung</th>
-                                    <th class="text-center" style="width: 150px;">Aksi</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @forelse($pengajar as $no => $p)
-                                <tr class="hover-shadow">
-                                    <th scope="row" class="text-center">{{ ($pengajar->currentPage() - 1) * $pengajar->perPage() + $no + 1 }}</th>
-                                    <td class="text-center">
-                                        <div class="avatar avatar-md">
-                                            @if($p->foto)
-                                                <img src="{{ asset('storage/' . $p->foto) }}" class="rounded-circle border border-3 border-primary" width="70" height="70" style="object-fit: cover;">
-                                            @else
-                                                <div class="avatar-placeholder rounded-circle bg-light text-muted d-flex align-items-center justify-content-center" style="width: 70px; height: 70px;">
-                                                    <i class="fas fa-user-tie fa-lg"></i>
-                                                </div>
-                                            @endif
-                                        </div>
-                                    </td>
-                                    <td>{{ $p->nip }}</td>
-                                    <td>
-                                        <div class="fw-semibold">{{ $p->nama_lengkap }}</div>
-                                    </td>
-                                    <td>{{ $p->mata_pelajaran }}</td>
-                                    <td class="text-center">{{ $p->tahun_bergabung }}</td>
-                                    <td class="text-center">
-                                        <div class="btn-group btn-group-sm" role="group">
-                                            <a href="#" data-bs-toggle="modal" data-bs-target="#lihat{{$p->id}}" 
-                                                class="btn btn-outline-info rounded-start-pill" title="Lihat Detail">
-                                                <i class="fa-solid fa-eye"></i>
-                                            </a>
-                                            <a href="#" data-bs-toggle="modal" data-bs-target="#edit{{$p->id}}" 
-                                                class="btn btn-outline-primary" title="Edit">
-                                                <i class="fa-solid fa-pen-to-square"></i>
-                                            </a>
-                                            <a href="#" data-bs-toggle="modal" data-bs-target="#delete{{$p->id}}" 
-                                                class="btn btn-outline-danger rounded-end-pill" title="Hapus">
-                                                <i class="fa-solid fa-trash"></i>
-                                            </a>
-                                        </div>
-                                    </td>
-                                </tr>
-                                @empty
-                                <tr>
-                                    <td colspan="7" class="text-center py-4">
-                                        <div class="alert alert-info d-flex align-items-center justify-content-center">
-                                            <i class="fas fa-info-circle me-3 fa-2x"></i>
-                                            <div>
-                                                <h5 class="alert-heading mb-1">Data Pengajar Kosong</h5>
-                                                <p class="mb-0">Belum ada data pengajar yang tersedia.</p>
-                                            </div>
-                                        </div>
-                                    </td>
-                                </tr>
-                                @endforelse
-                            </tbody>
-                        </table>
-                    </div>
-                    
-                    <!-- Pagination -->
-                    <div class="d-flex justify-content-between align-items-center mt-4">
-                        <div class="text-muted">
-                            Menampilkan <b>{{ $pengajar->firstItem() }}</b> sampai <b>{{ $pengajar->lastItem() }}</b> dari <b>{{ $pengajar->total() }}</b> hasil
-                        </div>
-                        <nav aria-label="Page navigation">
-                            <ul class="pagination pagination-sm mb-0">
-                                @if ($pengajar->onFirstPage())
-                                    <li class="page-item disabled">
-                                        <span class="page-link rounded-pill">&laquo;</span>
-                                    </li>
-                                @else
-                                    <li class="page-item">
-                                        <a class="page-link rounded-pill" href="{{ $pengajar->previousPageUrl() }}" rel="prev">&laquo;</a>
-                                    </li>
-                                @endif
-
-                                @foreach ($pengajar->links()->elements[0] as $page => $url)
-                                    <li class="page-item {{ $pengajar->currentPage() == $page ? 'active' : '' }}">
-                                        <a class="page-link rounded-circle" href="{{ $url }}">{{ $page }}</a>
-                                    </li>
-                                @endforeach
-
-                                @if ($pengajar->hasMorePages())
-                                    <li class="page-item">
-                                        <a class="page-link rounded-pill" href="{{ $pengajar->nextPageUrl() }}" rel="next">&raquo;</a>
-                                    </li>
-                                @else
-                                    <li class="page-item disabled">
-                                        <span class="page-link rounded-pill">&raquo;</span>
-                                    </li>
-                                @endif
-                            </ul>
-                        </nav>
-                    </div>
+                            </td>
+                        </tr>
+                        @empty
+                        <tr>
+                            <td colspan="7" class="text-center py-5">
+                                <div class="d-flex flex-column align-items-center">
+                                    <i class="fas fa-chalkboard-teacher fs-1 text-muted mb-3"></i>
+                                    <h5 class="text-muted">Data Pengajar Tidak Ditemukan</h5>
+                                    <p class="text-muted">Tidak ada data pengajar yang tersedia.</p>
+                                </div>
+                            </td>
+                        </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
+            
+            <!-- Pagination -->
+            <div class="d-flex justify-content-between align-items-center mt-4">
+                <div class="text-muted small">
+                    Menampilkan <b>{{ $pengajar->firstItem() }}</b> sampai <b>{{ $pengajar->lastItem() }}</b> dari <b>{{ $pengajar->total() }}</b> entri
+                </div>
+                <div>
+                    {{ $pengajar->onEachSide(1)->links() }}
                 </div>
             </div>
         </div>
@@ -212,53 +210,52 @@
 
 @push('styles')
 <style>
-    .card-header.bg-gradient-primary {
-    background: linear-gradient(to right, #3a7bd5, #00d2ff) !important;
-    /* Warna bisa disesuaikan */
+    /* Gaya yang sama persis dengan tampilan alumni */
+    :root {
+        --primary-color: #4e54c8;
+        --secondary-color: #8f94fb;
     }
     
     .card {
+        border: none;
         border-radius: 12px;
         overflow: hidden;
     }
     
-    .card-header {
-        border-bottom: none;
+    .card-header.bg-gradient-primary-to-secondary {
+        background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
     }
     
     .table th {
+        letter-spacing: 0.5px;
         font-weight: 600;
         text-transform: uppercase;
-        font-size: 0.8rem;
-        letter-spacing: 0.5px;
+        font-size: 0.75rem;
+        color: #6c757d;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.05);
     }
     
-    .hover-shadow:hover {
-        box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
-        transform: translateY(-2px);
-        transition: all 0.3s ease;
+    .table-striped tbody tr:nth-of-type(odd) {
+        background-color: rgba(0, 0, 0, 0.02);
     }
     
-    .avatar-placeholder {
-        border: 2px dashed #dee2e6;
+    .avatar {
+        width: 50px;
+        height: 50px;
     }
     
-    .btn-outline-primary:hover, .btn-outline-info:hover, .btn-outline-danger:hover {
-        color: white !important;
+    /* Gaya Alert */
+    .alert {
+        border: none;
+        border-left: 4px solid;
+    }
+
+    .alert-success {
+        border-left-color: var(--bs-success);
     }
     
-    .rounded-pill {
-        border-radius: 50rem !important;
-    }
-    
-    .rounded-start-pill {
-        border-top-left-radius: 50rem !important;
-        border-bottom-left-radius: 50rem !important;
-    }
-    
-    .rounded-end-pill {
-        border-top-right-radius: 50rem !important;
-        border-bottom-right-radius: 50rem !important;
+    .alert-danger {
+        border-left-color: var(--bs-danger);
     }
     
     .badge {
@@ -266,8 +263,52 @@
         font-weight: 500;
     }
     
-    .btn-group .btn {
-        border-radius: 0;
+    .btn-icon {
+        width: 36px;
+        height: 36px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0;
+    }
+    
+    .btn-icon i {
+        font-size: 0.9rem;
+    }
+
+    .pagination {
+        margin: 0;
+    }
+
+    .pagination .page-item {
+        margin: 0 2px;
+    }
+
+    .pagination .page-link {
+        border-radius: 50rem !important;
+        padding: 0.4rem 0.8rem;
+        font-size: 0.85rem;
+        color: #6c757d;
+        border: 1px solid #dee2e6;
+    }
+
+    .pagination .page-item.active .page-link {
+        background-color: #4e54c8;
+        border-color: #4e54c8;
+        color: #fff;
+        font-weight: 600;
+    }
+
+    .pagination .page-link:hover {
+        background-color: #f0f2ff;
+        border-color: #bfc3ff;
+        color: #4e54c8;
+    }
+
+    .pagination .page-item.disabled .page-link {
+        background-color: #f8f9fa;
+        color: #adb5bd;
+        border-color: #dee2e6;
     }
 </style>
 @endpush
