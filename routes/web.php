@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Auth;
 
 // Halaman utama
 Route::get('/', function () {
-    return view('beranda');
+    return view('dashboard');
 });
 Route::get('/tentangsmkn1', function () {
     return view('tentangsmkn1');
@@ -21,10 +21,6 @@ Route::get('/tentangsmkn1', function () {
 
 Route::get('/welcome', function () {
     return view('welcome');
-});
-
-Route::get('/alumni', function () {
-    return view('alumni');
 });
 
 Route::get('/home', function () {
@@ -35,15 +31,11 @@ Route::get('/app', function () {
     return view('layouts.app');
 });
 
-Route::get('/berita', function () {
-    return view('layouts.berita.berita');
-});
 Route::get('/home', [HomeController::class, 'index'])->name('home');
 
 // Rute untuk Alumni
 Route::resource('alumni', AlumniController::class);
 Route::get('/alumni/pdf/{id}', [AlumniController::class, 'generatePdf'])->name('alumni.invoice');
-Route::get('/alumni/{id}', [AlumniController::class, 'show'])->name('alumni.show');
 
 // Rute untuk Berita
 Route::resource('tmbberita', TambahBeritaController::class);

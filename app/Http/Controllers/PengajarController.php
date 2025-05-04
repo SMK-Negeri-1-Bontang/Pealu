@@ -49,7 +49,7 @@ class PengajarController extends Controller
         $pengajar = $query->paginate(10)
                         ->appends($request->query());
         
-        return view('layouts.pengajar.pengajar', compact('pengajar', 'mataPelajaranList', 'tahunBergabungList'));
+        return view('layouts.pengajar.index', compact('pengajar', 'mataPelajaranList', 'tahunBergabungList'));
     }
 
     public function store(Request $request)
@@ -117,18 +117,5 @@ class PengajarController extends Controller
 
         return redirect()->route('pengajar.index')
             ->with('delete', 'Data pengajar berhasil dihapus');
-    }
-
-    public function invoice($id)
-    {
-        $pengajar = Pengajar::findOrFail($id);
-        $status_map = [1 => 'Aktif', 2 => 'Tidak Aktif', 3 => 'Pensiun'];
-        
-        $pdf = PDF::loadView('layouts.pengajar.invoice', [
-            'pengajar' => $pengajar,
-            'status_map' => $status_map
-        ]);
-
-        return $pdf->stream('invoice_pengajar_'.$id.'.pdf');
     }
 }

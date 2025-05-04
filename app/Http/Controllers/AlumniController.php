@@ -54,7 +54,7 @@ class AlumniController extends Controller
         $alumni = $query->paginate(10)
                       ->appends($request->query());
         
-        return view('layouts.alumni.alumni', compact('alumni', 'jurusanList', 'tahunList'));
+        return view('layouts.alumni.index', compact('alumni', 'jurusanList', 'tahunList'));
     }
     
     public function generatePdf($id)
@@ -132,9 +132,9 @@ class AlumniController extends Controller
         ]);
 
         if($alumni) {
-            return redirect('alumni')->with(['success' => 'Data Berhasil Disimpan']);
+            return redirect()->route('alumni.index')->with(['success' => 'Data Berhasil Disimpan']);
         } else {
-            return redirect('alumni')->with(['error' => 'Data Gagal Disimpan']);
+            return redirect()->route('alumni.index')->with(['error' => 'Data Gagal Disimpan']);
         }
     }
 
@@ -198,9 +198,9 @@ class AlumniController extends Controller
         ]);
 
         if($alumni) {
-            return redirect('alumni')->with(['update' => 'Data Berhasil Di Update']);
+            return redirect()->route('alumni.index')->with(['update' => 'Data Berhasil Di Update']);
         } else {
-            return redirect('alumni')->with(['error' => 'Data Gagal Disimpan']);
+            return redirect()->route('alumni.index')->with(['error' => 'Data Gagal Disimpan']);
         }
     }
 
@@ -210,9 +210,9 @@ class AlumniController extends Controller
         $alumni->delete();
 
         if($alumni) {
-            return redirect('alumni')->with(['delete' => 'Data Berhasil Didelete']);
+            return redirect()->route('alumni.index')->with(['delete' => 'Data Berhasil Didelete']);
         } else {
-            return redirect('alumni')->with(['error' => 'Data Gagal Dihapus']);
+            return redirect()->route('alumni.index')->with(['error' => 'Data Gagal Dihapus']);
         }
     }
 }
