@@ -86,16 +86,16 @@
             <div class="mb-4">
                 <form action="{{ route('pengajar.index') }}" method="GET">
                     <div class="row g-3 align-items-end">
-                        <div class="col-md-2">
-                            <label class="form-label small text-uppercase fw-bold text-muted">NIP</label>
-                            <input type="text" name="nip" class="form-control" placeholder="Cari NIP..." value="{{ request('nip') }}">
-                        </div>
                         <div class="col-md-3">
                             <label class="form-label small text-uppercase fw-bold text-muted">Nama</label>
                             <div class="input-group">
                                 <span class="input-group-text bg-transparent"><i class="fas fa-search"></i></span>
                                 <input type="text" name="nama_lengkap" class="form-control border-start-0 ps-0" placeholder="Cari nama..." value="{{ request('nama_lengkap') }}">
                             </div>
+                        </div>
+                        <div class="col-md-2">
+                            <label class="form-label small text-uppercase fw-bold text-muted">NIP</label>
+                            <input type="text" name="nip" class="form-control" placeholder="Cari NIP..." value="{{ request('nip') }}">
                         </div>
                         <div class="col-md-3 flex-grow-1">
                             <label class="form-label small text-uppercase fw-bold text-muted">Mata Pelajaran</label>
@@ -135,11 +135,11 @@
                         <tr>
                             <th class="text-center" style="width: 60px;">No</th>
                             <th class="text-center" style="width: 80px;">Foto</th>
-                            <th style="width: 120px;">NIP</th>
+                            <th>NIP</th>
                             <th>Nama Lengkap</th>
                             <th>Mata Pelajaran</th>
-                            <th class="text-center" style="width: 120px;">Tahun Bergabung</th>
-                            <th class="text-center" style="width: 150px;">Aksi</th>
+                            <th class="text-center">Tahun Bergabung</th>
+                            <th class="text-center"Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -315,103 +315,172 @@
 
 @push('modal')
 <!-- Modal Tambah Data Pengajar -->
-<div class="modal fade" id="tambah" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content" style="background:rgb(240, 240, 240);">
-            <div class="modal-header">
-                <h1 class="modal-title fs-5" id="exampleModalLabel">Tambah Data Pengajar</h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+<div class="modal fade" id="tambah" tabindex="-1" aria-labelledby="tambahPengajarModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content border-0 shadow-lg" style="border-radius: 12px; overflow: hidden;">
+            <!-- Modal Header with Gradient Background -->
+            <div class="modal-header text-white" style="background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));">
+                <h4 class="mb-0 text-white p-2"" id="tambahPengajarModalLabel">
+                    <i class="fas fa-chalkboard-teacher me-2"></i> Tambah Data Pengajar
+                </h4>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body text-capitalize">
-                <form action="{{ route('pengajar.store') }}" method="POST" enctype="multipart/form-data">
+            
+            <!-- Modal Body -->
+            <div class="modal-body p-4">
+                <form action="{{ route('pengajar.store') }}" method="POST" enctype="multipart/form-data" class="needs-validation" novalidate>
                     @csrf
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
-                                <label class="form-label">Nama Lengkap</label>
-                                <input type="text" class="form-control @error('nama_lengkap') is-invalid @enderror" name="nama_lengkap" placeholder="Masukkan Nama Lengkap Pengajar">
+                    <div class="row g-3">
+                        <!-- Nama Lengkap & NIP -->
+                        <div class="col-md-6">
+                            <div class="form-floating">
+                                <input type="text" class="form-control @error('nama_lengkap') is-invalid @enderror" 
+                                       id="nama_lengkap" name="nama_lengkap" placeholder="Nama Lengkap" required>
+                                <label for="nama_lengkap" class="text-muted">
+                                    <i class="fas fa-user me-1"></i> Nama Lengkap
+                                </label>
                                 @error('nama_lengkap')
-                                <div class="alert alert-danger">{{ $message }}</div>
+                                <div class="invalid-feedback d-block">{{ $message }}</div>
                                 @enderror
+                            </div>
                         </div>
-                        <div class="col-md-6 mb-3">
-                                <label class="form-label">NIP</label>
-                                <input type="number" class="form-control @error('nip') is-invalid @enderror" name="nip" placeholder="Masukkan NIP Dengan Benar">
+                        
+                        <div class="col-md-6">
+                            <div class="form-floating">
+                                <input type="number" class="form-control @error('nip') is-invalid @enderror" 
+                                       id="nip" name="nip" placeholder="NIP" required>
+                                <label for="nip" class="text-muted">
+                                    <i class="fas fa-id-card me-1"></i> NIP
+                                </label>
                                 @error('nip')
-                                <div class="alert alert-danger">{{ $message }}</div>
+                                <div class="invalid-feedback d-block">{{ $message }}</div>
                                 @enderror
+                            </div>
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
-                                <label class="form-label">Mata Pelajaran</label>
-                                <input type="text" class="form-control @error('mata_pelajaran') is-invalid @enderror" name="mata_pelajaran" placeholder="Contoh 'Matematika'">
+                        
+                        <!-- Mata Pelajaran & Tahun Bergabung -->
+                        <div class="col-md-6">
+                            <div class="form-floating">
+                                <input type="text" class="form-control @error('mata_pelajaran') is-invalid @enderror" 
+                                       id="mata_pelajaran" name="mata_pelajaran" placeholder="Mata Pelajaran" required>
+                                <label for="mata_pelajaran" class="text-muted">
+                                    <i class="fas fa-book me-1"></i> Mata Pelajaran
+                                </label>
                                 @error('mata_pelajaran')
-                                <div class="alert alert-danger">{{ $message }}</div>
+                                <div class="invalid-feedback d-block">{{ $message }}</div>
                                 @enderror
+                            </div>
                         </div>
-                        <div class="col-md-6 mb-3">
-                                <label class="form-label">Tahun Bergabung</label>
-                                <input type="text" class="form-control @error('tahun_bergabung') is-invalid @enderror" name="tahun_bergabung" placeholder="Contoh '2022'">
+                        
+                        <div class="col-md-6">
+                            <div class="form-floating">
+                                <input type="text" class="form-control @error('tahun_bergabung') is-invalid @enderror" 
+                                       id="tahun_bergabung" name="tahun_bergabung" placeholder="Tahun Bergabung" required>
+                                <label for="tahun_bergabung" class="text-muted">
+                                    <i class="fas fa-calendar-alt me-1"></i> Tahun Bergabung
+                                </label>
                                 @error('tahun_bergabung')
-                                <div class="alert alert-danger">{{ $message }}</div>
+                                <div class="invalid-feedback d-block">{{ $message }}</div>
                                 @enderror
+                            </div>
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
-                                <label class="form-label">Nomor Telpon</label>
-                                <input type="number" class="form-control @error('nomor_telp') is-invalid @enderror" name="nomor_telp" placeholder="Masukkan Nomor Telpon Dengan Benar">
+                        
+                        <!-- Nomor Telpon & Status -->
+                        <div class="col-md-6">
+                            <div class="form-floating">
+                                <input type="tel" class="form-control @error('nomor_telp') is-invalid @enderror" 
+                                       id="nomor_telp" name="nomor_telp" placeholder="Nomor Telepon">
+                                <label for="nomor_telp" class="text-muted">
+                                    <i class="fas fa-phone me-1"></i> Nomor Telepon
+                                </label>
                                 @error('nomor_telp')
-                                <div class="alert alert-danger">{{ $message }}</div>
+                                <div class="invalid-feedback d-block">{{ $message }}</div>
                                 @enderror
+                            </div>
                         </div>
-                        <div class="col-md-6 mb-3">
-                                <label class="form-label">Status</label>
-                                <select class="form-select @error('status') is-invalid @enderror" name="status">
-                                    <option disabled selected>Pilih</option>
+                        
+                        <div class="col-md-6">
+                            <div class="form-floating">
+                                <select class="form-select @error('status') is-invalid @enderror" 
+                                        id="status" name="status" required>
+                                    <option value="" disabled selected>Pilih Status</option>
                                     <option value="1">Aktif</option>
                                     <option value="2">Tidak Aktif</option>
                                     <option value="3">Pensiun</option>
                                 </select>
+                                <label for="status" class="text-muted">
+                                    <i class="fas fa-info-circle me-1"></i> Status
+                                </label>
                                 @error('status')
-                                <div class="alert alert-danger">{{ $message }}</div>
+                                <div class="invalid-feedback d-block">{{ $message }}</div>
                                 @enderror
+                            </div>
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
-                                <label class="form-label">Pendidikan Terakhir</label>
-                                <input type="text" class="form-control @error('pendidikan_terakhir') is-invalid @enderror" name="pendidikan_terakhir" placeholder="Contoh 'S1 Pendidikan Matematika'">
+                        
+                        <!-- Pendidikan Terakhir & Jabatan -->
+                        <div class="col-md-6">
+                            <div class="form-floating">
+                                <input type="text" class="form-control @error('pendidikan_terakhir') is-invalid @enderror" 
+                                       id="pendidikan_terakhir" name="pendidikan_terakhir" placeholder="Pendidikan Terakhir">
+                                <label for="pendidikan_terakhir" class="text-muted">
+                                    <i class="fas fa-graduation-cap me-1"></i> Pendidikan Terakhir
+                                </label>
                                 @error('pendidikan_terakhir')
-                                <div class="alert alert-danger">{{ $message }}</div>
+                                <div class="invalid-feedback d-block">{{ $message }}</div>
                                 @enderror
+                            </div>
                         </div>
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label">Jabatan</label>
-                                <input type="text" class="form-control @error('jabatan') is-invalid @enderror" name="jabatan" placeholder="Contoh 'Guru Matematika'">
+                        
+                        <div class="col-md-6">
+                            <div class="form-floating">
+                                <input type="text" class="form-control @error('jabatan') is-invalid @enderror" 
+                                       id="jabatan" name="jabatan" placeholder="Jabatan">
+                                <label for="jabatan" class="text-muted">
+                                    <i class="fas fa-briefcase me-1"></i> Jabatan
+                                </label>
                                 @error('jabatan')
-                                <div class="alert alert-danger">{{ $message }}</div>
+                                <div class="invalid-feedback d-block">{{ $message }}</div>
                                 @enderror
+                            </div>
+                        </div>
+                        
+                        <!-- Alamat Rumah -->
+                        <div class="col-12">
+                            <div class="form-floating">
+                                <textarea class="form-control @error('alamat') is-invalid @enderror" 
+                                          id="alamat" name="alamat" placeholder="Alamat Rumah" style="height: 100px"></textarea>
+                                <label for="alamat" class="text-muted">
+                                    <i class="fas fa-home me-1"></i> Alamat Rumah
+                                </label>
+                                @error('alamat')
+                                <div class="invalid-feedback d-block">{{ $message }}</div>
+                                @enderror
+                            </div>
+                        </div>
+                        
+                        <!-- Foto Pengajar -->
+                        <div class="col-12">
+                            <div class="mb-3">
+                                <label for="foto" class="form-label text-muted">
+                                    <i class="fas fa-image me-1"></i> Foto Pengajar
+                                </label>
+                                <input class="form-control @error('foto') is-invalid @enderror" 
+                                       type="file" id="foto" name="foto" accept="image/*">
+                                @error('foto')
+                                <div class="invalid-feedback d-block">{{ $message }}</div>
+                                @enderror
+                            </div>
                         </div>
                     </div>
-                    <div class="mb-3">
-                        <label class="form-label">Alamat Rumah</label>
-                        <textarea class="form-control @error('alamat') is-invalid @enderror" name="alamat" rows="3" placeholder="Alamat Lengkap"></textarea>
-                        @error('alamat')
-                        <div class="alert alert-danger">{{ $message }}</div>
-                        @enderror
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Foto Pengajar</label>
-                        <input type="file" class="form-control @error('foto') is-invalid @enderror" name="foto">
-                        @error('foto')
-                        <div class="alert alert-danger">{{ $message }}</div>
-                        @enderror
-                    </div>
-
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                        <button type="submit" class="btn btn-success">Simpan</button>
+                    
+                    <!-- Modal Footer -->
+                    <div class="modal-footer border-0 pt-5">
+                        <button type="button" class="btn btn-outline-secondary rounded-pill px-4" data-bs-dismiss="modal">
+                            <i class="fas fa-times me-2"></i> Batal
+                        </button>
+                        <button type="submit" class="btn btn-primary rounded-pill px-4 shadow-sm">
+                            <i class="fas fa-save me-2"></i> Simpan Data
+                        </button>
                     </div>
                 </form>
             </div>
@@ -422,108 +491,188 @@
 
 @foreach($pengajar as $p)
 <!-- Modal Edit Data Pengajar -->
-<div class="modal fade" id="edit{{$p->id}}" tabindex="-1" aria-labelledby="editModalLabel{{$p->id}}" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content" style="background:rgb(240, 240, 240);">
-            <div class="modal-header">
-                <h1 class="modal-title fs-5" id="editModalLabel{{$p->id}}">Edit Data Pengajar</h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+<div class="modal fade" id="edit{{$p->id}}" tabindex="-1" aria-labelledby="editPengajarModalLabel{{$p->id}}" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content border-0 shadow-lg" style="border-radius: 12px; overflow: hidden;">
+            <!-- Modal Header with Gradient Background -->
+            <div class="modal-header text-white" style="background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));">
+                <h4 class="mb-0 text-white p-2"" id="editPengajarModalLabel{{$p->id}}">
+                    <i class="fas fa-user-edit me-2"></i> Edit Data Pengajar
+                </h4>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body text-capitalize">
-                <form action="{{ route('pengajar.update', $p->id) }}" method="POST" enctype="multipart/form-data">
+            
+            <!-- Modal Body -->
+            <div class="modal-body p-4">
+                <form action="{{ route('pengajar.update', $p->id) }}" method="POST" enctype="multipart/form-data" class="needs-validation" novalidate>
                     @csrf
                     @method('PUT')
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label">Nama Lengkap</label>
-                            <input type="text" class="form-control @error('nama_lengkap') is-invalid @enderror" name="nama_lengkap" value="{{ old('nama_lengkap', $p->nama_lengkap) }}" placeholder="Masukkan Nama Lengkap Pengajar">
-                            @error('nama_lengkap')
-                            <div class="alert alert-danger">{{ $message }}</div>
-                            @enderror
+                    <div class="row g-3">
+                        <!-- Nama Lengkap & NIP -->
+                        <div class="col-md-6">
+                            <div class="form-floating">
+                                <input type="text" class="form-control @error('nama_lengkap') is-invalid @enderror" 
+                                       id="edit_nama_lengkap{{$p->id}}" name="nama_lengkap" 
+                                       value="{{ old('nama_lengkap', $p->nama_lengkap) }}" placeholder="Nama Lengkap" required>
+                                <label for="edit_nama_lengkap{{$p->id}}" class="text-muted">
+                                    <i class="fas fa-user me-1"></i> Nama Lengkap
+                                </label>
+                                @error('nama_lengkap')
+                                <div class="invalid-feedback d-block">{{ $message }}</div>
+                                @enderror
+                            </div>
                         </div>
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label">NIP</label>
-                            <input type="number" class="form-control @error('nip') is-invalid @enderror" name="nip" value="{{ old('nip', $p->nip) }}" placeholder="Masukkan NIP Dengan Benar">
-                            @error('nip')
-                            <div class="alert alert-danger">{{ $message }}</div>
-                            @enderror
+                        
+                        <div class="col-md-6">
+                            <div class="form-floating">
+                                <input type="number" class="form-control @error('nip') is-invalid @enderror" 
+                                       id="edit_nip{{$p->id}}" name="nip" 
+                                       value="{{ old('nip', $p->nip) }}" placeholder="NIP" required>
+                                <label for="edit_nip{{$p->id}}" class="text-muted">
+                                    <i class="fas fa-id-card me-1"></i> NIP
+                                </label>
+                                @error('nip')
+                                <div class="invalid-feedback d-block">{{ $message }}</div>
+                                @enderror
+                            </div>
+                        </div>
+                        
+                        <!-- Mata Pelajaran & Tahun Bergabung -->
+                        <div class="col-md-6">
+                            <div class="form-floating">
+                                <input type="text" class="form-control @error('mata_pelajaran') is-invalid @enderror" 
+                                       id="edit_mata_pelajaran{{$p->id}}" name="mata_pelajaran" 
+                                       value="{{ old('mata_pelajaran', $p->mata_pelajaran) }}" placeholder="Mata Pelajaran" required>
+                                <label for="edit_mata_pelajaran{{$p->id}}" class="text-muted">
+                                    <i class="fas fa-book me-1"></i> Mata Pelajaran
+                                </label>
+                                @error('mata_pelajaran')
+                                <div class="invalid-feedback d-block">{{ $message }}</div>
+                                @enderror
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <div class="form-floating">
+                                <input type="text" class="form-control @error('tahun_bergabung') is-invalid @enderror" 
+                                       id="edit_tahun_bergabung{{$p->id}}" name="tahun_bergabung" 
+                                       value="{{ old('tahun_bergabung', $p->tahun_bergabung) }}" placeholder="Tahun Bergabung" required>
+                                <label for="edit_tahun_bergabung{{$p->id}}" class="text-muted">
+                                    <i class="fas fa-calendar-alt me-1"></i> Tahun Bergabung
+                                </label>
+                                @error('tahun_bergabung')
+                                <div class="invalid-feedback d-block">{{ $message }}</div>
+                                @enderror
+                            </div>
+                        </div>
+                        
+                        <!-- Nomor Telpon & Status -->
+                        <div class="col-md-6">
+                            <div class="form-floating">
+                                <input type="tel" class="form-control @error('nomor_telp') is-invalid @enderror" 
+                                       id="edit_nomor_telp{{$p->id}}" name="nomor_telp" 
+                                       value="{{ old('nomor_telp', $p->nomor_telp) }}" placeholder="Nomor Telepon">
+                                <label for="edit_nomor_telp{{$p->id}}" class="text-muted">
+                                    <i class="fas fa-phone me-1"></i> Nomor Telepon
+                                </label>
+                                @error('nomor_telp')
+                                <div class="invalid-feedback d-block">{{ $message }}</div>
+                                @enderror
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <div class="form-floating">
+                                <select class="form-select @error('status') is-invalid @enderror" 
+                                        id="edit_status{{$p->id}}" name="status" required>
+                                    <option value="" disabled>Pilih Status</option>
+                                    <option value="1" {{ old('status', $p->status) == '1' ? 'selected' : '' }}>Aktif</option>
+                                    <option value="2" {{ old('status', $p->status) == '2' ? 'selected' : '' }}>Tidak Aktif</option>
+                                    <option value="3" {{ old('status', $p->status) == '3' ? 'selected' : '' }}>Pensiun</option>
+                                </select>
+                                <label for="edit_status{{$p->id}}" class="text-muted">
+                                    <i class="fas fa-info-circle me-1"></i> Status
+                                </label>
+                                @error('status')
+                                <div class="invalid-feedback d-block">{{ $message }}</div>
+                                @enderror
+                            </div>
+                        </div>
+                        
+                        <!-- Pendidikan Terakhir & Jabatan -->
+                        <div class="col-md-6">
+                            <div class="form-floating">
+                                <input type="text" class="form-control @error('pendidikan_terakhir') is-invalid @enderror" 
+                                       id="edit_pendidikan_terakhir{{$p->id}}" name="pendidikan_terakhir" 
+                                       value="{{ old('pendidikan_terakhir', $p->pendidikan_terakhir) }}" placeholder="Pendidikan Terakhir">
+                                <label for="edit_pendidikan_terakhir{{$p->id}}" class="text-muted">
+                                    <i class="fas fa-graduation-cap me-1"></i> Pendidikan Terakhir
+                                </label>
+                                @error('pendidikan_terakhir')
+                                <div class="invalid-feedback d-block">{{ $message }}</div>
+                                @enderror
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <div class="form-floating">
+                                <input type="text" class="form-control @error('jabatan') is-invalid @enderror" 
+                                       id="edit_jabatan{{$p->id}}" name="jabatan" 
+                                       value="{{ old('jabatan', $p->jabatan) }}" placeholder="Jabatan">
+                                <label for="edit_jabatan{{$p->id}}" class="text-muted">
+                                    <i class="fas fa-briefcase me-1"></i> Jabatan
+                                </label>
+                                @error('jabatan')
+                                <div class="invalid-feedback d-block">{{ $message }}</div>
+                                @enderror
+                            </div>
+                        </div>
+                        
+                        <!-- Alamat Rumah -->
+                        <div class="col-12">
+                            <div class="form-floating">
+                                <textarea class="form-control @error('alamat') is-invalid @enderror" 
+                                          id="edit_alamat{{$p->id}}" name="alamat" 
+                                          placeholder="Alamat Rumah" style="height: 100px">{{ old('alamat', $p->alamat) }}</textarea>
+                                <label for="edit_alamat{{$p->id}}" class="text-muted">
+                                    <i class="fas fa-home me-1"></i> Alamat Rumah
+                                </label>
+                                @error('alamat')
+                                <div class="invalid-feedback d-block">{{ $message }}</div>
+                                @enderror
+                            </div>
+                        </div>
+                        
+                        <!-- Foto Pengajar -->
+                        <div class="col-12">
+                            <div class="mb-3">
+                                <label for="edit_foto{{$p->id}}" class="form-label text-muted">
+                                    <i class="fas fa-image me-1"></i> Foto Pengajar
+                                </label>
+                                <input class="form-control @error('foto') is-invalid @enderror" 
+                                       type="file" id="edit_foto{{$p->id}}" name="foto" accept="image/*">
+                                <input type="hidden" name="foto_lama" value="{{ $p->foto }}">
+                                @if($p->foto)
+                                    <div class="mt-2 d-flex align-items-center">
+                                        <span class="me-2">Foto saat ini:</span>
+                                        <img src="{{ asset('storage/' . $p->foto) }}" class="rounded" width="60" height="60" style="object-fit: cover;">
+                                    </div>
+                                @endif
+                                @error('foto')
+                                <div class="invalid-feedback d-block">{{ $message }}</div>
+                                @enderror
+                            </div>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label">Mata Pelajaran</label>
-                            <input type="text" class="form-control @error('mata_pelajaran') is-invalid @enderror" name="mata_pelajaran" value="{{ old('mata_pelajaran', $p->mata_pelajaran) }}" placeholder="Contoh 'Matematika'">
-                            @error('mata_pelajaran')
-                            <div class="alert alert-danger">{{ $message }}</div>
-                            @enderror
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label">Tahun Bergabung</label>
-                            <input type="text" class="form-control @error('tahun_bergabung') is-invalid @enderror" name="tahun_bergabung" value="{{ old('tahun_bergabung', $p->tahun_bergabung) }}" placeholder="Contoh '2022'">
-                            @error('tahun_bergabung')
-                            <div class="alert alert-danger">{{ $message }}</div>
-                            @enderror
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label">Nomor Telpon</label>
-                            <input type="number" class="form-control @error('nomor_telp') is-invalid @enderror" name="nomor_telp" value="{{ old('nomor_telp', $p->nomor_telp) }}" placeholder="Masukkan Nomor Telpon Dengan Benar">
-                            @error('nomor_telp')
-                            <div class="alert alert-danger">{{ $message }}</div>
-                            @enderror
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label">Status</label>
-                            <select class="form-select @error('status') is-invalid @enderror" name="status">
-                                <option value="" disabled selected>Pilih</option>
-                                <option value="1" {{ old('status', $p->status) == '1' ? 'selected' : '' }}>Aktif</option>
-                                <option value="2" {{ old('status', $p->status) == '2' ? 'selected' : '' }}>Tidak Aktif</option>
-                                <option value="3" {{ old('status', $p->status) == '3' ? 'selected' : '' }}>Pensiun</option>
-                            </select>
-                            @error('status')
-                            <div class="alert alert-danger">{{ $message }}</div>
-                            @enderror
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label">Pendidikan Terakhir</label>
-                            <input type="text" class="form-control @error('pendidikan_terakhir') is-invalid @enderror" name="pendidikan_terakhir" value="{{ old('pendidikan_terakhir', $p->pendidikan_terakhir) }}" placeholder="Contoh 'S1 Pendidikan Matematika'">
-                            @error('pendidikan_terakhir')
-                            <div class="alert alert-danger">{{ $message }}</div>
-                            @enderror
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label">Jabatan</label>
-                            <input type="text" class="form-control @error('jabatan') is-invalid @enderror" name="jabatan" value="{{ old('jabatan', $p->jabatan) }}" placeholder="Contoh 'Guru Matematika'">
-                            @error('jabatan')
-                            <div class="alert alert-danger">{{ $message }}</div>
-                            @enderror
-                        </div>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Alamat Rumah</label>
-                        <textarea class="form-control @error('alamat') is-invalid @enderror" name="alamat" rows="3" placeholder="Alamat Lengkap">{{ old('alamat', $p->alamat) }}</textarea>
-                        @error('alamat')
-                        <div class="alert alert-danger">{{ $message }}</div>
-                        @enderror
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Foto Pengajar</label>
-                        <input type="file" class="form-control @error('foto') is-invalid @enderror" name="foto">
-                        <input type="hidden" name="foto_lama" value="{{ $p->foto }}">
-                        @if($p->foto)
-                            <small class="d-block mt-1">Foto sekarang: <img src="{{ asset('storage/' . $p->foto) }}" width="80"></small>
-                        @endif
-                        @error('foto')
-                        <div class="alert alert-danger">{{ $message }}</div>
-                        @enderror
-                    </div>
-
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                        <button type="submit" class="btn btn-success">Simpan</button>
+                    
+                    <!-- Modal Footer -->
+                    <div class="modal-footer border-0 pt-5">
+                        <button type="button" class="btn btn-outline-secondary rounded-pill px-4" data-bs-dismiss="modal">
+                            <i class="fas fa-times me-2"></i> Batal
+                        </button>
+                        <button type="submit" class="btn btn-primary rounded-pill px-4 shadow-sm">
+                            <i class="fas fa-save me-2"></i> Simpan Perubahan
+                        </button>
                     </div>
                 </form>
             </div>
@@ -531,40 +680,72 @@
     </div>
 </div>
 
-@endforeach
-
-@foreach($pengajar as $p)
-<!-- Modal Delete -->
-<div class="modal fade" id="delete{{ $p->id }}" tabindex="-1" aria-labelledby="deleteModalLabel{{ $p->id }}" aria-hidden="true">
+<!-- Modal Delete Data Pengajar -->
+<div class="modal fade" id="delete{{$p->id}}" tabindex="-1" aria-labelledby="deletePengajarModalLabel{{$p->id}}" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content border-0 shadow-lg">
-            <div class="modal-header bg-danger text-white">
-                <h5 class="modal-title fw-bold" id="deleteModalLabel{{ $p->id }}">
-                    <i class="fas fa-exclamation-triangle"></i> Konfirmasi Penghapusan
+        <div class="modal-content border-0 shadow-lg" style="border-radius: 12px; overflow: hidden;">
+            <!-- Modal Header with Gradient Background -->
+            <div class="modal-header text-white py-4" style="background: linear-gradient(135deg, #ff416c 0%, #ff4b2b 100%);">
+                <h5 class="modal-title fw-bold" id="deletePengajarModalLabel{{$p->id}}">
+                    <i class="fas fa-exclamation-triangle me-2"></i> Konfirmasi Penghapusan
                 </h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body text-center">
-                <i class="fas fa-trash-alt text-danger fa-3x mb-3"></i>
-                <p class="mb-0">Apakah Anda yakin ingin menghapus data pengajar:</p>
-                <h5 class="fw-bold text-uppercase mt-2">{{ $p->nama_lengkap }}</h5>
-                <p class="text-muted">Tindakan ini tidak dapat dibatalkan!</p>
+            
+            <!-- Modal Body -->
+            <div class="modal-body text-center py-4">
+                <div class="icon-circle bg-danger bg-opacity-10 p-3 d-inline-block rounded-circle mb-3">
+                    <i class="fas fa-trash-alt text-danger fa-3x"></i>
+                </div>
+                <h4 class="fw-bold mb-2">Hapus Data Pengajar?</h4>
+                <p class="mb-2">Anda akan menghapus data:</p>
+                <div class="alert alert-light border-danger border-1 rounded-3 py-2 px-3 d-inline-block">
+                    <h5 class="fw-bold text-danger mb-0">{{ $p->nama_lengkap }}</h5>
+                </div>
+                <p class="text-muted mt-3">
+                    <i class="fas fa-info-circle me-1"></i> Data yang dihapus tidak dapat dikembalikan!
+                </p>
             </div>
-            <div class="modal-footer border-0 d-flex justify-content-center">
-                <button type="button" class="btn btn-secondary px-4" data-bs-dismiss="modal">
-                    <i class="fas fa-times"></i> Batal
+            
+            <!-- Modal Footer -->
+            <div class="modal-footer border-0 d-flex justify-content-center py-3" style="background-color: #f8f9fa;">
+                <button type="button" class="btn btn-outline-secondary rounded-pill px-4" data-bs-dismiss="modal">
+                    <i class="fas fa-times me-2"></i> Batal
                 </button>
                 <form action="{{ route('pengajar.destroy', $p->id) }}" method="POST">
                     @csrf
                     @method('DELETE')
-                    <button type="submit" class="btn btn-danger px-4">
-                        <i class="fas fa-trash"></i> Hapus
+                    <button type="submit" class="btn btn-danger rounded-pill px-4 shadow-sm">
+                        <i class="fas fa-trash-alt me-2"></i> Ya, Hapus!
                     </button>
                 </form>
             </div>
         </div>
     </div>
 </div>
+
+<script>
+    // Validasi form
+    (function () {
+        'use strict'
+        
+        // Fetch all the forms we want to apply custom Bootstrap validation styles to
+        var forms = document.querySelectorAll('.needs-validation')
+        
+        // Loop over them and prevent submission
+        Array.prototype.slice.call(forms)
+            .forEach(function (form) {
+                form.addEventListener('submit', function (event) {
+                    if (!form.checkValidity()) {
+                        event.preventDefault()
+                        event.stopPropagation()
+                    }
+                    
+                    form.classList.add('was-validated')
+                }, false)
+            })
+    })();
+</script>
 @endforeach
 
 @php
