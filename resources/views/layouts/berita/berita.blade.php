@@ -38,11 +38,6 @@
                             <i class="bi bi-person-circle fs-4 text-muted me-2"></i>
                             <span class="text-muted">Admin</span>
                         </div>
-                        <div class="ms-auto">
-                            <button class="btn btn-sm btn-outline-primary rounded-pill px-3">
-                                <i class="bi bi-share me-1"></i> Share
-                            </button>
-                        </div>
                     </div>
                 </div>
             </div>

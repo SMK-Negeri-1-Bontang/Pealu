@@ -26,11 +26,6 @@
                             {{ $p->mata_pelajaran }}
                         </span>
                         
-                        <div class="teacher-social mt-3 d-flex justify-content-center">
-                            <a href="#" class="text-secondary mx-2 hover-primary"><i class="bi bi-linkedin"></i></a>
-                            <a href="#" class="text-secondary mx-2 hover-primary"><i class="bi bi-twitter-x"></i></a>
-                            <a href="#" class="text-secondary mx-2 hover-primary"><i class="bi bi-envelope"></i></a>
-                        </div>
                     </div>
                 </div>
             </div>

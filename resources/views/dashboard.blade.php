@@ -708,10 +708,6 @@
     </div>
 </div>
 
-<!-- Floating Action Button -->
-<button class="fab">
-    <i class="fas fa-plus"></i>
-</button>
 
 <!-- Include Chart.js -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -764,7 +760,7 @@ document.addEventListener('DOMContentLoaded', function() {
             labels: ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'],
             datasets: [{
                 label: 'Pengguna Baru',
-                data: [45, 60, 75, 90, 110, 130, 150, 170, 190, 210, 230, 250],
+                data: [10, 60, 180, 29, 110, 130, 15, 60, 19, 210, 23, 250],
                 borderColor: '#6366f1',
                 backgroundColor: 'rgba(99, 102, 241, 0.1)',
                 borderWidth: 2,
