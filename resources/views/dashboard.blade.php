@@ -1,969 +1,305 @@
 @extends('welcome')
 
 @section('content')
+<div class="container py-5">
+    <div class="text-center mb-6">
+        <h1 class="display-5 fw-bold mb-3 text-dark">Our Distinguished Alumni</h1>
+        <p class="lead text-secondary">Meet our successful graduates from various fields</p>
+    </div>
+
+    <!-- Filter Section -->
+    <div class="row mb-4 g-3 justify-content-center">
+        <div class="col-md-8">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body p-3">
+                    <form action="{{ route('alumni.index') }}" method="GET">
+                        <div class="row g-3 align-items-center">
+                            <div class="col-md-5">
+                                <div class="input-group">
+                                    <span class="input-group-text bg-transparent border-end-0">
+                                        <i class="bi bi-search"></i>
+                                    </span>
+                                    <input type="text" name="nama_lengk" class="form-control border-start-0" 
+                                           placeholder="Search alumni..." value="{{ request('nama_lengk') }}">
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <select name="tahun_lulus" class="form-select">
+                                    <option value="">All Graduation Years</option>
+                                    @isset($tahunList)
+                                        @foreach($tahunList as $tahun)
+                                            <option value="{{ $tahun }}" {{ request('tahun_lulus') == $tahun ? 'selected' : '' }}>
+                                                Class of {{ $tahun }}
+                                            </option>
+                                        @endforeach
+                                    @else
+                                        <!-- Default years if variable not set -->
+                                        @for($year = date('Y'); $year >= 2000; $year--)
+                                            <option value="{{ $year }}" {{ request('tahun_lulus') == $year ? 'selected' : '' }}>
+                                                Class of {{ $year }}
+                                            </option>
+                                        @endfor
+                                    @endisset
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <button type="submit" class="btn btn-primary w-100">
+                                    <i class="bi bi-funnel me-1"></i> Filter
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Alumni Cards -->
+    <div class="row g-4 justify-content-center">
+        @forelse ($alumni as $a)
+        <div class="col-xl-3 col-lg-4 col-md-6">
+            <div class="card alumni-card border-0 overflow-hidden h-100 rounded-3">
+                <div class="alumni-image-container position-relative">
+                    @if($a->image)
+                        <img src="{{ asset('storage/' . $a->image) }}" 
+                             class="card-img-top alumni-image img-fluid" 
+                             alt="{{ $a->nama_lengk }}"
+                             loading="lazy">
+                    @else
+                        <div class="alumni-placeholder d-flex align-items-center justify-content-center">
+                            <i class="bi bi-person-circle fs-1 text-muted"></i>
+                        </div>
+                    @endif
+                    <div class="alumni-overlay position-absolute top-0 start-0 w-100 h-100"></div>
+                    <div class="alumni-badge position-absolute bottom-0 start-0 p-2">
+                        <span class="badge bg-dark rounded-pill px-3">
+                            {{ $a->tahun_lulus }}
+                        </span>
+                    </div>
+                </div>
+                <div class="card-body text-center px-4 pb-4 pt-0">
+                    <div class="alumni-content">
+                        <h5 class="fw-bold mb-2 mt-3 text-dark">{{ $a->nama_lengk }}</h5>
+                        <p class="text-secondary mb-3">{{ $a->jur_sekolah }}</p>
+                        
+                        <!-- Status Badge -->
+                        @if($a->status == 1) <!-- Bekerja -->
+                            <span class="badge bg-success bg-opacity-10 text-success rounded-pill px-3 py-1 mb-3">
+                                <i class="bi bi-briefcase me-1"></i> {{ $a->nama_per ?? 'Employed' }}
+                            </span>
+                        @elseif($a->status == 2) <!-- Kuliah -->
+                            <span class="badge bg-info bg-opacity-10 text-info rounded-pill px-3 py-1 mb-3">
+                                <i class="bi bi-mortarboard me-1"></i> {{ $a->nama_perti ?? 'Studying' }}
+                            </span>
+                        @elseif($a->wirausaha) <!-- Wirausaha -->
+                            <span class="badge bg-warning bg-opacity-10 text-warning rounded-pill px-3 py-1 mb-3">
+                                <i class="bi bi-shop me-1"></i> {{ $a->wirausaha ?? 'Entrepreneur' }}
+                            </span>
+                        @else
+                            <span class="badge bg-secondary bg-opacity-10 text-secondary rounded-pill px-3 py-1 mb-3">
+                                <i class="bi bi-question-circle me-1"></i> Other
+                            </span>
+                        @endif
+                    </div>
+                </div>
+                
+                <!-- Detail Button -->
+                <div class="card-footer bg-transparent border-0 pt-0 pb-3 text-center">
+                    <button data-bs-toggle="modal" data-bs-target="#detail{{$a->id}}" 
+                            class="btn btn-sm btn-outline-primary rounded-pill px-3">
+                        <i class="bi bi-eye me-1"></i> View Profile
+                    </button>
+                </div>
+            </div>
+        </div>
+        @empty
+        <div class="col-12 text-center py-5">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body py-5">
+                    <i class="bi bi-people fs-1 text-muted mb-3"></i>
+                    <h5 class="text-muted">No Alumni Found</h5>
+                    <p class="text-muted">We couldn't find any alumni matching your criteria.</p>
+                    <a href="{{ route('alumni.index') }}" class="btn btn-primary mt-3">
+                        <i class="bi bi-arrow-counterclockwise me-1"></i> Reset Filters
+                    </a>
+                </div>
+            </div>
+        </div>
+        @endforelse
+    </div>
+
+    <!-- Pagination -->
+    @if($alumni->hasPages())
+    <div class="row mt-5">
+        <div class="col-12 d-flex justify-content-center">
+            <nav aria-label="Page navigation">
+                {{ $alumni->onEachSide(1)->links() }}
+            </nav>
+        </div>
+    </div>
+    @endif
+</div>
+
 <style>
-    :root {
-        --primary: #6366f1;
-        --primary-light: #e0e7ff;
-        --primary-lighter: #f5f7ff;
-        --secondary: #8b5cf6;
-        --accent: #a78bfa;
-        --success: #10b981;
-        --warning: #f59e0b;
-        --danger: #ef4444;
-        --info: #3b82f6;
-        --background: #f8fafc;
-        --foreground: #1e293b;
-        --muted: #64748b;
-        --border: #e2e8f0;
-        --card-bg: #ffffff;
-        --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-        --card-shadow-hover: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-        --radius-lg: 16px;
-        --radius-md: 12px;
-        --radius-sm: 8px;
-        --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    .alumni-card {
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        background: #fff;
+        transition: all 0.3s ease;
+        border: 1px solid rgba(0, 0, 0, 0.03);
     }
-
-    body {
-        font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-        background-color: var(--background);
-        color: var(--foreground);
-        line-height: 1.5;
+    
+    .alumni-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 12px 25px rgba(0, 0, 0, 0.1);
     }
-
-    .dashboard-header {
-        margin-bottom: 3rem;
-        text-align: center;
-        position: relative;
-        padding-bottom: 1.5rem;
-    }
-
-    .dashboard-header::after {
-        content: '';
-        position: absolute;
-        bottom: 0;
-        left: 50%;
-        transform: translateX(-50%);
-        width: 100px;
-        height: 4px;
-        background: linear-gradient(to right, var(--primary), var(--secondary));
-        border-radius: 2px;
-    }
-
-    .dashboard-header h1 {
-        font-weight: 800;
-        font-size: 2.75rem;
-        color: var(--foreground);
-        margin-bottom: 0.75rem;
-        letter-spacing: -0.025em;
-    }
-
-    .dashboard-header h2 {
-        font-weight: 500;
-        font-size: 1.15rem;
-        color: var(--muted);
-        max-width: 700px;
-        margin: 0 auto;
-        line-height: 1.6;
-    }
-
-    .dashboard-card {
-        background: var(--card-bg);
-        border-radius: var(--radius-lg);
-        box-shadow: var(--card-shadow);
-        padding: 2rem;
-        border: 1px solid var(--border);
-        transition: var(--transition);
-        height: 100%;
-        position: relative;
+    
+    .alumni-image-container {
+        height: 220px;
         overflow: hidden;
+        background-color: #f8f9fa;
     }
-
-    .dashboard-card:hover {
-        transform: translateY(-5px);
-        box-shadow: var(--card-shadow-hover);
-    }
-
-    .card-title {
-        font-size: 1.35rem;
-        font-weight: 700;
-        color: var(--foreground);
-        margin-bottom: 1.75rem;
-        display: flex;
-        align-items: center;
-        gap: 0.75rem;
-        position: relative;
-        padding-bottom: 0.75rem;
-    }
-
-    .card-title::after {
-        content: '';
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        width: 40px;
-        height: 3px;
-        background: linear-gradient(to right, var(--primary), var(--secondary));
-        border-radius: 3px;
-    }
-
-    .card-title i {
-        color: var(--primary);
-        font-size: 1.3rem;
-        background: var(--primary-lighter);
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-
-    .date-label {
-        font-size: 0.9rem;
-        color: var(--muted);
-        margin-bottom: 1.5rem;
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-    }
-
-    .date-label i {
-        font-size: 1rem;
-    }
-
-    .stat-container {
-        display: flex;
-        justify-content: space-between;
-        gap: 1.5rem;
-        margin-bottom: 2rem;
-    }
-
-    .stat-item {
-        flex: 1;
-        padding: 1.25rem;
-        background: var(--primary-lighter);
-        border-radius: var(--radius-md);
-        transition: var(--transition);
-    }
-
-    .stat-item:hover {
-        transform: translateY(-3px);
-        box-shadow: var(--card-shadow);
-    }
-
-    .stat-number {
-        font-size: 2.5rem;
-        font-weight: 800;
-        color: var(--foreground);
-        line-height: 1;
-        margin-bottom: 0.5rem;
-        font-feature-settings: 'tnum';
-        letter-spacing: -0.025em;
-    }
-
-    .stat-label {
-        font-size: 0.9rem;
-        color: var(--muted);
-        font-weight: 500;
-    }
-
-    .trend-badge {
-        display: inline-flex;
-        align-items: center;
-        gap: 0.25rem;
-        font-size: 0.75rem;
-        padding: 0.35rem 0.75rem;
-        border-radius: 9999px;
-        margin-left: 0.5rem;
-        font-weight: 600;
-    }
-
-    .trend-up {
-        background-color: rgba(16, 185, 129, 0.1);
-        color: var(--success);
-    }
-
-    .trend-down {
-        background-color: rgba(239, 68, 68, 0.1);
-        color: var(--danger);
-    }
-
-    .trend-neutral {
-        background-color: rgba(59, 130, 246, 0.1);
-        color: var(--info);
-    }
-
-    .chart-container {
-        height: 250px;
-        margin: 2rem 0;
-        position: relative;
-    }
-
-    .summary-grid {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: 1.25rem;
-        margin-top: 1.5rem;
-    }
-
-    .summary-item {
-        background-color: var(--primary-lighter);
-        border-radius: var(--radius-md);
-        padding: 1.5rem;
-        text-align: center;
-        transition: var(--transition);
-        border: 1px solid var(--border);
-    }
-
-    .summary-item:hover {
-        transform: translateY(-3px);
-        box-shadow: var(--card-shadow);
-        background-color: var(--card-bg);
-    }
-
-    .members-table {
+    
+    .alumni-image {
         width: 100%;
-        border-collapse: separate;
-        border-spacing: 0;
-        margin-top: 1.5rem;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.5s ease;
     }
-
-    .members-table th {
-        font-weight: 600;
-        font-size: 0.85rem;
-        color: var(--muted);
-        text-transform: uppercase;
-        letter-spacing: 0.05em;
-        padding: 0.75rem 1rem;
-        border-bottom: 1px solid var(--border);
-        position: sticky;
-        top: 0;
-        background-color: var(--card-bg);
+    
+    .alumni-placeholder {
+        width: 100%;
+        height: 100%;
+        background-color: #f8f9fa;
     }
-
-    .members-table td {
-        padding: 1.25rem 1rem;
-        border-bottom: 1px solid var(--border);
-        vertical-align: middle;
-        transition: var(--transition);
+    
+    .alumni-overlay {
+        background: linear-gradient(to top, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0) 60%);
     }
-
-    .members-table tr:last-child td {
-        border-bottom: none;
+    
+    .alumni-card:hover .alumni-image {
+        transform: scale(1.05);
     }
-
-    .members-table tr:hover td {
-        background-color: var(--primary-lighter);
+    
+    .alumni-badge {
+        z-index: 2;
     }
-
-    .member-info {
-        display: flex;
-        align-items: center;
-        gap: 1rem;
-    }
-
-    .member-avatar {
-        width: 42px;
-        height: 42px;
-        border-radius: 50%;
-        background-color: var(--primary-light);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: var(--primary);
-        font-weight: 600;
-        flex-shrink: 0;
-        border: 2px solid var(--primary-light);
-    }
-
-    .member-name {
-        font-weight: 600;
-        margin-bottom: 0.25rem;
-    }
-
-    .member-position {
-        font-size: 0.85rem;
-        color: var(--muted);
-    }
-
-    .activity-badge {
-        padding: 0.5rem 1rem;
-        border-radius: 9999px;
-        font-size: 0.85rem;
-        font-weight: 500;
-        display: inline-block;
-    }
-
-    .badge-update {
-        background-color: rgba(139, 92, 246, 0.1);
-        color: var(--accent);
-        border: 1px solid rgba(139, 92, 246, 0.2);
-    }
-
-    .badge-event {
-        background-color: rgba(59, 130, 246, 0.1);
-        color: var(--info);
-        border: 1px solid rgba(59, 130, 246, 0.2);
-    }
-
-    .badge-upload {
-        background-color: rgba(16, 185, 129, 0.1);
-        color: var(--success);
-        border: 1px solid rgba(16, 185, 129, 0.2);
-    }
-
-    .badge-share {
-        background-color: rgba(245, 158, 11, 0.1);
-        color: var(--warning);
-        border: 1px solid rgba(245, 158, 11, 0.2);
-    }
-
-    .badge-testimonial {
-        background-color: rgba(239, 68, 68, 0.1);
-        color: var(--danger);
-        border: 1px solid rgba(239, 68, 68, 0.2);
-    }
-
-    .divider {
-        border-top: 1px solid var(--border);
-        margin: 2rem 0;
-        opacity: 0.5;
-    }
-
-    .badge-container {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 0.75rem;
-        margin-top: 1.5rem;
-    }
-
-    .badge {
-        padding: 0.5rem 1rem;
-        border-radius: 9999px;
-        font-size: 0.85rem;
-        font-weight: 500;
-        display: inline-flex;
-        align-items: center;
-        gap: 0.5rem;
-        border: 1px solid transparent;
-    }
-
-    .badge-primary {
-        background-color: var(--primary-lighter);
-        color: var(--primary);
-        border-color: rgba(79, 70, 229, 0.2);
-    }
-
-    .badge-success {
-        background-color: rgba(16, 185, 129, 0.1);
-        color: var(--success);
-        border-color: rgba(16, 185, 129, 0.2);
-    }
-
-    .badge-warning {
-        background-color: rgba(245, 158, 11, 0.1);
-        color: var(--warning);
-        border-color: rgba(245, 158, 11, 0.2);
-    }
-
-    .badge-info {
-        background-color: rgba(59, 130, 246, 0.1);
-        color: var(--info);
-        border-color: rgba(59, 130, 246, 0.2);
-    }
-
-    /* Chart tooltip styles */
-    .chart-tooltip {
-        background: var(--card-bg) !important;
-        border: 1px solid var(--border) !important;
-        border-radius: var(--radius-sm) !important;
-        box-shadow: var(--card-shadow) !important;
-        padding: 0.75rem 1rem !important;
-    }
-
-    .chart-tooltip .label {
-        color: var(--muted) !important;
-        font-weight: 600 !important;
-        font-size: 0.8rem !important;
-        margin-bottom: 0.25rem !important;
-    }
-
-    .chart-tooltip .value {
-        color: var(--foreground) !important;
-        font-weight: 700 !important;
-        font-size: 1rem !important;
-    }
-
-    /* Floating action button */
-    .fab {
-        position: fixed;
-        bottom: 2rem;
-        right: 2rem;
-        width: 56px;
-        height: 56px;
-        border-radius: 50%;
-        background: linear-gradient(to right, var(--primary), var(--secondary));
-        color: white;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-        cursor: pointer;
-        transition: var(--transition);
-        z-index: 50;
-        border: none;
-    }
-
-    .fab:hover {
-        transform: translateY(-3px) scale(1.05);
-        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-    }
-
-    .fab i {
-        font-size: 1.5rem;
-    }
-
-    /* Responsive adjustments */
-    @media (max-width: 992px) {
-        .dashboard-header h1 {
-            font-size: 2.25rem;
-        }
-    }
-
+    
     @media (max-width: 768px) {
-        .dashboard-header h1 {
-            font-size: 2rem;
-        }
-
-        .stat-container {
-            flex-direction: column;
-            gap: 1rem;
-        }
-
-        .summary-grid {
-            grid-template-columns: 1fr;
-        }
-
-        .stat-number {
-            font-size: 2rem;
-        }
-        
-        .chart-container {
-            height: 220px;
-        }
-    }
-
-    @media (max-width: 576px) {
-        .dashboard-card {
-            padding: 1.5rem;
-        }
-        
-        .card-title {
-            font-size: 1.25rem;
-        }
-        
-        .stat-number {
-            font-size: 1.75rem;
+        .alumni-image-container {
+            height: 180px;
         }
     }
 </style>
 
-<div class="container py-5">
-    <div class="dashboard-header">
-        <h1>JARINGAN ALUMNI</h1>
-        <h2>Pantau perkembangan dan aktivitas terkini jaringan alumni SMKN 1 Bontang</h2>
-    </div>
+<!-- Bootstrap Icons -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
 
-    <div class="row g-4">
-        <!-- Total Pengguna Card -->
-        <div class="col-lg-6">
-            <div class="dashboard-card">
-                <h3 class="card-title">
-                    <i class="fas fa-users"></i>
-                    Total Pengguna
-                </h3>
-                <div class="date-label">
-                    <i class="fas fa-calendar-alt"></i>
-                    Update terakhir: {{ now()->format('d F Y') }}
-                </div>
-                
-                <div class="stat-container">
-                    <div class="stat-item">
-                        <div class="stat-number" id="total-users">1,458</div>
-                        <div class="stat-label">Total pengguna terdaftar</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-number" id="active-users">
-                            620
-                            <span class="trend-badge trend-up">
-                                <i class="fas fa-arrow-up"></i> 12%
-                            </span>
-                        </div>
-                        <div class="stat-label">Pengguna aktif minggu ini</div>
-                    </div>
-                </div>
-                
-                <div class="chart-container">
-                    <canvas id="userGrowthChart"></canvas>
-                </div>
-                
-                <div class="badge-container">
-                    <span class="badge badge-primary">
-                        <i class="fas fa-user-plus"></i> 43 baru bulan ini
-                    </span>
-                    <span class="badge badge-success">
-                        <i class="fas fa-check-circle"></i> 78% aktif
-                    </span>
-                    <span class="badge badge-warning">
-                        <i class="fas fa-sync-alt"></i> 205 pembaruan profil
-                    </span>
-                </div>
+<!-- Modal Detail Alumni -->
+@foreach($alumni as $a)
+<div class="modal fade" id="detail{{$a->id}}" tabindex="-1" aria-labelledby="detailLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content border-0 shadow">
+            <div class="modal-header border-0 pb-0">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-        </div>
-
-        <!-- Aktivitas Terkini Card -->
-        <div class="col-lg-6">
-            <div class="dashboard-card">
-                <h3 class="card-title">
-                    <i class="fas fa-bell"></i>
-                    Aktivitas Terkini
-                </h3>
-                <div class="date-label">
-                    <i class="fas fa-clock"></i>
-                    7 hari terakhir
-                </div>
-                
-                <div style="max-height: 400px; overflow-y: auto;">
-                    <table class="members-table">
-                        <thead>
-                            <tr>
-                                <th>Anggota</th>
-                                <th>Aktivitas</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>
-                                    <div class="member-info">
-                                        <div class="member-avatar">EL</div>
-                                        <div>
-                                            <div class="member-name">Edward Lindgren</div>
-                                            <div class="member-position">Angkatan 2015</div>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td><span class="activity-badge badge-update">Memperbarui profil</span></td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <div class="member-info">
-                                        <div class="member-avatar">LO</div>
-                                        <div>
-                                            <div class="member-name">Leonardo Oliveira</div>
-                                            <div class="member-position">Angkatan 2017</div>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td><span class="activity-badge badge-event">Mendaftar acara</span></td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <div class="member-info">
-                                        <div class="member-avatar">DL</div>
-                                        <div>
-                                            <div class="member-name">Dontae Little</div>
-                                            <div class="member-position">Angkatan 2018</div>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td><span class="activity-badge badge-upload">Mengunggah CV</span></td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <div class="member-info">
-                                        <div class="member-avatar">SB</div>
-                                        <div>
-                                            <div class="member-name">Sudanita Bakalowitz</div>
-                                            <div class="member-position">Angkatan 2016</div>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td><span class="activity-badge badge-share">Membagikan lowongan</span></td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <div class="member-info">
-                                        <div class="member-avatar">NY</div>
-                                        <div>
-                                            <div class="member-name">Naomi Yepes</div>
-                                            <div class="member-position">Angkatan 2019</div>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td><span class="activity-badge badge-testimonial">Memberikan testimoni</span></td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <div class="member-info">
-                                        <div class="member-avatar">RJ</div>
-                                        <div>
-                                            <div class="member-name">Rizky Jaya</div>
-                                            <div class="member-position">Angkatan 2020</div>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td><span class="activity-badge badge-update">Memperbarui pekerjaan</span></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="row g-4 mt-4">
-        <!-- Statistik Alumni Card -->
-        <div class="col-lg-6">
-            <div class="dashboard-card">
-                <h3 class="card-title">
-                    <i class="fas fa-chart-pie"></i>
-                    Statistik Alumni
-                </h3>
-                
-                <div class="summary-grid">
-                    <div class="summary-item">
-                        <div class="stat-number" id="total-alumni">1,631</div>
-                        <div class="stat-label">Total Alumni</div>
+            <div class="modal-body px-4 pb-4 pt-0">
+                <div class="row">
+                    <div class="col-md-4 text-center">
+                        @if($a->image)
+                            <img src="{{ asset('storage/' . $a->image) }}" 
+                                 class="img-fluid rounded-3 mb-4 shadow-sm" 
+                                 alt="{{ $a->nama_lengk }}"
+                                 style="max-height: 250px; object-fit: cover;">
+                        @else
+                            <div class="bg-light rounded-3 d-flex align-items-center justify-content-center mb-4" 
+                                 style="height: 250px; width: 100%;">
+                                <i class="bi bi-person-circle fs-1 text-muted"></i>
+                            </div>
+                        @endif
                     </div>
-                    <div class="summary-item">
-                        <div class="stat-number" id="active-alumni">
-                            206
-                            <span class="trend-badge trend-neutral">
-                                <i class="fas fa-minus"></i> 2%
+                    <div class="col-md-8">
+                        <h3 class="fw-bold mb-3">{{ $a->nama_lengk }}</h3>
+                        
+                        <div class="d-flex align-items-center gap-2 mb-4">
+                            <span class="badge bg-dark rounded-pill px-3 py-1">
+                                Class of {{ $a->tahun_lulus }}
                             </span>
-                        </div>
-                        <div class="stat-label">Aktif bulan ini</div>
-                    </div>
-                    <div class="summary-item">
-                        <div class="stat-number" id="event-attendees">113</div>
-                        <div class="stat-label">Hadir acara</div>
-                    </div>
-                    <div class="summary-item">
-                        <div class="stat-number" id="donors">78</div>
-                        <div class="stat-label">Memberi donasi</div>
-                    </div>
-                </div>
-                
-                <div class="divider"></div>
-                
-                <div class="chart-container">
-                    <canvas id="alumniDistributionChart"></canvas>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Koneksi & Lowongan Card -->
-        <div class="col-lg-6">
-            <div class="dashboard-card">
-                <h3 class="card-title">
-                    <i class="fas fa-network-wired"></i>
-                    Koneksi & Lowongan
-                </h3>
-                
-                <div class="stat-container">
-                    <div class="stat-item">
-                        <div class="stat-number" id="active-jobs">12</div>
-                        <div class="stat-label">Lowongan aktif</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-number" id="new-connections">
-                            24
-                            <span class="trend-badge trend-up">
-                                <i class="fas fa-arrow-up"></i> 8%
+                            <span class="badge bg-primary bg-opacity-10 text-primary rounded-pill px-3 py-1">
+                                {{ $a->jur_sekolah }}
                             </span>
+                            @if($a->nis)
+                            <span class="badge bg-secondary bg-opacity-10 text-secondary rounded-pill px-3 py-1">
+                                NIS: {{ $a->nis }}
+                            </span>
+                            @endif
                         </div>
-                        <div class="stat-label">Koneksi dibuat</div>
+                        
+                        <div class="mb-4">
+                            @if($a->status == 1) <!-- Bekerja -->
+                                <div class="d-flex align-items-start mb-3">
+                                    <i class="bi bi-briefcase fs-5 text-success me-3 mt-1"></i>
+                                    <div>
+                                        <h6 class="fw-bold mb-1">Currently Working At</h6>
+                                        <p class="mb-0">{{ $a->nama_per }} ({{ $a->nama_tok }})</p>
+                                        @if($a->lok_bekerja)
+                                        <small class="text-muted">{{ $a->lok_bekerja }}</small>
+                                        @endif
+                                    </div>
+                                </div>
+                            @elseif($a->status == 2) <!-- Kuliah -->
+                                <div class="d-flex align-items-start mb-3">
+                                    <i class="bi bi-mortarboard fs-5 text-info me-3 mt-1"></i>
+                                    <div>
+                                        <h6 class="fw-bold mb-1">Currently Studying At</h6>
+                                        <p class="mb-0">{{ $a->nama_perti }} - {{ $a->jur_prodi }}</p>
+                                        @if($a->lok_kuliah)
+                                        <small class="text-muted">{{ $a->lok_kuliah }}</small>
+                                        @endif
+                                    </div>
+                                </div>
+                            @elseif($a->wirausaha) <!-- Wirausaha -->
+                                <div class="d-flex align-items-start mb-3">
+                                    <i class="bi bi-shop fs-5 text-warning me-3 mt-1"></i>
+                                    <div>
+                                        <h6 class="fw-bold mb-1">Entrepreneur</h6>
+                                        <p class="mb-0">{{ $a->wirausaha }}</p>
+                                    </div>
+                                </div>
+                            @endif
+                            
+                            @if($a->alamat_rum)
+                                <div class="d-flex align-items-start mb-3">
+                                    <i class="bi bi-geo-alt fs-5 text-muted me-3 mt-1"></i>
+                                    <div>
+                                        <h6 class="fw-bold mb-1">Location</h6>
+                                        <p class="mb-0">{{ $a->alamat_rum }}</p>
+                                    </div>
+                                </div>
+                            @endif
+                        </div>
+                        
+                        <div class="border-top pt-3">
+                            <h6 class="fw-bold mb-3">Contact Information</h6>
+                            <div class="row">
+                                <div class="col-md-6 mb-2">
+                                    <div class="d-flex align-items-center">
+                                        <i class="bi bi-telephone me-2 text-muted"></i>
+                                        <span>{{ $a->nomor_telp ?? 'Not available' }}</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-2">
+                                    <div class="d-flex align-items-center">
+                                        <i class="bi bi-envelope me-2 text-muted"></i>
+                                        <span>{{ $a->email ?? 'Not available' }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                </div>
-                
-                <div class="chart-container">
-                    <canvas id="jobTrendsChart"></canvas>
-                </div>
-                
-                <div class="badge-container">
-                    <span class="badge badge-primary">
-                        <i class="fas fa-building"></i> 18 perusahaan rekanan
-                    </span>
-                    <span class="badge badge-info">
-                        <i class="fas fa-handshake"></i> 32 mentor aktif
-                    </span>
-                    <span class="badge badge-success">
-                        <i class="fas fa-briefcase"></i> 5 lowongan baru
-                    </span>
                 </div>
             </div>
         </div>
     </div>
 </div>
-
-
-<!-- Include Chart.js -->
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
-
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    // Animate numbers with counting effect
-    const animateNumbers = (elements) => {
-        elements.forEach(element => {
-            const target = parseInt(element.innerText.replace(/,/g, ''));
-            const duration = 1500;
-            const start = 0;
-            const increment = target / (duration / 16);
-            
-            let current = start;
-            const timer = setInterval(() => {
-                current += increment;
-                if (current >= target) {
-                    clearInterval(timer);
-                    current = target;
-                }
-                element.innerText = Math.floor(current).toLocaleString('id-ID');
-            }, 16);
-        });
-    };
-    
-    // Animate all stat numbers
-    animateNumbers(document.querySelectorAll('.stat-number'));
-    
-    // Add hover effects to cards
-    const cards = document.querySelectorAll('.dashboard-card');
-    cards.forEach(card => {
-        card.addEventListener('mouseenter', () => {
-            card.style.transform = 'translateY(-5px)';
-            card.style.boxShadow = '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)';
-        });
-        
-        card.addEventListener('mouseleave', () => {
-            card.style.transform = '';
-            card.style.boxShadow = '';
-        });
-    });
-
-    // User Growth Chart
-    const userGrowthCtx = document.getElementById('userGrowthChart').getContext('2d');
-    const userGrowthChart = new Chart(userGrowthCtx, {
-        type: 'line',
-        data: {
-            labels: ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'],
-            datasets: [{
-                label: 'Pengguna Baru',
-                data: [10, 60, 180, 29, 110, 130, 15, 60, 19, 210, 23, 250],
-                borderColor: '#6366f1',
-                backgroundColor: 'rgba(99, 102, 241, 0.1)',
-                borderWidth: 2,
-                tension: 0.4,
-                fill: true,
-                pointBackgroundColor: '#fff',
-                pointBorderColor: '#6366f1',
-                pointBorderWidth: 2,
-                pointRadius: 4,
-                pointHoverRadius: 6
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-                legend: {
-                    display: false
-                },
-                tooltip: {
-                    backgroundColor: 'var(--card-bg)',
-                    titleColor: 'var(--foreground)',
-                    bodyColor: 'var(--muted)',
-                    borderColor: 'var(--border)',
-                    borderWidth: 1,
-                    padding: 12,
-                    boxPadding: 6,
-                    usePointStyle: true,
-                    callbacks: {
-                        label: function(context) {
-                            return `${context.dataset.label}: ${context.parsed.y} orang`;
-                        }
-                    }
-                }
-            },
-            scales: {
-                y: {
-                    beginAtZero: true,
-                    grid: {
-                        color: 'rgba(0, 0, 0, 0.05)'
-                    },
-                    ticks: {
-                        color: 'var(--muted)'
-                    }
-                },
-                x: {
-                    grid: {
-                        display: false
-                    },
-                    ticks: {
-                        color: 'var(--muted)'
-                    }
-                }
-            }
-        }
-    });
-
-    // Alumni Distribution Chart
-    const alumniDistributionCtx = document.getElementById('alumniDistributionChart').getContext('2d');
-    const alumniDistributionChart = new Chart(alumniDistributionCtx, {
-        type: 'doughnut',
-        data: {
-            labels: ['2015', '2016', '2017', '2018', '2019', '2020', '2021', '2022'],
-            datasets: [{
-                data: [120, 180, 210, 240, 260, 230, 200, 191],
-                backgroundColor: [
-                    '#6366f1',
-                    '#7c3aed',
-                    '#8b5cf6',
-                    '#a78bfa',
-                    '#c4b5fd',
-                    '#ddd6fe',
-                    '#ede9fe',
-                    '#f5f3ff'
-                ],
-                borderWidth: 0,
-                hoverOffset: 10
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            cutout: '75%',
-            plugins: {
-                legend: {
-                    position: 'right',
-                    labels: {
-                        boxWidth: 12,
-                        padding: 20,
-                        usePointStyle: true,
-                        pointStyle: 'circle',
-                        color: 'var(--muted)'
-                    }
-                },
-                tooltip: {
-                    backgroundColor: 'var(--card-bg)',
-                    titleColor: 'var(--foreground)',
-                    bodyColor: 'var(--muted)',
-                    borderColor: 'var(--border)',
-                    borderWidth: 1,
-                    padding: 12,
-                    boxPadding: 6,
-                    usePointStyle: true,
-                    callbacks: {
-                        label: function(context) {
-                            const total = context.dataset.data.reduce((a, b) => a + b, 0);
-                            const percentage = Math.round((context.parsed / total) * 100);
-                            return `${context.label}: ${context.parsed} alumni (${percentage}%)`;
-                        }
-                    }
-                }
-            }
-        }
-    });
-
-    // Job Trends Chart
-    const jobTrendsCtx = document.getElementById('jobTrendsChart').getContext('2d');
-    const jobTrendsChart = new Chart(jobTrendsCtx, {
-        type: 'bar',
-        data: {
-            labels: ['Teknik', 'TI', 'Akuntansi', 'Bisnis', 'Bahasa', 'Lainnya'],
-            datasets: [{
-                label: 'Lowongan Pekerjaan',
-                data: [8, 15, 6, 4, 3, 5],
-                backgroundColor: [
-                    'rgba(99, 102, 241, 0.8)',
-                    'rgba(124, 58, 237, 0.8)',
-                    'rgba(139, 92, 246, 0.8)',
-                    'rgba(167, 139, 250, 0.8)',
-                    'rgba(196, 181, 253, 0.8)',
-                    'rgba(221, 214, 254, 0.8)'
-                ],
-                borderColor: [
-                    'rgba(99, 102, 241, 1)',
-                    'rgba(124, 58, 237, 1)',
-                    'rgba(139, 92, 246, 1)',
-                    'rgba(167, 139, 250, 1)',
-                    'rgba(196, 181, 253, 1)',
-                    'rgba(221, 214, 254, 1)'
-                ],
-                borderWidth: 0,
-                borderRadius: 6,
-                hoverBackgroundColor: [
-                    'rgba(99, 102, 241, 1)',
-                    'rgba(124, 58, 237, 1)',
-                    'rgba(139, 92, 246, 1)',
-                    'rgba(167, 139, 250, 1)',
-                    'rgba(196, 181, 253, 1)',
-                    'rgba(221, 214, 254, 1)'
-                ]
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-                legend: {
-                    display: false
-                },
-                tooltip: {
-                    backgroundColor: 'var(--card-bg)',
-                    titleColor: 'var(--foreground)',
-                    bodyColor: 'var(--muted)',
-                    borderColor: 'var(--border)',
-                    borderWidth: 1,
-                    padding: 12,
-                    boxPadding: 6,
-                    usePointStyle: true,
-                    callbacks: {
-                        label: function(context) {
-                            return `${context.dataset.label} ${context.label}: ${context.parsed.y}`;
-                        }
-                    }
-                }
-            },
-            scales: {
-                y: {
-                    beginAtZero: true,
-                    grid: {
-                        color: 'rgba(0, 0, 0, 0.05)'
-                    },
-                    ticks: {
-                        color: 'var(--muted)',
-                        stepSize: 5
-                    }
-                },
-                x: {
-                    grid: {
-                        display: false
-                    },
-                    ticks: {
-                        color: 'var(--muted)'
-                    }
-                }
-            }
-        }
-    });
-    
-    // Floating action button click handler
-    const fab = document.querySelector('.fab');
-    fab.addEventListener('click', function() {
-        alert('Aksi tambahan akan dijalankan di sini!');
-    });
-});
-</script>
+@endforeach
 @endsection

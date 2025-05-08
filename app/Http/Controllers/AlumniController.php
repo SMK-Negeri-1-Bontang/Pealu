@@ -56,6 +56,54 @@ class AlumniController extends Controller
         
         return view('layouts.alumni.index', compact('alumni', 'jurusanList', 'tahunList'));
     }
+
+    public function dashboard(Request $request)
+    {
+        // Query dasar
+        $query = Alumni::query();
+        
+        // Filter berdasarkan nama (case insensitive untuk MySQL)
+        if ($request->filled('nama')) {
+            $query->where('nama_lengk', 'like', '%' . $request->nama . '%');
+        }
+        
+        // Filter berdasarkan NIS (exact match)
+        if ($request->filled('nis')) {
+            $query->where('nis', $request->nis);
+        }
+        
+        // Filter berdasarkan jurusan (dropdown exact match)
+        if ($request->filled('jurusan')) {
+            $query->where('jur_sekolah', $request->jurusan);
+        }
+        
+        // Filter berdasarkan tahun lulus (dropdown exact match)
+        if ($request->filled('tahun_lulus')) {
+            $query->where('tahun_lulus', $request->tahun_lulus);
+        }
+        
+        // Sorting default
+        $query->orderBy('nama_lengk');
+        
+        // Get data untuk dropdown filter
+        $jurusanList = Alumni::select('jur_sekolah')
+                            ->distinct()
+                            ->orderBy('jur_sekolah')
+                            ->pluck('jur_sekolah');
+        
+        $tahunList = Alumni::select('tahun_lulus')
+                          ->distinct()
+                          ->orderBy('tahun_lulus', 'desc')
+                          ->pluck('tahun_lulus');
+        
+        // Pagination dengan 10 item per halaman
+        $alumni = $query->paginate(10)
+                      ->appends($request->query());
+        
+        return view('dashboard', compact('alumni', 'jurusanList', 'tahunList'));
+    }
+
+
     
     public function generatePdf($id)
     {
