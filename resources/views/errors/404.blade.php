@@ -214,7 +214,8 @@
         font-weight: 800;
         background: linear-gradient(to right, var(--space-purple), var(--space-blue));
         -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        color: transparent;
         margin-bottom: -1.5rem;
         line-height: 1;
         text-shadow: 0 5px 15px rgba(110, 69, 226, 0.3);
@@ -224,10 +225,10 @@
         font-size: 2.2rem;
         font-weight: 700;
         margin-bottom: 1rem;
-        color: white;
         background: linear-gradient(to right, #fff, #ddd);
         -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        color: transparent;
     }
 
     .error-description {

@@ -96,11 +96,25 @@ class AlumniController extends Controller
                           ->orderBy('tahun_lulus', 'desc')
                           ->pluck('tahun_lulus');
         
+        // Get statistics for the dashboard
+        $totalAlumni = Alumni::count();
+        $workingCount = Alumni::where('status', 1)->count();
+        $studyingCount = Alumni::where('status', 2)->count();
+        $entrepreneurCount = Alumni::whereNotNull('wirausaha')->count();
+        
         // Pagination dengan 10 item per halaman
         $alumni = $query->paginate(10)
                       ->appends($request->query());
         
-        return view('dashboard', compact('alumni', 'jurusanList', 'tahunList'));
+        return view('dashboard', compact(
+            'alumni', 
+            'jurusanList', 
+            'tahunList',
+            'totalAlumni',
+            'workingCount',
+            'studyingCount',
+            'entrepreneurCount'
+        ));
     }
 
 

@@ -12,7 +12,8 @@ use Illuminate\Support\Facades\Auth;
 
 
 // Halaman utama
-Route::get('/', [AlumniController::class, 'dashboard']);
+// For the dashboard route
+Route::get('/', [AlumniController::class, 'dashboard'])->name('alumni.dashboard');
 
 Route::get('/tentangsmkn1', function () {
     return view('tentangsmkn1');
