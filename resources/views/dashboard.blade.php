@@ -279,7 +279,7 @@
             <div class="modal-body">
                 <div class="row g-0">
                     <div class="col-md-5 modal-profile-col">
-                        <div class="modal-profile mt-4">
+                        <div class="modal-profile d-flex justify-content-center">
                             @if($a->image)
                                 <img src="{{ asset('storage/' . $a->image) }}" 
                                      class="modal-profile-image" 

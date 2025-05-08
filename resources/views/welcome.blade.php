@@ -37,7 +37,7 @@
             --accent-color: #4cc9f0;
             --dark-color: #1e293b;
             --light-color: #f8fafc;
-            --sidebar-width: 280px;
+            --sidebar-width: 300px;
             --transition-speed: 0.4s;
             --border-radius: 16px;
             --card-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
