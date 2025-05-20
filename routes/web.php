@@ -69,10 +69,3 @@ Route::get('/pengajar-tampilan', function () {
     $pengajar = App\Models\Pengajar::paginate(5);
     return view('layouts.pengajar.tampilan', compact('pengajar'));
 });
-
-// Lowongan
-Route::resource('lowongan', LowonganController::class);
-Route::get('/lowongan-tampilan', function () {
-    $lowongan = App\Models\Lowongan::paginate(5);
-    return view('layouts.lowongan.tampilan', compact('lowongan'));
-});

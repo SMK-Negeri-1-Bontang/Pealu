@@ -3,94 +3,91 @@
 namespace App\Http\Controllers;
 
 use App\Models\Lowongan;
-use Exception;
 use Illuminate\Http\Request;
 
 class LowonganController extends Controller
 {
+    /**
+     * Display a listing of the resource.
+     */
     public function index()
     {
-        $lowongan = Lowongan::paginate(10);
+        $lowongan = Lowongan::paginate(5);
         return view('layouts.lowongan.index', compact('lowongan'));
     }
 
+    /**
+     * Show the form for creating a new resource.
+     */
     public function create()
     {
         return view('layouts.lowongan.create');
     }
 
+    /**
+     * Store a newly created resource in storage.
+     */
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'company_name' => 'required|string|max:255',
-            'position' => 'required|string|max:255',
-            'location' => 'required|string|max:255',
-            'employment_type' => 'required|string',
-            'education' => 'nullable|string|max:255',
-            'experience' => 'nullable|string|max:255',
-            'category' => 'nullable|string|max:255',
-            'salary_min' => 'required|integer',
-            'salary_max' => 'required|integer',
+        $request->validate([
+            'company_name' => 'required',
+            'position' => 'required',
+            'location' => 'required',
+            'employment_type' => 'required',
+            'education' => 'required',
+            'experience' => 'required',
+            'category' => 'required',
+            'salary_min' => 'required|numeric',
+            'salary_max' => 'required|numeric',
         ]);
 
-        Lowongan::create($validated);
-
-        return redirect()->route('lowongan.index')->with('success', 'Data lowongan kerja berhasil ditambahkan');
+        Lowongan::create($request->all());
+        return redirect()->route('lowongan.index')->with('success', 'Lowongan berhasil ditambahkan');
     }
 
-    public function edit($id)
+    /**
+     * Display the specified resource.
+     */
+    public function show(Lowongan $lowongan)
     {
-        $lowongan = Lowongan::find($id);
+        return view('layouts.lowongan.show', compact('lowongan'));
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit(Lowongan $lowongan)
+    {
         return view('layouts.lowongan.edit', compact('lowongan'));
     }
 
-    public function update(Request $request, $id)
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(Request $request, Lowongan $lowongan)
     {
-        // Validate incoming data
-        $validated = $request->validate([
-            'company_name' => 'required|string|max:255',
-            'position' => 'required|string|max:255',
-            'location' => 'required|string|max:255',
-            'employment_type' => 'required|string',
-            'education' => 'nullable|string|max:255',
-            'experience' => 'nullable|string|max:255',
-            'category' => 'nullable|string|max:255',
-            'salary_min' => 'required|integer',
-            'salary_max' => 'required|integer',
+        $request->validate([
+            'company_name' => 'required',
+            'position' => 'required',
+            'location' => 'required',
+            'employment_type' => 'required',
+            'education' => 'required',
+            'experience' => 'required',
+            'category' => 'required',
+            'salary_min' => 'required|numeric',
+            'salary_max' => 'required|numeric',
         ]);
 
-        try {
-            // Find the existing 'lowongan' record by ID
-            $lowongan = Lowongan::findOrFail($id);
-
-            // Update the record with new data
-            $lowongan->company_name = $request->company_name;
-            $lowongan->position = $request->position;
-            $lowongan->location = $request->location;
-            $lowongan->employment_type = $request->employment_type;
-            $lowongan->education = $request->education;
-            $lowongan->experience = $request->experience;
-            $lowongan->category = $request->category;
-            $lowongan->salary_min = $request->salary_min;
-            $lowongan->salary_max = $request->salary_max;
-
-            // Save the updated record
-            $lowongan->save();
-
-            // Redirect with success message
-            return redirect()->route('lowongan.index')->with('success', 'Data Lowongan Kerja Berhasil Diperbarui');
-        } catch (Exception $e) {
-            // Handle any errors
-            return redirect()->back()->with('error', 'Data Lowongan Kerja Gagal Diperbarui');
-        }
+        $lowongan->update($request->all());
+        return redirect()->route('lowongan.index')->with('success', 'Lowongan berhasil diperbarui');
     }
 
-    public function destroy($id) {
-        $lowongan = Lowongan::find($id);
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(Lowongan $lowongan)
+    {
         $lowongan->delete();
-        return redirect()->route('lowongan.index')->with('success', 'Data Lowongan Kerja Berhasil Dihapus');
+        return redirect()->route('lowongan.index')->with('success', 'Lowongan berhasil dihapus');
     }
-
-    
-
-}
+} 

@@ -677,10 +677,6 @@
                     <i class="fas fa-newspaper"></i> 
                     <span>Berita</span>
                 </a>
-                <a href="{{ url('/lowongan-tampilan') }}" class="menu-item">
-                    <i class="fas fa-briefcase"></i> 
-                    <span>Lowongan Kerja</span>
-                </a>
                 
                 @auth
                     @if (Auth::user()->isAdmin() || Auth::user()->isPetugas())
@@ -701,10 +697,6 @@
                         <a href="{{ route('tmbberita.index') }}" class="menu-item">
                             <i class="fas fa-plus-circle"></i> 
                             <span>Tambah Berita</span>
-                        </a>
-                        <a href="{{ route('lowongan.index') }}" class="menu-item">
-                            <i class="fas fa-plus-circle"></i> 
-                            <span>Tambah Lowongan</span>
                         </a>
                     @endif
                 @endauth
