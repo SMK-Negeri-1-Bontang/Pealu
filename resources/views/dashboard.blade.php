@@ -15,7 +15,7 @@
                     
                     @auth
                         @if (Auth::user()->isAdmin() || Auth::user()->isPetugas())
-                        <a href="{{ url('/alumni') }}" class="btn btn-outline-light btn-lg rounded-pill" data-bs-toggle="modal" data-bs-target="#tambah">
+                        <a href="{{ url('/alumni') }}" class="btn btn-outline-light btn-lg rounded-pill">
                             <i class="bi bi-plus-circle me-2"></i>Add Alumni
                         </a>
                         @endif
@@ -381,8 +381,8 @@
                             
                             <!-- Action Buttons -->
                             <div class="modal-actions">
-                                <a href="{{ route('alumni.invoice', ['id' => $a->id]) }}" class="btn btn-primary"  title="Unduh">
-                                    <i class="bi bi-download me-2"></i>Download Profile
+                                <a href="{{ route('alumni.invoice', ['id' => $a->id]) }}" class="btn btn-primary" title="Unduh">
+                                    <i class="bi bi-download me-2"></i>Download Informasi
                                 </a>
                                 <button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal">
                                     <i class="bi bi-x-circle me-"></i>  Close
