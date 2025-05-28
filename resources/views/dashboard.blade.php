@@ -261,7 +261,7 @@
     <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content">
             <!-- Modal Header -->
-            <div class="modal-header">
+            <div class="modal-header text-white" style="background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));">
                 <div>
                     <h3 class="modal-title">{{ $a->nama_lengk }}</h3>
                     <div class="modal-badges">
@@ -795,10 +795,9 @@
     }
 
     .modal-header {
-        background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-        color: var(--white-color);
-        padding: 1.5rem;
-        border-bottom: none;
+        color: #ffffff !important;
+        padding: 1.5rem !important;
+        border-bottom: none !important;
     }
 
     .modal-title {

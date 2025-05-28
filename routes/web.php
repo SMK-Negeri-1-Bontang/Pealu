@@ -65,7 +65,4 @@ Auth::routes();
 
 // Rute untuk Pengajar
 Route::resource('pengajar', PengajarController::class);
-Route::get('/pengajar-tampilan', function () {
-    $pengajar = App\Models\Pengajar::paginate(5);
-    return view('layouts.pengajar.tampilan', compact('pengajar'));
-});
+Route::get('/pengajar-tampilan', [PengajarController::class, 'tampilan'])->name('pengajar.tampilan');

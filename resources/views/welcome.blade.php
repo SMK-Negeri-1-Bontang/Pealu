@@ -910,11 +910,24 @@
                     const currentPath = currentUrl.pathname;
                     const itemPath = itemUrl.pathname;
                     
+                    // Remove any existing active class first
+                    item.classList.remove("active");
+                    
+                    // Exact match for root path
                     if (itemPath === '/' && currentPath === '/') {
                         item.classList.add("active");
                     }
-                    else if (itemPath !== '/' && currentPath.startsWith(itemPath)) {
+                    // For other paths, check for exact matches first
+                    else if (itemPath === currentPath) {
                         item.classList.add("active");
+                    }
+                    // For nested routes, only match if it's a direct parent
+                    else if (itemPath !== '/' && currentPath.startsWith(itemPath)) {
+                        // Check if the next character after the path is a slash or end of string
+                        const nextChar = currentPath.charAt(itemPath.length);
+                        if (nextChar === '/' || nextChar === '') {
+                            item.classList.add("active");
+                        }
                     }
                 } catch (e) {
                     console.error("Error processing menu item:", e);

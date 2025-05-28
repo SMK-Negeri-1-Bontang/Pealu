@@ -52,6 +52,52 @@ class PengajarController extends Controller
         return view('layouts.pengajar.index', compact('pengajar', 'mataPelajaranList', 'tahunBergabungList'));
     }
 
+    public function tampilan(Request $request)
+    {
+        $query = Pengajar::query();
+
+        if ($request->filled('nama_lengkap')) {
+            $query->where('nama_lengkap', 'like', '%' . $request->nama_lengkap . '%');
+        }
+        if ($request->filled('nip')) {
+            $query->where('nip', 'like', '%' . $request->nip . '%');
+        }
+        if ($request->filled('mata_pelajaran')) {
+            $query->where('mata_pelajaran', $request->mata_pelajaran);
+        }
+        if ($request->filled('tahun_bergabung')) {
+            $query->where('tahun_bergabung', $request->tahun_bergabung);
+        }
+
+        $query->orderBy('nama_lengkap');
+
+        $mataPelajaranList = Pengajar::select('mata_pelajaran')
+            ->distinct()
+            ->orderBy('mata_pelajaran')
+            ->pluck('mata_pelajaran');
+
+        $tahunBergabungList = Pengajar::select('tahun_bergabung')
+            ->distinct()
+            ->orderBy('tahun_bergabung', 'desc')
+            ->pluck('tahun_bergabung');
+
+        $pengajar = $query->paginate(10)->appends($request->query());
+
+        // Statistik
+        $totalPengajar = Pengajar::count();
+        $aktifCount = Pengajar::where('status', 1)->count();
+        $nonAktifCount = Pengajar::where('status', 2)->count();
+
+        return view('layouts.pengajar.tampilan', compact(
+            'pengajar', 
+            'mataPelajaranList', 
+            'tahunBergabungList',
+            'totalPengajar',
+            'aktifCount',
+            'nonAktifCount'
+        ));
+    }
+
     public function store(Request $request)
     {
         $validated = $request->validate([
