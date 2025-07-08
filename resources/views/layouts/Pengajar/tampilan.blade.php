@@ -281,8 +281,8 @@
                 <div class="row g-0">
                     <div class="col-md-5 modal-profile-col">
                         <div class="modal-profile d-flex justify-content-center">
-                            @if($p->image)
-                                <img src="{{ asset('storage/' . $p->image) }}" 
+                            @if($p->foto)
+                                <img src="{{ asset('storage/' . $p->foto) }}" 
                                      class="modal-profile-image" 
                                      alt="{{ $p->nama_lengkap }}">
                             @else
@@ -350,18 +350,14 @@
                             <!-- Contact Information -->
                             <div class="modal-section">
                                 <h5 class="section-title">Contact Information</h5>
-                                <div class="contact-grid">
-                                    <div class="contact-card full-width">
-                                        <div class="contact-icon">
-                                            <i class="bi bi-telephone"></i>
-                                        </div>
-                                        <div class="contact-info">
-                                            <small>Phone</small>
-                                            <a href="tel:{{ $p->nomor_telp }}" class="phone-link">
-                                                {{ $p->nomor_telp ?? 'Not available' }}
-                                            </a>
-                                        </div>
+                                <div class="contact-card custom-phone-card">
+                                    <div class="d-flex align-items-center mb-1">
+                                        <i class="bi bi-telephone me-2"></i>
+                                        <span class="phone-label">Phone</span>
                                     </div>
+                                    <a href="tel:{{ $p->nomor_telp }}" class="phone-link">
+                                        {{ $p->nomor_telp ?? 'Not available' }}
+                                    </a>
                                 </div>
                             </div>
                             
@@ -1028,6 +1024,42 @@
         .stat-number {
             font-size: 2rem;
         }
+    }
+
+    .phone-link {
+        color: var(--primary-color);
+        font-weight: 600;
+        text-decoration: none;
+        transition: color 0.2s;
+        word-break: break-all;
+    }
+    .phone-link:hover {
+        color: var(--secondary-color);
+        text-decoration: underline;
+    }
+    .custom-phone-card {
+        background: #f8f9fa;
+        border-radius: 8px;
+        padding: 1rem 1.25rem;
+        margin-bottom: 1rem;
+    }
+    .custom-phone-card .phone-label {
+        font-weight: 500;
+        color: #6c757d;
+        font-size: 1rem;
+    }
+    .custom-phone-card .phone-link {
+        display: block;
+        margin-left: 2rem;
+        margin-top: 0.25rem;
+        color: var(--primary-color);
+        font-weight: 600;
+        text-decoration: none;
+        word-break: break-all;
+    }
+    .custom-phone-card .phone-link:hover {
+        color: var(--secondary-color);
+        text-decoration: underline;
     }
 </style>
 

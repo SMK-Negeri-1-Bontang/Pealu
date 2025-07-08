@@ -157,12 +157,53 @@
             </div>
             
             <!-- Pagination -->
-            <div class="d-flex justify-content-between align-items-center mt-4">
-                <div class="text-muted small">
-                    Menampilkan <b>{{ $users->firstItem() }}</b> sampai <b>{{ $users->lastItem() }}</b> dari <b>{{ $users->total() }}</b> entri
-                </div>
-                <div>
-                    {{ $users->onEachSide(1)->links() }}
+            <div class="d-flex flex-wrap justify-content-between align-items-center mt-4 gap-2">
+                <form method="GET" id="perPageForm" class="d-flex align-items-center gap-2 mb-0">
+                    <div class="d-flex align-items-center gap-2">
+                        <label for="perPage" class="mb-0 fw-semibold text-secondary" style="white-space: nowrap;">Rows per page:</label>
+                        <select name="per_page" id="perPage" class="form-select form-select-sm w-auto shadow-sm"
+                            onchange="document.getElementById('perPageForm').submit()">
+                            @foreach([10, 25, 50, 200] as $size)
+                                <option value="{{ $size }}" {{ request('per_page', 10) == $size ? 'selected' : '' }}>{{ $size }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    @foreach(request()->except('per_page', 'page') as $key => $val)
+                        <input type="hidden" name="{{ $key }}" value="{{ $val }}">
+                    @endforeach
+                </form>
+                <div class="d-flex align-items-center gap-3">
+                    <span class="text-muted small">
+                        <b>{{ $users->firstItem() }}</b> - <b>{{ $users->lastItem() }}</b> of <b>{{ $users->total() }}</b>
+                    </span>
+                    <nav>
+                        <ul class="pagination pagination-sm mb-0">
+                            {{-- Previous --}}
+                            <li class="page-item {{ $users->onFirstPage() ? 'disabled' : '' }}">
+                                <a class="page-link" href="{{ $users->previousPageUrl() }}{{ $users->previousPageUrl() ? '&per_page='.request('per_page', 10) : '' }}" tabindex="-1">
+                                    <i class="fas fa-chevron-left"></i>
+                                </a>
+                            </li>
+                            {{-- Page Numbers --}}
+                            @foreach ($users->getUrlRange(1, $users->lastPage()) as $page => $url)
+                                @if ($page == $users->currentPage() || ($page <= 2 || $page > $users->lastPage() - 2 || abs($page - $users->currentPage()) <= 1))
+                                    <li class="page-item {{ $users->currentPage() == $page ? 'active' : '' }}">
+                                        <a class="page-link" href="{{ $url }}&per_page={{ request('per_page', 10) }}">{{ $page }}</a>
+                                    </li>
+                                @elseif ($page == 3 && $users->currentPage() > 4)
+                                    <li class="page-item disabled"><span class="page-link">...</span></li>
+                                @elseif ($page == $users->lastPage() - 2 && $users->currentPage() < $users->lastPage() - 3)
+                                    <li class="page-item disabled"><span class="page-link">...</span></li>
+                                @endif
+                            @endforeach
+                            {{-- Next --}}
+                            <li class="page-item {{ !$users->hasMorePages() ? 'disabled' : '' }}">
+                                <a class="page-link" href="{{ $users->nextPageUrl() }}{{ $users->nextPageUrl() ? '&per_page='.request('per_page', 10) : '' }}">
+                                    <i class="fas fa-chevron-right"></i>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
                 </div>
             </div>
         </div>
@@ -298,30 +339,35 @@
     }
 
     .pagination .page-link {
-        border-radius: 50rem !important;
-        padding: 0.4rem 0.8rem;
-        font-size: 0.85rem;
-        color: #6c757d;
-        border: 1px solid #dee2e6;
+        border-radius: 50% !important;
+        width: 32px;
+        height: 32px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #4e54c8;
+        border: none;
+        margin: 0 2px;
+        font-weight: 500;
+        transition: background 0.2s;
+        padding: 0;
+        font-size: 1rem;
     }
 
     .pagination .page-item.active .page-link {
-        background-color: #4e54c8;
-        border-color: #4e54c8;
+        background: linear-gradient(135deg, #4e54c8, #8f94fb);
         color: #fff;
-        font-weight: 600;
+        box-shadow: 0 2px 8px rgba(78, 84, 200, 0.15);
     }
 
     .pagination .page-link:hover {
-        background-color: #f0f2ff;
-        border-color: #bfc3ff;
+        background: #f0f2ff;
         color: #4e54c8;
     }
 
     .pagination .page-item.disabled .page-link {
-        background-color: #f8f9fa;
         color: #adb5bd;
-        border-color: #dee2e6;
+        background: #f8f9fa;
     }
 </style>
 @endpush

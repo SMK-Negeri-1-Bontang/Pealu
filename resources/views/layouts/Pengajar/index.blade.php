@@ -195,12 +195,51 @@
             </div>
             
             <!-- Pagination -->
-            <div class="d-flex justify-content-between align-items-center mt-4">
-                <div class="text-muted small">
-                    Menampilkan <b>{{ $pengajar->firstItem() }}</b> sampai <b>{{ $pengajar->lastItem() }}</b> dari <b>{{ $pengajar->total() }}</b> entri
-                </div>
-                <div>
-                    {{ $pengajar->onEachSide(1)->links() }}
+            <div class="d-flex flex-wrap justify-content-between align-items-center mt-4 gap-2">
+                <form method="GET" id="perPageForm" class="d-flex align-items-center gap-2 mb-0 flex-nowrap">
+                    <label for="perPage" class="mb-0 fw-semibold text-secondary">Rows per page:</label>
+                    <select name="per_page" id="perPage" class="form-select form-select-sm w-auto shadow-sm"
+                        onchange="document.getElementById('perPageForm').submit()">
+                        @foreach([10, 25, 50, 200] as $size)
+                            <option value="{{ $size }}" {{ request('per_page', 10) == $size ? 'selected' : '' }}>{{ $size }}</option>
+                        @endforeach
+                    </select>
+                    @foreach(request()->except('per_page', 'page') as $key => $val)
+                        <input type="hidden" name="{{ $key }}" value="{{ $val }}">
+                    @endforeach
+                </form>
+                <div class="d-flex align-items-center gap-3">
+                    <span class="text-muted small">
+                        <b>{{ $pengajar->firstItem() }}</b> - <b>{{ $pengajar->lastItem() }}</b> of <b>{{ $pengajar->total() }}</b>
+                    </span>
+                    <nav>
+                        <ul class="pagination pagination-sm mb-0">
+                            {{-- Previous --}}
+                            <li class="page-item {{ $pengajar->onFirstPage() ? 'disabled' : '' }}">
+                                <a class="page-link" href="{{ $pengajar->previousPageUrl() }}{{ $pengajar->previousPageUrl() ? '&per_page='.request('per_page', 10) : '' }}" tabindex="-1">
+                                    <i class="fas fa-chevron-left"></i>
+                                </a>
+                            </li>
+                            {{-- Page Numbers --}}
+                            @foreach ($pengajar->getUrlRange(1, $pengajar->lastPage()) as $page => $url)
+                                @if ($page == $pengajar->currentPage() || ($page <= 2 || $page > $pengajar->lastPage() - 2 || abs($page - $pengajar->currentPage()) <= 1))
+                                    <li class="page-item {{ $pengajar->currentPage() == $page ? 'active' : '' }}">
+                                        <a class="page-link" href="{{ $url }}&per_page={{ request('per_page', 10) }}">{{ $page }}</a>
+                                    </li>
+                                @elseif ($page == 3 && $pengajar->currentPage() > 4)
+                                    <li class="page-item disabled"><span class="page-link">...</span></li>
+                                @elseif ($page == $pengajar->lastPage() - 2 && $pengajar->currentPage() < $pengajar->lastPage() - 3)
+                                    <li class="page-item disabled"><span class="page-link">...</span></li>
+                                @endif
+                            @endforeach
+                            {{-- Next --}}
+                            <li class="page-item {{ !$pengajar->hasMorePages() ? 'disabled' : '' }}">
+                                <a class="page-link" href="{{ $pengajar->nextPageUrl() }}{{ $pengajar->nextPageUrl() ? '&per_page='.request('per_page', 10) : '' }}">
+                                    <i class="fas fa-chevron-right"></i>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
                 </div>
             </div>
         </div>
@@ -214,6 +253,8 @@
     :root {
         --primary-color: #4e54c8;
         --secondary-color: #8f94fb;
+        --light-color: #f8f9fa;
+        --dark-color: #212529;
     }
     
     .card {
@@ -285,30 +326,33 @@
     }
 
     .pagination .page-link {
-        border-radius: 50rem !important;
-        padding: 0.4rem 0.8rem;
-        font-size: 0.85rem;
-        color: #6c757d;
-        border: 1px solid #dee2e6;
+        border-radius: 50% !important;
+        width: 32px;
+        height: 32px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #4e54c8;
+        border: none;
+        margin: 0 2px;
+        font-weight: 500;
+        transition: background 0.2s;
     }
 
     .pagination .page-item.active .page-link {
-        background-color: #4e54c8;
-        border-color: #4e54c8;
+        background: linear-gradient(135deg, #4e54c8, #8f94fb);
         color: #fff;
-        font-weight: 600;
+        box-shadow: 0 2px 8px rgba(78, 84, 200, 0.15);
     }
 
     .pagination .page-link:hover {
-        background-color: #f0f2ff;
-        border-color: #bfc3ff;
+        background: #f0f2ff;
         color: #4e54c8;
     }
 
     .pagination .page-item.disabled .page-link {
-        background-color: #f8f9fa;
         color: #adb5bd;
-        border-color: #dee2e6;
+        background: #f8f9fa;
     }
 </style>
 @endpush

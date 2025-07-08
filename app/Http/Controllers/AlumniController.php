@@ -51,7 +51,8 @@ class AlumniController extends Controller
                           ->pluck('tahun_lulus');
         
         // Pagination dengan 10 item per halaman
-        $alumni = $query->paginate(10)
+        $perPage = request('per_page', 10);
+        $alumni = $query->paginate($perPage)
                       ->appends($request->query());
         
         return view('layouts.alumni.index', compact('alumni', 'jurusanList', 'tahunList'));
@@ -103,7 +104,8 @@ class AlumniController extends Controller
         $entrepreneurCount = Alumni::whereNotNull('wirausaha')->count();
         
         // Pagination dengan 10 item per halaman
-        $alumni = $query->paginate(10)
+        $perPage = request('per_page', 10);
+        $alumni = $query->paginate($perPage)
                       ->appends($request->query());
         
         return view('dashboard', compact(
