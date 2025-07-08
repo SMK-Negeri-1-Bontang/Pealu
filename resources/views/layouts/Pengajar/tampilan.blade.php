@@ -6,17 +6,17 @@
     <section class="hero-section">
         <div class="container">
             <div class="hero-content animate__animated animate__fadeIn">
-                <h1 class="hero-title">Our Expert Educators</h1>
-                <p class="hero-subtitle">Meet our passionate team of professional instructors</p>
+                <h1 class="hero-title">Pengajar Profesional Kami</h1>
+                <p class="hero-subtitle">Kenali tim pengajar berpengalaman dan berdedikasi</p>
                 <div class="hero-actions">
                     <a href="#educator-grid" class="btn btn-primary btn-lg rounded-pill">
-                        <i class="bi bi-people-fill me-2"></i>Explore Educators
+                        <i class="bi bi-people-fill me-2"></i>Lihat Pengajar
                     </a>
                     
                     @auth
                         @if (Auth::user()->isAdmin() || Auth::user()->isPetugas())
                         <a href="{{ url('/pengajar') }}" class="btn btn-outline-light btn-lg rounded-pill">
-                            <i class="bi bi-plus-circle me-2"></i>Add Educator
+                            <i class="bi bi-plus-circle me-2"></i>Tambah Pengajar
                         </a>
                         @endif
                     @endauth
@@ -42,7 +42,7 @@
                             <i class="bi bi-people"></i>
                         </div>
                         <h3 class="stat-number">{{ $totalPengajar }}</h3>
-                        <p class="stat-label">Total Educators</p>
+                        <p class="stat-label">Total Pengajar</p>
                     </div>
                 </div>
                 <div class="col-md-3">
@@ -51,7 +51,7 @@
                             <i class="bi bi-check-circle"></i>
                         </div>
                         <h3 class="stat-number">{{ $aktifCount }}</h3>
-                        <p class="stat-label">Active Educators</p>
+                        <p class="stat-label">Aktif</p>
                     </div>
                 </div>
                 <div class="col-md-3">
@@ -60,7 +60,7 @@
                             <i class="bi bi-pause-circle"></i>
                         </div>
                         <h3 class="stat-number">{{ $nonAktifCount }}</h3>
-                        <p class="stat-label">Inactive Educators</p>
+                        <p class="stat-label">Tidak Aktif</p>
                     </div>
                 </div>
                 <div class="col-md-3">
@@ -69,7 +69,7 @@
                             <i class="bi bi-award"></i>
                         </div>
                         <h3 class="stat-number">{{ $pengajar->count() }}</h3>
-                        <p class="stat-label">Teaching Staff</p>
+                        <p class="stat-label">Staf Pengajar</p>
                     </div>
                 </div>
             </div>
@@ -85,19 +85,19 @@
                         <form action="{{ route('pengajar.tampilan') }}" method="GET">
                             <div class="row g-4 align-items-end">
                                 <div class="col-md-3 mb-2">
-                                    <label class="form-label mb-2">Name</label>
+                                    <label class="form-label mb-2">Nama</label>
                                     <input type="text" name="nama_lengkap" class="form-control form-control-lg ps-3"
-                                        placeholder="Search by name..." value="{{ request('nama_lengkap') }}">
+                                        placeholder="Cari berdasarkan nama..." value="{{ request('nama_lengkap') }}">
                                 </div>
                                 <div class="col-md-2 mb-2">
                                     <label class="form-label mb-2">NIP</label>
                                     <input type="text" name="nip" class="form-control form-control-lg ps-3" 
-                                        placeholder="Search NIP..." value="{{ request('nip') }}">
+                                        placeholder="Cari NIP..." value="{{ request('nip') }}">
                                 </div>
                                 <div class="col-md-3 mb-2">
-                                    <label class="form-label mb-2">Subject</label>
+                                    <label class="form-label mb-2">Mata Pelajaran</label>
                                     <select name="mata_pelajaran" class="form-select form-select-lg ps-3">
-                                        <option value="">All Subjects</option>
+                                        <option value="">Semua Mata Pelajaran</option>
                                         @foreach($mataPelajaranList as $mapel)
                                             <option value="{{ $mapel }}" {{ request('mata_pelajaran') == $mapel ? 'selected' : '' }}>
                                                 {{ $mapel }}
@@ -106,9 +106,9 @@
                                     </select>
                                 </div>
                                 <div class="col-md-2 mb-2">
-                                    <label class="form-label mb-2">Join Year</label>
+                                    <label class="form-label mb-2">Tahun Bergabung</label>
                                     <select name="tahun_bergabung" class="form-select form-select-lg ps-3">
-                                        <option value="">All Years</option>
+                                        <option value="">Semua Tahun</option>
                                         @foreach($tahunBergabungList as $tahun)
                                             <option value="{{ $tahun }}" {{ request('tahun_bergabung') == $tahun ? 'selected' : '' }}>
                                                 {{ $tahun }}
@@ -118,7 +118,7 @@
                                 </div>
                                 <div class="col-md-2 mb-2">
                                     <button type="submit" class="btn btn-primary btn-lg w-100 py-3" style="background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));">
-                                        <i class="bi bi-search me-2"></i> Search
+                                        <i class="bi bi-search me-2"></i> Cari
                                     </button>
                                 </div>
                             </div>
@@ -133,8 +133,8 @@
     <section id="educator-grid" class="educator-grid-section py-5">
         <div class="container">
             <div class="section-header animate__animated animate__fadeIn">
-                <h2 class="section-title">Our Teaching Staff</h2>
-                <p class="section-subtitle">Meet our dedicated educators</p>
+                <h2 class="section-title">Staf Pengajar</h2>
+                <p class="section-subtitle">Kenali para pengajar berdedikasi kami</p>
             </div>
 
             <div class="row g-4 justify-content-center">
@@ -169,15 +169,15 @@
                             <!-- Status Badge -->
                             @if($p->status == 1)
                                 <span class="educator-status active">
-                                    <i class="bi bi-check-circle me-1"></i> Active
+                                    <i class="bi bi-check-circle me-1"></i> Aktif
                                 </span>
                             @elseif($p->status == 2)
                                 <span class="educator-status inactive">
-                                    <i class="bi bi-pause-circle me-1"></i> Inactive
+                                    <i class="bi bi-pause-circle me-1"></i> Tidak Aktif
                                 </span>
                             @else
                                 <span class="educator-status retired">
-                                    <i class="bi bi-award me-1"></i> Retired
+                                    <i class="bi bi-award me-1"></i> Purna Tugas
                                 </span>
                             @endif
                         </div>
@@ -186,7 +186,7 @@
                         <div class="educator-actions">
                             <button data-bs-toggle="modal" data-bs-target="#lihat{{$p->id}}" 
                                     class="btn btn-outline-primary">
-                                <i class="bi bi-eye me-1"></i> View Profile
+                                <i class="bi bi-eye me-1"></i> Lihat Profil
                             </button>
                         </div>
                     </div>
@@ -195,10 +195,10 @@
                 <div class="col-12">
                     <div class="empty-state animate__animated animate__fadeIn">
                         <i class="bi bi-people"></i>
-                        <h5>No Educators Found</h5>
-                        <p>We couldn't find any educators matching your criteria.</p>
+                        <h5>Tidak Ada Pengajar Ditemukan</h5>
+                        <p>Kami tidak menemukan pengajar sesuai kriteria Anda.</p>
                         <a href="{{ route('pengajar.tampilan') }}" class="btn btn-primary">
-                            <i class="bi bi-arrow-counterclockwise me-1"></i> Reset Filters
+                            <i class="bi bi-arrow-counterclockwise me-1"></i> Atur Ulang Filter
                         </a>
                     </div>
                 </div>
@@ -223,28 +223,28 @@
         <div class="container">
             <div class="cta-content animate__animated animate__fadeIn">
                 @guest
-                    <h2 class="cta-title">Join Our Educator Network</h2>
-                    <p class="cta-subtitle">Become part of our dedicated teaching staff</p>
+                    <h2 class="cta-title">Bergabunglah dengan Jaringan Pengajar</h2>
+                    <p class="cta-subtitle">Jadilah bagian dari tim pengajar berdedikasi kami</p>
                 @else
-                    <h2 class="cta-title">Welcome Back, {{ Auth::user()->name }}</h2>
-                    <p class="cta-subtitle">Continue your journey with our institution</p>
+                    <h2 class="cta-title">Selamat Datang Kembali, {{ Auth::user()->name }}</h2>
+                    <p class="cta-subtitle">Lanjutkan perjalanan Anda dengan institusi kami</p>
                 @endguest
                 
                 <div class="cta-actions">
                     @guest
                         <a href="{{ route('register') }}" class="btn btn-light">
-                            <i class="bi bi-person-plus me-2"></i>Register
+                            <i class="bi bi-person-plus me-2"></i>Daftar
                         </a>
                         <a href="{{ route('login') }}" class="btn btn-outline-light">
-                            <i class="bi bi-box-arrow-in-right me-2"></i>Sign In
+                            <i class="bi bi-box-arrow-in-right me-2"></i>Masuk
                         </a>
                     @else
                         <a href="{{ url('/profile') }}" class="btn btn-light">
-                            <i class="bi bi-person-circle me-2"></i>My Profile
+                            <i class="bi bi-person-circle me-2"></i>Profil Saya
                         </a>
                         <a href="{{ route('logout') }}" class="btn btn-outline-light"
                         onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                            <i class="bi bi-box-arrow-right me-2"></i>Logout
+                            <i class="bi bi-box-arrow-right me-2"></i>Keluar
                         </a>
                         <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                             @csrf
@@ -267,7 +267,7 @@
                     <h3 class="modal-title">{{ $p->nama_lengkap }}</h3>
                     <div class="modal-badges">
                         <span class="badge">{{ $p->jabatan }}</span>
-                        <span class="badge">Since {{ $p->tahun_bergabung }}</span>
+                        <span class="badge">Bergabung {{ $p->tahun_bergabung }}</span>
                         @if($p->nip)
                         <span class="badge">NIP: {{ $p->nip }}</span>
                         @endif
@@ -301,7 +301,7 @@
                                         <i class="bi bi-book"></i>
                                     </div>
                                     <div class="info-content">
-                                        <h5>Teaching Subject</h5>
+                                        <h5>Mata Pelajaran</h5>
                                         <p class="subject">{{ $p->mata_pelajaran }}</p>
                                     </div>
                                 </div>
@@ -314,7 +314,7 @@
                                         <i class="bi bi-mortarboard"></i>
                                     </div>
                                     <div class="info-content">
-                                        <h5>Education</h5>
+                                        <h5>Pendidikan Terakhir</h5>
                                         <p class="education">{{ $p->pendidikan_terakhir }}</p>
                                     </div>
                                 </div>
@@ -336,11 +336,11 @@
                                         <h5>Status</h5>
                                         <p class="status">
                                             @if($p->status == 1)
-                                                Active Educator
+                                                Aktif
                                             @elseif($p->status == 2)
-                                                Inactive
+                                                Tidak Aktif
                                             @else
-                                                Retired
+                                                Purna Tugas
                                             @endif
                                         </p>
                                     </div>
@@ -349,14 +349,14 @@
                             
                             <!-- Contact Information -->
                             <div class="modal-section">
-                                <h5 class="section-title">Contact Information</h5>
+                                <h5 class="section-title">Informasi Kontak</h5>
                                 <div class="contact-card custom-phone-card">
                                     <div class="d-flex align-items-center mb-1">
                                         <i class="bi bi-telephone me-2"></i>
-                                        <span class="phone-label">Phone</span>
+                                        <span class="phone-label">Telepon</span>
                                     </div>
                                     <a href="tel:{{ $p->nomor_telp }}" class="phone-link">
-                                        {{ $p->nomor_telp ?? 'Not available' }}
+                                        {{ $p->nomor_telp ?? 'Tidak tersedia' }}
                                     </a>
                                 </div>
                             </div>
@@ -364,7 +364,7 @@
                             <!-- Address -->
                             @if($p->alamat)
                             <div class="modal-section">
-                                <h5 class="section-title">Address</h5>
+                                <h5 class="section-title">Alamat</h5>
                                 <div class="location-card full-width">
                                     <div class="location-icon">
                                         <i class="bi bi-geo-alt"></i>
@@ -379,7 +379,7 @@
                             <!-- Action Buttons -->
                             <div class="modal-actions">
                                 <button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal">
-                                    <i class="bi bi-x-circle me-1"></i> Close
+                                    <i class="bi bi-x-circle me-1"></i> Tutup
                                 </button>
                             </div>
                         </div>

@@ -6,17 +6,17 @@
     <section class="hero-section">
         <div class="container">
             <div class="hero-content animate__animated animate__fadeIn">
-                <h1 class="hero-title">Our Distinguished Alumni Network</h1>
-                <p class="hero-subtitle">Connecting successful graduates across generations and industries</p>
+                <h1 class="hero-title">Jaringan Alumni Terbaik Kami</h1>
+                <p class="hero-subtitle">Menghubungkan lulusan sukses lintas generasi dan bidang</p>
                 <div class="hero-actions">
                     <a href="#alumni-grid" class="btn btn-primary btn-lg rounded-pill">
-                        <i class="bi bi-people-fill me-2"></i>Explore Alumni
+                        <i class="bi bi-people-fill me-2"></i>Lihat Alumni
                     </a>
                     
                     @auth
                         @if (Auth::user()->isAdmin() || Auth::user()->isPetugas())
                         <a href="{{ url('/alumni') }}" class="btn btn-outline-light btn-lg rounded-pill">
-                            <i class="bi bi-plus-circle me-2"></i>Add Alumni
+                            <i class="bi bi-plus-circle me-2"></i>Tambah Alumni
                         </a>
                         @endif
                     @endauth
@@ -51,7 +51,7 @@
                             <i class="bi bi-briefcase"></i>
                         </div>
                         <h3 class="stat-number">{{ $workingCount }}</h3>
-                        <p class="stat-label">Working Professionals</p>
+                        <p class="stat-label">Bekerja</p>
                     </div>
                 </div>
                 <div class="col-md-3">
@@ -60,7 +60,7 @@
                             <i class="bi bi-mortarboard"></i>
                         </div>
                         <h3 class="stat-number">{{ $studyingCount }}</h3>
-                        <p class="stat-label">Currently Studying</p>
+                        <p class="stat-label">Sedang Kuliah</p>
                     </div>
                 </div>
                 <div class="col-md-3">
@@ -69,7 +69,7 @@
                             <i class="bi bi-shop"></i>
                         </div>
                         <h3 class="stat-number">{{ $entrepreneurCount }}</h3>
-                        <p class="stat-label">Entrepreneurs</p>
+                        <p class="stat-label">Wirausaha</p>
                     </div>
                 </div>
             </div>
@@ -133,8 +133,8 @@
     <section id="alumni-grid" class="alumni-grid-section py-5">
         <div class="container">
             <div class="section-header animate__animated animate__fadeIn">
-                <h2 class="section-title">Featured Alumni</h2>
-                <p class="section-subtitle">Discover our accomplished graduates</p>
+                <h2 class="section-title">Alumni Unggulan</h2>
+                <p class="section-subtitle">Temukan lulusan-lulusan terbaik kami</p>
             </div>
 
             <div class="row g-4 justify-content-center">
@@ -164,19 +164,19 @@
                             <!-- Status Badge -->
                             @if($a->status == 1) <!-- Bekerja -->
                                 <span class="alumni-status working">
-                                    <i class="bi bi-briefcase me-1"></i> {{ $a->nama_per ?? 'Employed' }}
+                                    <i class="bi bi-briefcase me-1"></i> {{ $a->nama_per ?? 'Bekerja' }}
                                 </span>
                             @elseif($a->status == 2) <!-- Kuliah -->
                                 <span class="alumni-status studying">
-                                    <i class="bi bi-mortarboard me-1"></i> {{ $a->nama_perti ?? 'Studying' }}
+                                    <i class="bi bi-mortarboard me-1"></i> {{ $a->nama_perti ?? 'Sedang Kuliah' }}
                                 </span>
                             @elseif($a->wirausaha) <!-- Wirausaha -->
                                 <span class="alumni-status entrepreneur">
-                                    <i class="bi bi-shop me-1"></i> {{ $a->wirausaha ?? 'Entrepreneur' }}
+                                    <i class="bi bi-shop me-1"></i> {{ $a->wirausaha ?? 'Wirausaha' }}
                                 </span>
                             @else
                                 <span class="alumni-status other">
-                                    <i class="bi bi-question-circle me-1"></i> Other
+                                    <i class="bi bi-question-circle me-1"></i> Lainnya
                                 </span>
                             @endif
                         </div>
@@ -185,7 +185,7 @@
                         <div class="alumni-actions">
                             <button data-bs-toggle="modal" data-bs-target="#detail{{$a->id}}" 
                                     class="btn btn-outline-primary">
-                                <i class="bi bi-eye me-1"></i> View Profile
+                                <i class="bi bi-eye me-1"></i> Lihat Profil
                             </button>
                         </div>
                     </div>
@@ -194,10 +194,10 @@
                 <div class="col-12">
                     <div class="empty-state animate__animated animate__fadeIn">
                         <i class="bi bi-people"></i>
-                        <h5>No Alumni Found</h5>
-                        <p>We couldn't find any alumni matching your criteria.</p>
+                        <h5>Tidak Ada Alumni Ditemukan</h5>
+                        <p>Kami tidak menemukan alumni sesuai kriteria Anda.</p>
                         <a href="{{ route('alumni.index') }}" class="btn btn-primary">
-                            <i class="bi bi-arrow-counterclockwise me-1"></i> Reset Filters
+                            <i class="bi bi-arrow-counterclockwise me-1"></i> Atur Ulang Filter
                         </a>
                     </div>
                 </div>
@@ -222,28 +222,28 @@
         <div class="container">
             <div class="cta-content animate__animated animate__fadeIn">
                 @guest
-                    <h2 class="cta-title">Join Our Alumni Network</h2>
-                    <p class="cta-subtitle">Stay connected with your alma mater and fellow graduates</p>
+                    <h2 class="cta-title">Bergabunglah dengan Jaringan Alumni Kami</h2>
+                    <p class="cta-subtitle">Tetap terhubung dengan almamater dan sesama lulusan</p>
                 @else
-                    <h2 class="cta-title">Welcome Back, {{ Auth::user()->name }}</h2>
-                    <p class="cta-subtitle">Continue connecting with your alma mater and fellow graduates</p>
+                    <h2 class="cta-title">Selamat Datang Kembali, {{ Auth::user()->name }}</h2>
+                    <p class="cta-subtitle">Lanjutkan koneksi dengan almamater dan rekan alumni</p>
                 @endguest
                 
                 <div class="cta-actions">
                     @guest
                         <a href="{{ route('register') }}" class="btn btn-light">
-                            <i class="bi bi-person-plus me-2"></i>Register
+                            <i class="bi bi-person-plus me-2"></i>Daftar
                         </a>
                         <a href="{{ route('login') }}" class="btn btn-outline-light">
-                            <i class="bi bi-box-arrow-in-right me-2"></i>Sign In
+                            <i class="bi bi-box-arrow-in-right me-2"></i>Masuk
                         </a>
                     @else
                         <a href="{{ url('/profile') }}" class="btn btn-light">
-                            <i class="bi bi-person-circle me-2"></i>My Profile
+                            <i class="bi bi-person-circle me-2"></i>Profil Saya
                         </a>
                         <a href="{{ route('logout') }}" class="btn btn-outline-light"
                         onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                            <i class="bi bi-box-arrow-right me-2"></i>Logout
+                            <i class="bi bi-box-arrow-right me-2"></i>Keluar
                         </a>
                         <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                             @csrf
@@ -266,7 +266,7 @@
                     <h3 class="modal-title">{{ $a->nama_lengk }}</h3>
                     <div class="modal-badges">
                         <span class="badge">{{ $a->jur_sekolah }}</span>
-                        <span class="badge">Class of {{ $a->tahun_lulus }}</span>
+                        <span class="badge">Lulus {{ $a->tahun_lulus }}</span>
                         @if($a->nis)
                         <span class="badge">NIS: {{ $a->nis }}</span>
                         @endif
@@ -301,7 +301,7 @@
                                             <i class="bi bi-briefcase"></i>
                                         </div>
                                         <div class="info-content">
-                                            <h5>Professional Career</h5>
+                                            <h5>Karir Profesional</h5>
                                             <p class="company">{{ $a->nama_per }}</p>
                                             @if($a->nama_tok)
                                             <p class="position">{{ $a->nama_tok }}</p>
@@ -320,7 +320,7 @@
                                             <i class="bi bi-mortarboard"></i>
                                         </div>
                                         <div class="info-content">
-                                            <h5>Higher Education</h5>
+                                            <h5>Pendidikan Tinggi</h5>
                                             <p class="institution">{{ $a->nama_perti }}</p>
                                             @if($a->jur_prodi)
                                             <p class="program">{{ $a->jur_prodi }}</p>
@@ -339,7 +339,7 @@
                                             <i class="bi bi-shop"></i>
                                         </div>
                                         <div class="info-content">
-                                            <h5>Entrepreneurship</h5>
+                                            <h5>Wirausaha</h5>
                                             <p class="business">{{ $a->wirausaha }}</p>
                                         </div>
                                     </div>
@@ -348,16 +348,16 @@
                             
                             <!-- Contact Information -->
                             <div class="modal-section">
-                                <h5 class="section-title">Contact Information</h5>
+                                <h5 class="section-title">Informasi Kontak</h5>
                                 <div class="contact-grid">
                                     <div class="contact-card full-width">
                                         <div class="contact-icon">
                                             <i class="bi bi-telephone"></i>
                                         </div>
                                         <div class="contact-info">
-                                            <small>Phone</small>
+                                            <small>Telepon</small>
                                             <a href="#" class="phone-link">
-                                                {{ $a->nomor_telp ?? 'Not available' }}
+                                                {{ $a->nomor_telp ?? 'Tidak tersedia' }}
                                             </a>
                                         </div>
                                     </div>
@@ -367,7 +367,7 @@
                             <!-- Address -->
                             @if($a->alamat_rum)
                             <div class="modal-section">
-                                <h5 class="section-title">Location</h5>
+                                <h5 class="section-title">Lokasi</h5>
                                 <div class="location-card full-width">
                                     <div class="location-icon">
                                         <i class="bi bi-geo-alt"></i>
@@ -382,10 +382,10 @@
                             <!-- Action Buttons -->
                             <div class="modal-actions">
                                 <a href="{{ route('alumni.invoice', ['id' => $a->id]) }}" class="btn btn-primary" title="Unduh">
-                                    <i class="bi bi-download me-2"></i>Download Informasi
+                                    <i class="bi bi-download me-2"></i>Unduh Informasi
                                 </a>
                                 <button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal">
-                                    <i class="bi bi-x-circle me-"></i>  Close
+                                    <i class="bi bi-x-circle me-"></i>  Tutup
                                 </button>
                             </div>
                         </div>
